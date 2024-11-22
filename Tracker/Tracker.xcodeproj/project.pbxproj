@@ -9,21 +9,23 @@
 /* Begin PBXBuildFile section */
 		91B0283A2CF06F680047E664 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B028392CF06F680047E664 /* AppDelegate.swift */; };
 		91B0283C2CF06F680047E664 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B0283B2CF06F680047E664 /* SceneDelegate.swift */; };
-		91B0283E2CF06F680047E664 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B0283D2CF06F680047E664 /* ViewController.swift */; };
-		91B028412CF06F680047E664 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 91B028402CF06F680047E664 /* Base */; };
+		91B0283E2CF06F680047E664 /* TrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B0283D2CF06F680047E664 /* TrackerViewController.swift */; };
 		91B028432CF06F690047E664 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91B028422CF06F690047E664 /* Assets.xcassets */; };
 		91B028462CF06F690047E664 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 91B028452CF06F690047E664 /* Base */; };
+		91B028522CF078D50047E664 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B028512CF078D50047E664 /* TabBarController.swift */; };
+		91B028552CF07AE60047E664 /* UIButton+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B028542CF07AE60047E664 /* UIButton+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		91B028362CF06F680047E664 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91B028392CF06F680047E664 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91B0283B2CF06F680047E664 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		91B0283D2CF06F680047E664 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		91B028402CF06F680047E664 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		91B0283D2CF06F680047E664 /* TrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerViewController.swift; sourceTree = "<group>"; };
 		91B028422CF06F690047E664 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		91B028452CF06F690047E664 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		91B028472CF06F690047E664 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		91B028512CF078D50047E664 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		91B028542CF07AE60047E664 /* UIButton+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +58,56 @@
 		91B028382CF06F680047E664 /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
-				91B028392CF06F680047E664 /* AppDelegate.swift */,
-				91B0283B2CF06F680047E664 /* SceneDelegate.swift */,
-				91B0283D2CF06F680047E664 /* ViewController.swift */,
-				91B0283F2CF06F680047E664 /* Main.storyboard */,
+				91B028532CF07ABE0047E664 /* Helpers */,
+				91B028502CF078B90047E664 /* TabBarController */,
+				91B0284F2CF074E40047E664 /* Storyboards */,
+				91B0284E2CF072270047E664 /* TrackerViewController */,
+				91B0284D2CF0719D0047E664 /* Core */,
 				91B028422CF06F690047E664 /* Assets.xcassets */,
-				91B028442CF06F690047E664 /* LaunchScreen.storyboard */,
 				91B028472CF06F690047E664 /* Info.plist */,
 			);
 			path = Tracker;
+			sourceTree = "<group>";
+		};
+		91B0284D2CF0719D0047E664 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				91B028392CF06F680047E664 /* AppDelegate.swift */,
+				91B0283B2CF06F680047E664 /* SceneDelegate.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		91B0284E2CF072270047E664 /* TrackerViewController */ = {
+			isa = PBXGroup;
+			children = (
+				91B0283D2CF06F680047E664 /* TrackerViewController.swift */,
+			);
+			path = TrackerViewController;
+			sourceTree = "<group>";
+		};
+		91B0284F2CF074E40047E664 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				91B028442CF06F690047E664 /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		91B028502CF078B90047E664 /* TabBarController */ = {
+			isa = PBXGroup;
+			children = (
+				91B028512CF078D50047E664 /* TabBarController.swift */,
+			);
+			path = TabBarController;
+			sourceTree = "<group>";
+		};
+		91B028532CF07ABE0047E664 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				91B028542CF07AE60047E664 /* UIButton+Extensions.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,7 +170,6 @@
 			files = (
 				91B028432CF06F690047E664 /* Assets.xcassets in Resources */,
 				91B028462CF06F690047E664 /* Base in Resources */,
-				91B028412CF06F680047E664 /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,8 +180,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				91B0283E2CF06F680047E664 /* ViewController.swift in Sources */,
+				91B0283E2CF06F680047E664 /* TrackerViewController.swift in Sources */,
+				91B028522CF078D50047E664 /* TabBarController.swift in Sources */,
 				91B0283A2CF06F680047E664 /* AppDelegate.swift in Sources */,
+				91B028552CF07AE60047E664 /* UIButton+Extensions.swift in Sources */,
 				91B0283C2CF06F680047E664 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -147,14 +191,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		91B0283F2CF06F680047E664 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				91B028402CF06F680047E664 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		91B028442CF06F690047E664 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -297,7 +333,6 @@
 				INFOPLIST_FILE = Tracker/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
@@ -326,7 +361,6 @@
 				INFOPLIST_FILE = Tracker/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
