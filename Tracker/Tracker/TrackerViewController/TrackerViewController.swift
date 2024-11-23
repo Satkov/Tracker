@@ -1,28 +1,32 @@
 import UIKit
 
-class TrackerViewController: UIViewController {
-    var headerLabel = UILabel()
-    var searchBar = UISearchBar()
-    var addTrackerButton = UIButton()
-    var datePicker = UIButton()
-    var placeholderImage = UIImageView()
-    var placeholderText = UILabel()
-
+class TrackerViewController: UIViewController, UIViewControllerTransitioningDelegate {
+    private var headerLabel = UILabel()
+    private var searchBar = UISearchBar()
+    private var addTrackerButton = UIButton()
+    private var datePicker = UIButton()
+    private var placeholderImage = UIImageView()
+    private var placeholderText = UILabel()
+    
+    var categories: [TrackerCategoryModel] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupSearchBar()
         showTrackerPlaceholder()
     }
-
-    func setupUI() {
-        view.backgroundColor = UIColor(named: "TrackerBackgroundColor")
-        setupAddPickerButton()
+    
+    private func setupUI() {
+        view.backgroundColor = UIColor(named: "TrackerBackgroundWhite")
+        setupAddTrackerButton()
         setupHeaderLabel()
         setupSearchBar()
+        setupDatePicker()
+        navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
-    func setupAddPickerButton() {
+    private func setupAddTrackerButton() {
         addTrackerButton.translatesAutoresizingMaskIntoConstraints = false
         addTrackerButton.setupButton(imageName: "PlusIcon", parent: view, action: #selector (addTrackerButtonPressed), constraints: [
             addTrackerButton.widthAnchor.constraint(equalToConstant: 42),
@@ -32,7 +36,7 @@ class TrackerViewController: UIViewController {
         ])
     }
     
-    func setupHeaderLabel() {
+    private func setupHeaderLabel() {
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         headerLabel.text = "Трекеры"
         headerLabel.font = UIFont.systemFont(ofSize: 34, weight: .bold)
@@ -43,7 +47,7 @@ class TrackerViewController: UIViewController {
         ])
     }
     
-    func setupSearchBar() {
+    private func setupSearchBar() {
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         searchBar.searchBarStyle = .minimal
         view.addSubview(searchBar)
@@ -64,12 +68,12 @@ class TrackerViewController: UIViewController {
         searchBar.placeholder = "Поиск"
     }
     
-    func showTrackerPlaceholder() {
+    private func showTrackerPlaceholder() {
         setupPlaceholderImage()
         setupPlaceholderText()
     }
     
-    func setupPlaceholderImage() {
+    private func setupPlaceholderImage() {
         placeholderImage.translatesAutoresizingMaskIntoConstraints = false
         placeholderImage.image = UIImage(named: "StarPlaceholder")
         view.addSubview(placeholderImage)
@@ -80,7 +84,7 @@ class TrackerViewController: UIViewController {
         ])
     }
     
-    func setupPlaceholderText() {
+    private func setupPlaceholderText() {
         placeholderText.translatesAutoresizingMaskIntoConstraints = false
         placeholderText.text = "Что будем отслеживать?"
         placeholderText.font = UIFont.systemFont(ofSize: 12, weight: .medium)
@@ -91,13 +95,34 @@ class TrackerViewController: UIViewController {
             placeholderText.topAnchor.constraint(equalTo: placeholderImage.bottomAnchor, constant: 8)
         ])
     }
-
     
-    @objc
-    func addTrackerButtonPressed() {
+    func setupDatePicker() {
+        datePicker.translatesAutoresizingMaskIntoConstraints = false
+        datePicker.backgroundColor = UIColor(hex: "#F0F0F0")
+        datePicker.setTitle(Date().toShortDateString(), for: .normal)
+        datePicker.layer.cornerRadius = 8
+        datePicker.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        datePicker.setTitleColor(UIColor(named: "TrackerBackgroundBlack"), for: .normal)
+        view.addSubview(datePicker)
+        
+        NSLayoutConstraint.activate([
+            datePicker.widthAnchor.constraint(equalToConstant: 77),
+            datePicker.heightAnchor.constraint(equalToConstant: 34),
+            datePicker.centerYAnchor.constraint(equalTo: addTrackerButton.centerYAnchor),
+            datePicker.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
+        ])
         
     }
     
-
+    
+    @objc
+    func addTrackerButtonPressed() {
+        print("ASd")
+        let createTrackerVC = CreateTrackerViewController()
+        createTrackerVC.modalPresentationStyle = .pageSheet
+        present(createTrackerVC, animated: true)
+    }
+    
+    
 }
 

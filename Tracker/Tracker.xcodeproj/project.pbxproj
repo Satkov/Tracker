@@ -14,6 +14,13 @@
 		91B028462CF06F690047E664 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 91B028452CF06F690047E664 /* Base */; };
 		91B028522CF078D50047E664 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B028512CF078D50047E664 /* TabBarController.swift */; };
 		91B028552CF07AE60047E664 /* UIButton+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B028542CF07AE60047E664 /* UIButton+Extensions.swift */; };
+		91B028782CF0C7A70047E664 /* TrackerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B028772CF0C7A70047E664 /* TrackerModel.swift */; };
+		91B0287A2CF0C7B20047E664 /* TrackerCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B028792CF0C7B20047E664 /* TrackerCategoryModel.swift */; };
+		91B0287C2CF0C7BD0047E664 /* TrackerRecordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B0287B2CF0C7BD0047E664 /* TrackerRecordModel.swift */; };
+		91B028802CF2061D0047E664 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B0287F2CF2061D0047E664 /* UIColor+Extensions.swift */; };
+		91B028832CF207BF0047E664 /* StatisticViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B028822CF207BF0047E664 /* StatisticViewController.swift */; };
+		91B028852CF209690047E664 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B028842CF209690047E664 /* Date+Extensions.swift */; };
+		91B028882CF257BE0047E664 /* CreateTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B028872CF257BE0047E664 /* CreateTrackerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +33,13 @@
 		91B028472CF06F690047E664 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		91B028512CF078D50047E664 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		91B028542CF07AE60047E664 /* UIButton+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extensions.swift"; sourceTree = "<group>"; };
+		91B028772CF0C7A70047E664 /* TrackerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerModel.swift; sourceTree = "<group>"; };
+		91B028792CF0C7B20047E664 /* TrackerCategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategoryModel.swift; sourceTree = "<group>"; };
+		91B0287B2CF0C7BD0047E664 /* TrackerRecordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecordModel.swift; sourceTree = "<group>"; };
+		91B0287F2CF2061D0047E664 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
+		91B028822CF207BF0047E664 /* StatisticViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticViewController.swift; sourceTree = "<group>"; };
+		91B028842CF209690047E664 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
+		91B028872CF257BE0047E664 /* CreateTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,10 +72,13 @@
 		91B028382CF06F680047E664 /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				91B028862CF257AE0047E664 /* CreateTrackerViewController */,
+				91B028812CF207AC0047E664 /* StatisticViewController */,
+				91B0284E2CF072270047E664 /* TrackerViewController */,
+				91B028762CF0C7870047E664 /* Models */,
 				91B028532CF07ABE0047E664 /* Helpers */,
 				91B028502CF078B90047E664 /* TabBarController */,
 				91B0284F2CF074E40047E664 /* Storyboards */,
-				91B0284E2CF072270047E664 /* TrackerViewController */,
 				91B0284D2CF0719D0047E664 /* Core */,
 				91B028422CF06F690047E664 /* Assets.xcassets */,
 				91B028472CF06F690047E664 /* Info.plist */,
@@ -106,8 +123,36 @@
 			isa = PBXGroup;
 			children = (
 				91B028542CF07AE60047E664 /* UIButton+Extensions.swift */,
+				91B0287F2CF2061D0047E664 /* UIColor+Extensions.swift */,
+				91B028842CF209690047E664 /* Date+Extensions.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		91B028762CF0C7870047E664 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				91B028772CF0C7A70047E664 /* TrackerModel.swift */,
+				91B028792CF0C7B20047E664 /* TrackerCategoryModel.swift */,
+				91B0287B2CF0C7BD0047E664 /* TrackerRecordModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		91B028812CF207AC0047E664 /* StatisticViewController */ = {
+			isa = PBXGroup;
+			children = (
+				91B028822CF207BF0047E664 /* StatisticViewController.swift */,
+			);
+			path = StatisticViewController;
+			sourceTree = "<group>";
+		};
+		91B028862CF257AE0047E664 /* CreateTrackerViewController */ = {
+			isa = PBXGroup;
+			children = (
+				91B028872CF257BE0047E664 /* CreateTrackerViewController.swift */,
+			);
+			path = CreateTrackerViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -180,11 +225,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91B0287A2CF0C7B20047E664 /* TrackerCategoryModel.swift in Sources */,
+				91B028852CF209690047E664 /* Date+Extensions.swift in Sources */,
+				91B028782CF0C7A70047E664 /* TrackerModel.swift in Sources */,
 				91B0283E2CF06F680047E664 /* TrackerViewController.swift in Sources */,
+				91B028832CF207BF0047E664 /* StatisticViewController.swift in Sources */,
 				91B028522CF078D50047E664 /* TabBarController.swift in Sources */,
+				91B028802CF2061D0047E664 /* UIColor+Extensions.swift in Sources */,
 				91B0283A2CF06F680047E664 /* AppDelegate.swift in Sources */,
 				91B028552CF07AE60047E664 /* UIButton+Extensions.swift in Sources */,
+				91B028882CF257BE0047E664 /* CreateTrackerViewController.swift in Sources */,
 				91B0283C2CF06F680047E664 /* SceneDelegate.swift in Sources */,
+				91B0287C2CF0C7BD0047E664 /* TrackerRecordModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
