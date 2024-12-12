@@ -39,6 +39,7 @@ class CreateTrackerViewController: UIViewController {
     private func setupHabbitTrackerButton() {
         habbitTrackerButton.translatesAutoresizingMaskIntoConstraints = false
         setupButtonUI(for: habbitTrackerButton, title: "Привычка")
+        habbitTrackerButton.addTarget(nil, action: #selector(habbitButtonPressed), for: .touchUpInside)
         view.addSubview(habbitTrackerButton)
         
         NSLayoutConstraint.activate([
@@ -52,6 +53,7 @@ class CreateTrackerViewController: UIViewController {
     private func setupUnregularTrackerButton() {
         unregularTrackerButton.translatesAutoresizingMaskIntoConstraints = false
         setupButtonUI(for: unregularTrackerButton, title: "Нерегулярное событие")
+        unregularTrackerButton.addTarget(nil, action: #selector(unregularTrackerButtonPressed), for: .touchUpInside)
         view.addSubview(unregularTrackerButton)
         
         NSLayoutConstraint.activate([
@@ -62,5 +64,20 @@ class CreateTrackerViewController: UIViewController {
         ])
     }
     
+    private func switchToEditTrackerForm(isRegular: Bool) {
+        let editVC = EditNewTracker(type: isRegular)
+        editVC.modalPresentationStyle = .pageSheet
+        present(editVC, animated: true)
+    }
+
     
+    @objc
+    func habbitButtonPressed() {
+        switchToEditTrackerForm(isRegular: true)
+    }
+    
+    @objc
+    func unregularTrackerButtonPressed() {
+        switchToEditTrackerForm(isRegular: false)
+    }
 }

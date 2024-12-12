@@ -60,7 +60,7 @@ enum Schedule: String {
     }
 }
 
-enum Emojis: String {
+enum Emojis: String, CaseIterable {
     case smilingFace = "🙂"
     case heartEyesCat = "😻"
     case hibiscus = "🌺"

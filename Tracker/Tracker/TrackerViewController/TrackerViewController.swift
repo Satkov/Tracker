@@ -3,17 +3,16 @@ import UIKit
 class TrackerViewController: UIViewController, UIViewControllerTransitioningDelegate {
     private var headerLabel = UILabel()
     private var searchBar = UISearchBar()
-    private var addTrackerButton = UIButton()
-    private var datePicker = UIButton()
     private var placeholderImage = UIImageView()
     private var placeholderText = UILabel()
+    private var addTrackerButton = UIButton(type: .system)
+    private var datePicker = UIDatePicker()
     
     var categories: [TrackerCategoryModel] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        setupSearchBar()
         showTrackerPlaceholder()
     }
     
@@ -27,12 +26,37 @@ class TrackerViewController: UIViewController, UIViewControllerTransitioningDele
     }
     
     private func setupAddTrackerButton() {
+
+        addTrackerButton.setImage(UIImage(named: "PlusIcon"), for: .normal)
+        addTrackerButton.addTarget(self, action: #selector(addTrackerButtonPressed), for: .touchUpInside)
+        addTrackerButton.tintColor = UIColor.projectColor(.BackgroundBlack)
         addTrackerButton.translatesAutoresizingMaskIntoConstraints = false
-        addTrackerButton.setupButton(imageName: "PlusIcon", parent: view, action: #selector (addTrackerButtonPressed), constraints: [
+
+        view.addSubview(addTrackerButton)
+        
+        NSLayoutConstraint.activate([
+            addTrackerButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            addTrackerButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 49),
             addTrackerButton.widthAnchor.constraint(equalToConstant: 42),
-            addTrackerButton.heightAnchor.constraint(equalToConstant: 42),
-            addTrackerButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 6),
-            addTrackerButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 45)
+            addTrackerButton.heightAnchor.constraint(equalToConstant: 42)
+        ])
+
+    }
+    
+    func setupDatePicker() {
+        datePicker.translatesAutoresizingMaskIntoConstraints = false
+        datePicker.preferredDatePickerStyle = .compact
+        datePicker.datePickerMode = .date
+        datePicker.backgroundColor = UIColor(hex: "#F0F0F0")
+        
+        datePicker.layer.cornerRadius = 8
+        datePicker.locale = Locale(identifier: "ru_RU")
+        
+        view.addSubview(datePicker)
+        
+        NSLayoutConstraint.activate([
+            datePicker.centerYAnchor.constraint(equalTo: addTrackerButton.centerYAnchor),
+            datePicker.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
         ])
     }
     
@@ -96,33 +120,17 @@ class TrackerViewController: UIViewController, UIViewControllerTransitioningDele
         ])
     }
     
-    func setupDatePicker() {
-        datePicker.translatesAutoresizingMaskIntoConstraints = false
-        datePicker.backgroundColor = UIColor(hex: "#F0F0F0")
-        datePicker.setTitle(Date().toShortDateString(), for: .normal)
-        datePicker.layer.cornerRadius = 8
-        datePicker.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-        datePicker.setTitleColor(UIColor(named: "TrackerBackgroundBlack"), for: .normal)
-        view.addSubview(datePicker)
-        
-        NSLayoutConstraint.activate([
-            datePicker.widthAnchor.constraint(equalToConstant: 77),
-            datePicker.heightAnchor.constraint(equalToConstant: 34),
-            datePicker.centerYAnchor.constraint(equalTo: addTrackerButton.centerYAnchor),
-            datePicker.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
-        ])
-        
-    }
-    
     
     @objc
     func addTrackerButtonPressed() {
-        print("ASd")
         let createTrackerVC = CreateTrackerViewController()
         createTrackerVC.modalPresentationStyle = .pageSheet
         present(createTrackerVC, animated: true)
     }
     
-    
+    @objc
+    func dateTrackerButtonPressed() {
+        print("date pressed")
+    }
 }
 
