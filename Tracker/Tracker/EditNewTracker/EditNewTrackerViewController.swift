@@ -1,20 +1,29 @@
 import UIKit
 
 class EditNewTracker: UIViewController {
+    // MARK: - Properties
     var isRegular: Bool
     var scrollView = UIScrollView()
-    var contentView = UIView()
     var titleLabel = UILabel()
     var trackerNameField = UITextField()
     var buttonTable = UITableView()
     var buttonsIdentifiers = ["Категория", "Расписание"]
     var emojiCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    //    var colorCollection = UICollectionView()
+    var colorCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
+    private var emojiCollectionManager: EmojiCollectionViewManager?
+    private var colorCollectionManager: ColorCollectionManager?
+    private let params: GeometricParams
     
-    
+    // MARK: - Initializer
     init(type: Bool) {
         isRegular = type
+        params = GeometricParams(cellCount: 6,
+                                 leftInset: 18,
+                                 rightInset: 19,
+                                 cellSpacing: 5,
+                                 cellWidth: 52,
+                                 cellHeight: 52)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -22,15 +31,17 @@ class EditNewTracker: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
     
+    // MARK: - Setup UI
     private func setupUI() {
         view.backgroundColor = UIColor(named: "TrackerBackgroundWhite")
         setupScrollView()
-        setupContentView()
+        addContent()
     }
     
     private func setupScrollView() {
@@ -45,23 +56,12 @@ class EditNewTracker: UIViewController {
         ])
     }
     
-    private func setupContentView() {
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.addSubview(contentView)
-        
-        NSLayoutConstraint.activate([
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            contentView.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.heightAnchor)
-        ])
-        
-        addContent()
-    }
-    
     private func addContent() {
         setupTitleLabel()
         setupTrackerNameField()
         setupButtonsTableView()
         setupEmojiCollection()
+        setupColorCollection()
     }
     
     private func setupTitleLabel() {
@@ -69,11 +69,11 @@ class EditNewTracker: UIViewController {
         titleLabel.text = isRegular ? "Новая привычка" : "Новое нерегулярное событие"
         titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         titleLabel.textAlignment = .center
-        contentView.addSubview(titleLabel)
+        scrollView.addSubview(titleLabel)
         
         NSLayoutConstraint.activate([
-            titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16)
+            titleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            titleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16)
         ])
     }
     
@@ -96,13 +96,13 @@ class EditNewTracker: UIViewController {
         trackerNameField.rightView = rightPaddingView
         trackerNameField.rightViewMode = .always
         
-        contentView.addSubview(trackerNameField)
+        scrollView.addSubview(trackerNameField)
         
         NSLayoutConstraint.activate([
-            trackerNameField.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            trackerNameField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             trackerNameField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
-            trackerNameField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            trackerNameField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            trackerNameField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
+            trackerNameField.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
             trackerNameField.heightAnchor.constraint(equalToConstant: 75)
         ])
     }
@@ -115,97 +115,61 @@ class EditNewTracker: UIViewController {
         buttonTable.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         buttonTable.layer.cornerRadius = 16
         
-        contentView.addSubview(buttonTable)
+        scrollView.addSubview(buttonTable)
         
         let visibleRows = isRegular ? buttonsIdentifiers.count : buttonsIdentifiers.count - 1
         NSLayoutConstraint.activate([
             buttonTable.topAnchor.constraint(equalTo: trackerNameField.bottomAnchor, constant: 24),
-            buttonTable.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            buttonTable.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            buttonTable.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
+            buttonTable.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
             buttonTable.heightAnchor.constraint(equalToConstant: CGFloat(visibleRows) * 75)
         ])
     }
     
     private func setupEmojiCollection() {
-        emojiCollection.translatesAutoresizingMaskIntoConstraints = false
-        emojiCollection.delegate = self
-        emojiCollection.dataSource = self
+        emojiCollectionManager = EmojiCollectionViewManager(
+            collectionView: emojiCollection,
+            params: params
+        )
         
-        contentView.addSubview(emojiCollection)
+        emojiCollection.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(emojiCollection)
         
         NSLayoutConstraint.activate([
             emojiCollection.topAnchor.constraint(equalTo: buttonTable.bottomAnchor, constant: 50),
-            emojiCollection.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 18),
-            emojiCollection.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -19),
-            emojiCollection.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            emojiCollection.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            emojiCollection.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            emojiCollection.heightAnchor.constraint(equalToConstant: 204)
         ])
-        
-        emojiCollection.register(
-            SupplementaryView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: "header"
+    }
+    
+    private func setupColorCollection() {
+        colorCollectionManager = ColorCollectionManager(
+            collectionView: colorCollection,
+            params: params
         )
-        emojiCollection.register(
-            EmojiCollectionViewCell.self,
-            forCellWithReuseIdentifier: "cell"
-        )
+        
+        colorCollection.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(colorCollection)
+        
+        NSLayoutConstraint.activate([
+            colorCollection.topAnchor.constraint(equalTo: emojiCollection.bottomAnchor, constant: 34),
+            colorCollection.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            colorCollection.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            colorCollection.heightAnchor.constraint(equalToConstant: 204),
+            colorCollection.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+        ])
     }
 }
 
-extension EditNewTracker: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        Emojis.allCases.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? EmojiCollectionViewCell
-        
-        cell?.emojiLabel.text = Emojis.allCases[indexPath.item].rawValue
-        
-        return cell!
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        var id: String                                      // 1
-        switch kind {                                       // 2
-        case UICollectionView.elementKindSectionHeader:     // 3
-            id = "header"
-        case UICollectionView.elementKindSectionFooter:     // 4
-            id = "footer"
-        default:
-            id = ""                                         // 5
-        }
-        
-        let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: id, for: indexPath) as! SupplementaryView // 6
-        view.titleLabel.text = "Emoji"
-        return view
-    }
-}
-
-extension EditNewTracker: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        
-        let indexPath = IndexPath(row: 0, section: section)
-        let headerView = self.collectionView(collectionView, viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader, at: indexPath)
-        
-        return headerView.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width,
-                                                         height: UIView.layoutFittingExpandedSize.height),
-                                                  withHorizontalFittingPriority: .required,
-                                                  verticalFittingPriority: .fittingSizeLevel)
-    }
-}
-
-extension EditNewTracker: UICollectionViewDelegate {
-    
-}
-
+// MARK: - UITableViewDelegate
 extension EditNewTracker: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         75
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true) // Убираем выделение
+        tableView.deselectRow(at: indexPath, animated: true)
         let selectedOption = buttonsIdentifiers[indexPath.row]
         
         if selectedOption == "Категория" {
@@ -216,6 +180,7 @@ extension EditNewTracker: UITableViewDelegate {
     }
 }
 
+// MARK: - UITableViewDataSource
 extension EditNewTracker: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         isRegular ? buttonsIdentifiers.count : buttonsIdentifiers.count - 1
@@ -230,6 +195,25 @@ extension EditNewTracker: UITableViewDataSource {
         cell.selectionStyle = .none
         return cell
     }
+}
+
+// MARK: - GeometricParams
+struct GeometricParams {
+    let cellCount: Int
+    let leftInset: CGFloat
+    let rightInset: CGFloat
+    let cellSpacing: CGFloat
+    let cellWidth: CGFloat
+    let cellHeight: CGFloat
+    let paddingWidth: CGFloat
     
-    
+    init(cellCount: Int, leftInset: CGFloat, rightInset: CGFloat, cellSpacing: CGFloat, cellWidth: CGFloat, cellHeight: CGFloat) {
+        self.cellCount = cellCount
+        self.leftInset = leftInset
+        self.rightInset = rightInset
+        self.cellSpacing = cellSpacing
+        self.cellWidth = cellWidth
+        self.cellHeight = cellHeight
+        self.paddingWidth = leftInset + rightInset + CGFloat(cellCount - 1) * cellSpacing
+    }
 }

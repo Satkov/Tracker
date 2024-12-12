@@ -9,7 +9,7 @@ struct TrackerModel {
     let schedule: [Schedule]?
 }
 
-enum TrackerColors: String {
+enum TrackerColors: String, CaseIterable {
     case red = "0xFD4C49" // Красный
     case orange = "0xFF881E" // Оранжевый
     case blue = "0x007BFA" // Синий
