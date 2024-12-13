@@ -2,10 +2,18 @@ import UIKit
 
 final class TabBarController: UITabBarController {
     override func viewDidLoad() {
-            super.viewDidLoad()
-            setupTabBarControllers()
-        }
+        super.viewDidLoad()
+        setupTabBarControllers()
+        addTopBorderToTabBar()
+    }
     
+    private func addTopBorderToTabBar() {
+        let topBorder = CALayer()
+        topBorder.backgroundColor = UIColor.lightGray.cgColor
+        topBorder.frame = CGRect(x: 0, y: 0, width: tabBar.bounds.width, height: 1)
+        
+        tabBar.layer.addSublayer(topBorder)
+    }
     
     private func setupTabBarControllers() {
         let trackerViewController = TrackerViewController()
@@ -17,14 +25,11 @@ final class TabBarController: UITabBarController {
             image: UIImage(named: "RabbitIcon"),
             selectedImage: nil)
         
-        
         trackerNavViewController.tabBarItem = UITabBarItem(
             title: "Трекеры",
             image: UIImage(named: "TrackerCircleIcon"),
             selectedImage: nil
         )
-        
-        
         
         viewControllers = [trackerNavViewController, statisticViewController]
     }

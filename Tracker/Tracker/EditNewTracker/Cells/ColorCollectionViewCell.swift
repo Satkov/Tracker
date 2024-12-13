@@ -1,16 +1,24 @@
 import UIKit
 
 class ColorCollectionViewCell: UICollectionViewCell {
+    private let colorSquare = UIView()
     var cellColor: UIColor? {
         didSet {
-            contentView.backgroundColor = cellColor
+            colorSquare.backgroundColor = cellColor
         }
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.backgroundColor = cellColor
-        contentView.layer.cornerRadius = 8
+        contentView.addSubview(colorSquare)
+        colorSquare.translatesAutoresizingMaskIntoConstraints = false
+        colorSquare.layer.cornerRadius = 8
+        NSLayoutConstraint.activate([
+            colorSquare.widthAnchor.constraint(equalToConstant: 40),
+            colorSquare.heightAnchor.constraint(equalToConstant: 40),
+            colorSquare.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            colorSquare.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+        ])
     }
     
     required init?(coder: NSCoder) {

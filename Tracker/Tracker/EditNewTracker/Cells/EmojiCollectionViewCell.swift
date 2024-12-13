@@ -13,6 +13,8 @@ class EmojiCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             emojiLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             emojiLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            emojiLabel.widthAnchor.constraint(equalToConstant: 32),
+            emojiLabel.heightAnchor.constraint(equalToConstant: 38)
         ])
     }
     

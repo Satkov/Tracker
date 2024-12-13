@@ -10,9 +10,12 @@ class EditNewTracker: UIViewController {
     var buttonsIdentifiers = ["Категория", "Расписание"]
     var emojiCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     var colorCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    var cancelButton = UIButton()
+    var createButton = UIButton()
     
     private var emojiCollectionManager: EmojiCollectionViewManager?
     private var colorCollectionManager: ColorCollectionManager?
+    private var trackerNameFieldManager: TrackerNameTextFieldManager?
     private let params: GeometricParams
     
     // MARK: - Initializer
@@ -35,6 +38,10 @@ class EditNewTracker: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     }
     
     // MARK: - Setup UI
@@ -62,6 +69,8 @@ class EditNewTracker: UIViewController {
         setupButtonsTableView()
         setupEmojiCollection()
         setupColorCollection()
+        setupCancelButton()
+        setupCreateButton()
     }
     
     private func setupTitleLabel() {
@@ -78,23 +87,7 @@ class EditNewTracker: UIViewController {
     }
     
     private func setupTrackerNameField() {
-        trackerNameField.translatesAutoresizingMaskIntoConstraints = false
-        trackerNameField.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-        trackerNameField.layer.cornerRadius = 16
-        trackerNameField.attributedPlaceholder = NSAttributedString(
-            string: "Введите название трекера",
-            attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "TextColorForLightgray") ?? .gray]
-        )
-        trackerNameField.textColor = UIColor(named: "TrackerBackgroundBlack")
-        trackerNameField.backgroundColor = UIColor(named: "TrackerBackgroundLightGray")
-        
-        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: trackerNameField.frame.height))
-        trackerNameField.leftView = paddingView
-        trackerNameField.leftViewMode = .always
-        
-        let rightPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: trackerNameField.frame.height))
-        trackerNameField.rightView = rightPaddingView
-        trackerNameField.rightViewMode = .always
+        trackerNameFieldManager = TrackerNameTextFieldManager(trackerNameField: trackerNameField)
         
         scrollView.addSubview(trackerNameField)
         
@@ -156,8 +149,46 @@ class EditNewTracker: UIViewController {
             colorCollection.topAnchor.constraint(equalTo: emojiCollection.bottomAnchor, constant: 34),
             colorCollection.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             colorCollection.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            colorCollection.heightAnchor.constraint(equalToConstant: 204),
-            colorCollection.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+            colorCollection.heightAnchor.constraint(equalToConstant: 204)
+        ])
+    }
+    
+    private func setupCancelButton() {
+        cancelButton.translatesAutoresizingMaskIntoConstraints = false
+        cancelButton.setTitle("Отменить", for: .normal)
+        cancelButton.setTitleColor(UIColor.projectColor(.borderRed), for: .normal)
+        cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        cancelButton.layer.borderWidth = 1
+        cancelButton.layer.borderColor = UIColor.projectColor(.borderRed).cgColor
+        cancelButton.layer.cornerRadius = 16
+        
+        scrollView.addSubview(cancelButton)
+        
+        NSLayoutConstraint.activate([
+            cancelButton.topAnchor.constraint(equalTo: colorCollection.bottomAnchor, constant: 16),
+            cancelButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
+            cancelButton.trailingAnchor.constraint(equalTo: scrollView.centerXAnchor, constant: -4),
+            cancelButton.heightAnchor.constraint(equalToConstant: 60),
+            cancelButton.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+        ])
+    }
+    
+    private func setupCreateButton() {
+        createButton.translatesAutoresizingMaskIntoConstraints = false
+        createButton.setTitle("Создать", for: .normal)
+        createButton.setTitleColor(UIColor.projectColor(.backgroundWhite), for: .normal)
+        createButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        createButton.backgroundColor = UIColor.projectColor(.textColorForLightgray)
+        createButton.layer.cornerRadius = 16
+        
+        scrollView.addSubview(createButton)
+        
+        NSLayoutConstraint.activate([
+            createButton.topAnchor.constraint(equalTo: colorCollection.bottomAnchor, constant: 16),
+            createButton.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
+            createButton.leadingAnchor.constraint(equalTo: cancelButton.trailingAnchor, constant: 4),
+            cancelButton.heightAnchor.constraint(equalToConstant: 60),
+            createButton.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
         ])
     }
 }
@@ -196,6 +227,7 @@ extension EditNewTracker: UITableViewDataSource {
         return cell
     }
 }
+
 
 // MARK: - GeometricParams
 struct GeometricParams {

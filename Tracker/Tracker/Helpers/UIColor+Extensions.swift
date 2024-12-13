@@ -27,9 +27,10 @@ extension UIColor {
 
 enum ProjectColors: String {
     case textColorForLightgray = "TextColorForLightgray"
-    case BackgroundBlack = "TrackerBackgroundBlack"
-    case BackgroundLightGray = "TrackerBackgroundLightGray"
-    case BackgroundWhite = "TrackerBackgroundWhite"
-    case Blue = "TrackerBlue"
-    case Gray = "TrackerGray"
+    case backgroundBlack = "TrackerBackgroundBlack"
+    case backgroundLightGray = "TrackerBackgroundLightGray"
+    case backgroundWhite = "TrackerBackgroundWhite"
+    case blue = "TrackerBlue"
+    case bray = "TrackerGray"
+    case borderRed = "ButtonBorderRed"
 }

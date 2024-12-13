@@ -29,7 +29,7 @@ class TrackerViewController: UIViewController, UIViewControllerTransitioningDele
 
         addTrackerButton.setImage(UIImage(named: "PlusIcon"), for: .normal)
         addTrackerButton.addTarget(self, action: #selector(addTrackerButtonPressed), for: .touchUpInside)
-        addTrackerButton.tintColor = UIColor.projectColor(.BackgroundBlack)
+        addTrackerButton.tintColor = UIColor.projectColor(.backgroundBlack)
         addTrackerButton.translatesAutoresizingMaskIntoConstraints = false
 
         view.addSubview(addTrackerButton)
