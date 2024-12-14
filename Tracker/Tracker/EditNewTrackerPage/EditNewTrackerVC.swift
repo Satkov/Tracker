@@ -15,7 +15,11 @@ class EditNewTrackerViewController: UIViewController, SchedulePageViewController
     let trackerNameFieldContainer = UIView()
     var warningLabel = UILabel()
     var textFieldContainerHightConstraint: NSLayoutConstraint!
-    var selectedDays: Set<Schedule> = []
+    var selectedDays: Set<Schedule>? {
+        didSet {
+            buttonTable.reloadData()
+        }
+    }
     
     private var emojiCollectionManager: EmojiCollectionViewManager?
     private var colorCollectionManager: ColorCollectionManager?
@@ -123,7 +127,7 @@ class EditNewTrackerViewController: UIViewController, SchedulePageViewController
         buttonTable.delegate = self
         buttonTable.dataSource = self
         buttonTable.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        buttonTable.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        buttonTable.register(ButtonsTableViewCells.self, forCellReuseIdentifier: "ButtonsTableViewCells")
         buttonTable.layer.cornerRadius = 16
         
         scrollView.addSubview(buttonTable)
@@ -229,7 +233,9 @@ extension EditNewTrackerViewController: UITableViewDelegate {
         } else if selectedOption == "Расписание" {
             let createVC = SchedulePageViewController()
             createVC.delegate = self
-            createVC.selectedDays = selectedDays
+            if let selectedDays = selectedDays {
+                createVC.selectedDays = selectedDays
+            }
             createVC.modalPresentationStyle = .pageSheet
             present(createVC, animated: true)
         }
@@ -243,11 +249,12 @@ extension EditNewTrackerViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = buttonsIdentifiers[indexPath.row]
-        cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-        cell.accessoryType = .disclosureIndicator
-        cell.backgroundColor = UIColor.systemGray6
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ButtonsTableViewCells", for: indexPath) as? ButtonsTableViewCells else { return UITableViewCell() }
+        if buttonsIdentifiers[indexPath.row] == "Категория" {
+            cell.configurateTitleButton(title: buttonsIdentifiers[indexPath.row])
+        } else {
+            cell.configureSheduleButton(title: buttonsIdentifiers[indexPath.row], schedule: selectedDays)
+        }
         cell.selectionStyle = .none
         return cell
     }

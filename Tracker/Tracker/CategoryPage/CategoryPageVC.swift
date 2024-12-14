@@ -80,7 +80,6 @@ class CategoryPageViewController: UIViewController {
     
     @objc
     private func addSelectedDaysButtonPressed() {
-        print("LOG: Нажата кнопка создания категории")
         let createVC = CreateCategoryViewController()
         createVC.modalPresentationStyle = .pageSheet
         present(createVC, animated: true)

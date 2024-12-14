@@ -3,7 +3,7 @@ import UIKit
 class ButtonsTableViewCells: UITableViewCell {
     var labelsContainer = UIView()
     var titleLabel = UILabel()
-    var subtitleLabel = UILabel()
+    var scheduleSubtitleLabel = UILabel()
     var arrowImageView = UIImageView()
     
     // MARK: - Initializer
@@ -20,23 +20,25 @@ class ButtonsTableViewCells: UITableViewCell {
     private func setupUI() {
         // Add labels container to cell
         contentView.addSubview(labelsContainer)
+        contentView.backgroundColor = UIColor.projectColor(.backgroundLightGray)
         labelsContainer.translatesAutoresizingMaskIntoConstraints = false
         
         // Configure title label
         labelsContainer.addSubview(titleLabel)
-        titleLabel.font = UIFont.systemFont(ofSize: 17, weight: .medium)
-        titleLabel.textColor = .black
+        titleLabel.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        titleLabel.textColor = UIColor.projectColor(.backgroundBlack)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         // Configure subtitle label
-        labelsContainer.addSubview(subtitleLabel)
-        subtitleLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        subtitleLabel.textColor = .gray
-        subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        labelsContainer.addSubview(scheduleSubtitleLabel)
+        scheduleSubtitleLabel.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        scheduleSubtitleLabel.textColor = UIColor.projectColor(.textColorForLightgray)
+        scheduleSubtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         // Configure arrow image
         contentView.addSubview(arrowImageView)
         arrowImageView.tintColor = .gray
+        arrowImageView.image = UIImage(systemName: "chevron.right")
         arrowImageView.translatesAutoresizingMaskIntoConstraints = false
         
         // Constraints
@@ -52,10 +54,10 @@ class ButtonsTableViewCells: UITableViewCell {
             titleLabel.trailingAnchor.constraint(equalTo: labelsContainer.trailingAnchor),
             
             // Subtitle label
-            subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
-            subtitleLabel.leadingAnchor.constraint(equalTo: labelsContainer.leadingAnchor),
-            subtitleLabel.trailingAnchor.constraint(equalTo: labelsContainer.trailingAnchor),
-            subtitleLabel.bottomAnchor.constraint(equalTo: labelsContainer.bottomAnchor),
+            scheduleSubtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
+            scheduleSubtitleLabel.leadingAnchor.constraint(equalTo: labelsContainer.leadingAnchor),
+            scheduleSubtitleLabel.trailingAnchor.constraint(equalTo: labelsContainer.trailingAnchor),
+            scheduleSubtitleLabel.bottomAnchor.constraint(equalTo: labelsContainer.bottomAnchor),
             
             // Arrow image
             arrowImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
@@ -66,13 +68,17 @@ class ButtonsTableViewCells: UITableViewCell {
     }
     
     // MARK: - Configuration
-    func configure(title: String, subtitle: String?) {
+    func configurateTitleButton(title: String) {
         titleLabel.text = title
-        if let subtitle = subtitle, !subtitle.isEmpty {
-            subtitleLabel.text = subtitle
-            subtitleLabel.isHidden = false
+    }
+    
+    func configureSheduleButton(title: String, schedule: Set<Schedule>?) {
+        titleLabel.text = title
+        if let subtitle = schedule, !subtitle.isEmpty {
+            scheduleSubtitleLabel.text = Schedule.formattedString(from: subtitle)
+            scheduleSubtitleLabel.isHidden = false
         } else {
-            subtitleLabel.isHidden = true
+            scheduleSubtitleLabel.isHidden = true
         }
     }
 }

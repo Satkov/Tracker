@@ -19,6 +19,7 @@
 		9120917D2D0DB33C0048851D /* SchedulePageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9120917C2D0DB33C0048851D /* SchedulePageVC.swift */; };
 		912091822D0DBF1C0048851D /* SchedulePageViewControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912091812D0DBF1C0048851D /* SchedulePageViewControllerProtocol.swift */; };
 		912091842D0DCAE90048851D /* ButtonsTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912091832D0DCAE90048851D /* ButtonsTableViewCells.swift */; };
+		912091872D0DD5390048851D /* CategoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912091862D0DD5390048851D /* CategoryManager.swift */; };
 		91B0283A2CF06F680047E664 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B028392CF06F680047E664 /* AppDelegate.swift */; };
 		91B0283C2CF06F680047E664 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B0283B2CF06F680047E664 /* SceneDelegate.swift */; };
 		91B0283E2CF06F680047E664 /* TrackerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B0283D2CF06F680047E664 /* TrackerVC.swift */; };
@@ -50,6 +51,7 @@
 		9120917C2D0DB33C0048851D /* SchedulePageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulePageVC.swift; sourceTree = "<group>"; };
 		912091812D0DBF1C0048851D /* SchedulePageViewControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulePageViewControllerProtocol.swift; sourceTree = "<group>"; };
 		912091832D0DCAE90048851D /* ButtonsTableViewCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsTableViewCells.swift; sourceTree = "<group>"; };
+		912091862D0DD5390048851D /* CategoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryManager.swift; sourceTree = "<group>"; };
 		91B028362CF06F680047E664 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91B028392CF06F680047E664 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91B0283B2CF06F680047E664 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 				912091642D0ADCAF0048851D /* ColorCollectionManager.swift */,
 				912091622D0ADA080048851D /* EmojiCollectionViewManager.swift */,
 				9120916A2D0C623D0048851D /* TrackerNameTextFieldManager.swift */,
+				912091862D0DD5390048851D /* CategoryManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -118,13 +121,13 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		912091732D0CB5FF0048851D /* CreateCategoryPage */ = {
+		912091732D0CB5FF0048851D /* CategoryPage */ = {
 			isa = PBXGroup;
 			children = (
 				912091752D0CB69A0048851D /* CategoryPageVC.swift */,
 				912091772D0CBE0F0048851D /* CreateCategoryVC.swift */,
 			);
-			path = CreateCategoryPage;
+			path = CategoryPage;
 			sourceTree = "<group>";
 		};
 		9120917B2D0DB3070048851D /* SchedulePage */ = {
@@ -165,7 +168,7 @@
 			children = (
 				9120917B2D0DB3070048851D /* SchedulePage */,
 				912091682D0AED2E0048851D /* Managers */,
-				912091732D0CB5FF0048851D /* CreateCategoryPage */,
+				912091732D0CB5FF0048851D /* CategoryPage */,
 				91B028892CF334850047E664 /* EditNewTrackerPage */,
 				91B028862CF257AE0047E664 /* TrackerTypeMenuPage */,
 				91B028812CF207AC0047E664 /* StatisticPage */,
@@ -334,6 +337,7 @@
 				91B0287A2CF0C7B20047E664 /* TrackerCategoryModel.swift in Sources */,
 				91B028852CF209690047E664 /* Date+Extensions.swift in Sources */,
 				912091632D0ADA080048851D /* EmojiCollectionViewManager.swift in Sources */,
+				912091872D0DD5390048851D /* CategoryManager.swift in Sources */,
 				912091782D0CBE0F0048851D /* CreateCategoryVC.swift in Sources */,
 				91B028782CF0C7A70047E664 /* TrackerModel.swift in Sources */,
 				91B0283E2CF06F680047E664 /* TrackerVC.swift in Sources */,

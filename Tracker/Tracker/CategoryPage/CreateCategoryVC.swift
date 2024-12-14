@@ -5,7 +5,9 @@ class CreateCategoryViewController: UIViewController {
     private var titleLabel = UILabel()
     private var addCategoryButton = UIButton()
     private var trackerNameField = UITextField()
+    
     private var trackerNameFieldManager: TrackerNameTextFieldManager?
+    private var categoryManager: TrackerCategoryManager?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +40,7 @@ class CreateCategoryViewController: UIViewController {
             delegate: nil,
             placeholderText: "Введите название категории"
         )
+        trackerNameField.delegate = self
         view.addSubview(trackerNameField)
         
         NSLayoutConstraint.activate([
@@ -53,11 +56,10 @@ class CreateCategoryViewController: UIViewController {
         addCategoryButton.translatesAutoresizingMaskIntoConstraints = false
         addCategoryButton.setTitle("Готово", for: .normal)
         addCategoryButton.setTitleColor(UIColor.projectColor(.backgroundWhite), for: .normal)
-        addCategoryButton.backgroundColor = UIColor.projectColor(.textColorForLightgray)
         addCategoryButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         addCategoryButton.layer.cornerRadius = 16
-        addCategoryButton.addTarget(self, action: #selector(readybuttonPressed), for: .touchUpInside)
-        
+        addCategoryButton.addTarget(self, action: #selector(readyButtonPressed), for: .touchUpInside)
+        disableReadyButton()
         view.addSubview(addCategoryButton)
         
         NSLayoutConstraint.activate([
@@ -68,8 +70,35 @@ class CreateCategoryViewController: UIViewController {
         ])
     }
     
+    private func enableReadyButton() {
+        addCategoryButton.backgroundColor = UIColor.projectColor(.backgroundBlack)
+        addCategoryButton.isEnabled = true
+    }
+    
+    private func disableReadyButton() {
+        addCategoryButton.backgroundColor = UIColor.projectColor(.textColorForLightgray)
+        addCategoryButton.isEnabled = false
+    }
+    
     @objc
-    private func readybuttonPressed() {
-        print("LOG: Нажата кнопка готово")
+    private func readyButtonPressed() {
+        if let newCategoryName = trackerNameField.text {
+            let newTracker = TrackerCategoryModel(categoryName: newCategoryName)
+            categoryManager = TrackerCategoryManager()
+            categoryManager?.addCategory(newTracker)
+            dismiss(animated: true)
+        }
+    }
+}
+
+extension CreateCategoryViewController: UITextFieldDelegate {
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if let text = textField.text, !text.isEmpty {
+            enableReadyButton()
+        } else {
+            disableReadyButton()
+        }
+        return true
     }
 }

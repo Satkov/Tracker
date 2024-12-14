@@ -1,15 +1,15 @@
 import Foundation
 import UIKit
 
-struct TrackerModel {
-    let id = UUID()
+struct TrackerModel: Codable {
+    private(set) var id = UUID()
     let name: String
     let color: TrackerColors
     let emoji: Emojis
-    let schedule: [Schedule]?
+    let schedule: Set<Schedule>?
 }
 
-enum TrackerColors: String, CaseIterable {
+enum TrackerColors: String, CaseIterable, Codable {
     case red = "0xFD4C49" // Красный
     case orange = "0xFF881E" // Оранжевый
     case blue = "0x007BFA" // Синий
@@ -34,7 +34,7 @@ enum TrackerColors: String, CaseIterable {
     }
 }
 
-enum Schedule: String, CaseIterable {
+enum Schedule: String, CaseIterable, Codable {
     case monday = "Понедельник"
     case tuesday = "Вторник"
     case wednesday = "Среда"
@@ -46,7 +46,7 @@ enum Schedule: String, CaseIterable {
     static func dayOfWeek(for date: Date) -> Schedule {
         let calendar = Calendar.current
         let weekday = calendar.component(.weekday, from: date)
-        return getDayByNumberWeekday(weekday)
+        return getDayByNumberWeekday(weekday - 1)
     }
     
     static func getDayByNumberWeekday(_ weekday: Int) -> Schedule {
@@ -78,7 +78,7 @@ enum Schedule: String, CaseIterable {
         return [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
     }
     
-    static func formattedString(from days: [Schedule]) -> String {
+    static func formattedString(from days: Set<Schedule>) -> String {
         let sortedDays = days.sorted {
             sortedOrder.firstIndex(of: $0)! < sortedOrder.firstIndex(of: $1)!
         }
@@ -86,7 +86,7 @@ enum Schedule: String, CaseIterable {
     }
 }
 
-enum Emojis: String, CaseIterable {
+enum Emojis: String, CaseIterable, Codable {
     case smilingFace = "🙂"
     case heartEyesCat = "😻"
     case hibiscus = "🌺"

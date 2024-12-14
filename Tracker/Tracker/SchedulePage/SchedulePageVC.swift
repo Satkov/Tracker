@@ -13,11 +13,6 @@ class SchedulePageViewController: UIViewController {
         setupUI()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        scheduleTable.reloadData() // Перезагружаем таблицу
-    }
-    
     private func setupUI() {
         view.backgroundColor = UIColor(named: "TrackerBackgroundWhite")
         setupTitleLabel()

@@ -1,0 +1,55 @@
+import Foundation
+
+class TrackerCategoryManager {
+    private let userDefaults = UserDefaults.standard
+    private let categoriesKey = "trackerCategoriesKey"
+    
+    // Загрузка категорий
+    func loadCategories() -> [TrackerCategoryModel] {
+        guard let data = userDefaults.data(forKey: categoriesKey) else {
+            return []
+        }
+        let decoder = JSONDecoder()
+        return (try? decoder.decode([TrackerCategoryModel].self, from: data)) ?? []
+    }
+    
+    // Сохранение категорий
+    func saveCategories(_ categories: [TrackerCategoryModel]) {
+        let encoder = JSONEncoder()
+        if let data = try? encoder.encode(categories) {
+            userDefaults.set(data, forKey: categoriesKey)
+        }
+    }
+    
+    // Добавление новой категории
+    func addCategory(_ category: TrackerCategoryModel) {
+        var categories = loadCategories()
+        categories.append(category)
+        saveCategories(categories)
+    }
+    
+    // Удаление категории
+    func removeCategory(byName name: String) {
+        var categories = loadCategories()
+        categories.removeAll { $0.categoryName == name }
+        saveCategories(categories)
+    }
+    
+    // Добавление трекера в категорию
+    func addTracker(to categoryName: String, tracker: TrackerModel) {
+        var categories = loadCategories()
+        if let index = categories.firstIndex(where: { $0.categoryName == categoryName }) {
+            categories[index].trackers.append(tracker)
+            saveCategories(categories)
+        }
+    }
+    
+    // Удаление трекера из категории
+    func removeTracker(from categoryName: String, trackerID: UUID) {
+        var categories = loadCategories()
+        if let index = categories.firstIndex(where: { $0.categoryName == categoryName }) {
+            categories[index].trackers.removeAll { $0.id == trackerID }
+            saveCategories(categories)
+        }
+    }
+}
