@@ -1,7 +1,7 @@
 import UIKit
 
 
-class CreateTrackerViewController: UIViewController {
+class TrackerTypeMenuViewController: UIViewController {
     private var habbitTrackerButton = UIButton()
     private var unregularTrackerButton = UIButton()
     private var titleLabel = UILabel()
@@ -65,7 +65,7 @@ class CreateTrackerViewController: UIViewController {
     }
     
     private func switchToEditTrackerForm(isRegular: Bool) {
-        let editVC = EditNewTracker(type: isRegular)
+        let editVC = EditNewTrackerViewController(type: isRegular)
         editVC.modalPresentationStyle = .pageSheet
         present(editVC, animated: true)
     }

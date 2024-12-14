@@ -1,10 +1,10 @@
 import UIKit
 
-class ColorCollectionManager: NSObject, UICollectionViewDelegate {
+class EmojiCollectionViewManager: NSObject, UICollectionViewDelegate {
     private let collectionView: UICollectionView
-    private let params: GeometricParams
+    private let params: GeometricParamsModel
     
-    init(collectionView: UICollectionView, params: GeometricParams) {
+    init(collectionView: UICollectionView, params: GeometricParamsModel) {
         self.collectionView = collectionView
         self.params = params
         super.init()
@@ -17,8 +17,8 @@ class ColorCollectionManager: NSObject, UICollectionViewDelegate {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(
-            ColorCollectionViewCell.self,
-            forCellWithReuseIdentifier: "ColorCollectionViewCell"
+            EmojiCollectionViewCell.self,
+            forCellWithReuseIdentifier: "EmojiCollectionViewCell"
         )
         collectionView.register(
             SupplementaryView.self,
@@ -28,27 +28,27 @@ class ColorCollectionManager: NSObject, UICollectionViewDelegate {
     }
 }
 
-extension ColorCollectionManager: UICollectionViewDataSource {
+extension EmojiCollectionViewManager: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        TrackerColors.allCases.count
+        Emojis.allCases.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ColorCollectionViewCell", for: indexPath) as? ColorCollectionViewCell
-
-        cell?.cellColor = TrackerColors.allCases[indexPath.item].color
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmojiCollectionViewCell", for: indexPath) as? EmojiCollectionViewCell
+        
+        cell?.emojiLabel.text = Emojis.allCases[indexPath.item].rawValue
         
         return cell!
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SupplementaryView
-        view.titleLabel.text = "Цвет"
+        view.titleLabel.text = "Emoji"
         return view
     }
 }
 
-extension ColorCollectionManager: UICollectionViewDelegateFlowLayout {
+extension EmojiCollectionViewManager: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         
         let indexPath = IndexPath(row: 0, section: section)

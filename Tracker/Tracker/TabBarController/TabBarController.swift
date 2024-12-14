@@ -19,7 +19,7 @@ final class TabBarController: UITabBarController {
         let trackerViewController = TrackerViewController()
         let trackerNavViewController = UINavigationController(rootViewController: trackerViewController)
         
-        let statisticViewController = StatisticViewController()
+        let statisticViewController = StatisticPageViewController()
         statisticViewController.tabBarItem = UITabBarItem(
             title: "Статистика",
             image: UIImage(named: "RabbitIcon"),

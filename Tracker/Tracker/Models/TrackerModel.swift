@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 struct TrackerModel {
-    let id: UUID
+    let id = UUID()
     let name: String
     let color: TrackerColors
     let emoji: Emojis
@@ -34,29 +34,55 @@ enum TrackerColors: String, CaseIterable {
     }
 }
 
-enum Schedule: String {
-    case monday = "Monday"
-    case tuesday = "Tuesday"
-    case wednesday = "Wednesday"
-    case thursday = "Thursday"
-    case friday = "Friday"
-    case saturday = "Saturday"
-    case sunday = "Sunday"
+enum Schedule: String, CaseIterable {
+    case monday = "Понедельник"
+    case tuesday = "Вторник"
+    case wednesday = "Среда"
+    case thursday = "Четверг"
+    case friday = "Пятница"
+    case saturday = "Суббота"
+    case sunday = "Воскресенье"
     
-    static func dayOfWeek(for date: Date) -> Schedule? {
+    static func dayOfWeek(for date: Date) -> Schedule {
         let calendar = Calendar.current
         let weekday = calendar.component(.weekday, from: date)
-        
+        return getDayByNumberWeekday(weekday)
+    }
+    
+    static func getDayByNumberWeekday(_ weekday: Int) -> Schedule {
         switch weekday {
-        case 1: return .sunday
-        case 2: return .monday
-        case 3: return .tuesday
-        case 4: return .wednesday
-        case 5: return .thursday
-        case 6: return .friday
-        case 7: return .saturday
-        default: return nil
+        case 0: return .monday
+        case 1: return .tuesday
+        case 2: return .wednesday
+        case 3: return .thursday
+        case 4: return .friday
+        case 5: return .saturday
+        case 6: return .sunday
+        default: return .monday // По умолчанию
         }
+    }
+    
+    func shortName() -> String {
+        switch self {
+        case .monday: return "Пн"
+        case .tuesday: return "Вт"
+        case .wednesday: return "Ср"
+        case .thursday: return "Чт"
+        case .friday: return "Пт"
+        case .saturday: return "Сб"
+        case .sunday: return "Вс"
+        }
+    }
+    
+    static var sortedOrder: [Schedule] {
+        return [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
+    }
+    
+    static func formattedString(from days: [Schedule]) -> String {
+        let sortedDays = days.sorted {
+            sortedOrder.firstIndex(of: $0)! < sortedOrder.firstIndex(of: $1)!
+        }
+        return sortedDays.map { $0.shortName() }.joined(separator: ", ")
     }
 }
 
@@ -80,3 +106,4 @@ enum Emojis: String, CaseIterable {
     case desertIsland = "🏝"
     case sleepyFace = "😪"
 }
+

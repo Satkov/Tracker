@@ -1,6 +1,6 @@
 import UIKit
 
-class EditNewTracker: UIViewController {
+class EditNewTrackerViewController: UIViewController, SchedulePageViewControllerProtocol {
     // MARK: - Properties
     var isRegular: Bool
     var scrollView = UIScrollView()
@@ -12,16 +12,22 @@ class EditNewTracker: UIViewController {
     var colorCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     var cancelButton = UIButton()
     var createButton = UIButton()
+    let trackerNameFieldContainer = UIView()
+    var warningLabel = UILabel()
+    var textFieldContainerHightConstraint: NSLayoutConstraint!
+    var selectedDays: Set<Schedule> = []
     
     private var emojiCollectionManager: EmojiCollectionViewManager?
     private var colorCollectionManager: ColorCollectionManager?
     private var trackerNameFieldManager: TrackerNameTextFieldManager?
-    private let params: GeometricParams
+    private let params: GeometricParamsModel
+    
+    private(set) var isWarningHidden = true
     
     // MARK: - Initializer
     init(type: Bool) {
         isRegular = type
-        params = GeometricParams(cellCount: 6,
+        params = GeometricParamsModel(cellCount: 6,
                                  leftInset: 18,
                                  rightInset: 19,
                                  cellSpacing: 5,
@@ -87,16 +93,28 @@ class EditNewTracker: UIViewController {
     }
     
     private func setupTrackerNameField() {
-        trackerNameFieldManager = TrackerNameTextFieldManager(trackerNameField: trackerNameField)
+        trackerNameFieldManager = TrackerNameTextFieldManager(
+            trackerNameField: trackerNameField,
+            delegate: self,
+            placeholderText: "Введите название трекера"
+        )
+        trackerNameFieldContainer.translatesAutoresizingMaskIntoConstraints = false
         
-        scrollView.addSubview(trackerNameField)
+        trackerNameFieldContainer.addSubview(trackerNameField)
+        scrollView.addSubview(trackerNameFieldContainer)
+        
+        textFieldContainerHightConstraint = trackerNameFieldContainer.heightAnchor.constraint(equalToConstant: 75)
+        textFieldContainerHightConstraint.isActive = true
         
         NSLayoutConstraint.activate([
-            trackerNameField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-            trackerNameField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
-            trackerNameField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
-            trackerNameField.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
-            trackerNameField.heightAnchor.constraint(equalToConstant: 75)
+            trackerNameFieldContainer.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            trackerNameFieldContainer.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
+            trackerNameFieldContainer.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
+            trackerNameFieldContainer.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
+            trackerNameField.heightAnchor.constraint(equalToConstant: 75),
+            trackerNameField.centerXAnchor.constraint(equalTo: trackerNameFieldContainer.centerXAnchor),
+            trackerNameField.leadingAnchor.constraint(equalTo: trackerNameFieldContainer.leadingAnchor),
+            trackerNameField.trailingAnchor.constraint(equalTo: trackerNameFieldContainer.trailingAnchor),
         ])
     }
     
@@ -112,7 +130,7 @@ class EditNewTracker: UIViewController {
         
         let visibleRows = isRegular ? buttonsIdentifiers.count : buttonsIdentifiers.count - 1
         NSLayoutConstraint.activate([
-            buttonTable.topAnchor.constraint(equalTo: trackerNameField.bottomAnchor, constant: 24),
+            buttonTable.topAnchor.constraint(equalTo: trackerNameFieldContainer.bottomAnchor, constant: 24),
             buttonTable.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
             buttonTable.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
             buttonTable.heightAnchor.constraint(equalToConstant: CGFloat(visibleRows) * 75)
@@ -194,7 +212,7 @@ class EditNewTracker: UIViewController {
 }
 
 // MARK: - UITableViewDelegate
-extension EditNewTracker: UITableViewDelegate {
+extension EditNewTrackerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         75
     }
@@ -204,15 +222,22 @@ extension EditNewTracker: UITableViewDelegate {
         let selectedOption = buttonsIdentifiers[indexPath.row]
         
         if selectedOption == "Категория" {
-            print("Выбрана Категория")
+            let createVC = CategoryPageViewController()
+            createVC.modalPresentationStyle = .pageSheet
+            present(createVC, animated: true)
+
         } else if selectedOption == "Расписание" {
-            print("Выбрано Расписание")
+            let createVC = SchedulePageViewController()
+            createVC.delegate = self
+            createVC.selectedDays = selectedDays
+            createVC.modalPresentationStyle = .pageSheet
+            present(createVC, animated: true)
         }
     }
 }
 
 // MARK: - UITableViewDataSource
-extension EditNewTracker: UITableViewDataSource {
+extension EditNewTrackerViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         isRegular ? buttonsIdentifiers.count : buttonsIdentifiers.count - 1
     }
@@ -228,24 +253,34 @@ extension EditNewTracker: UITableViewDataSource {
     }
 }
 
-
-// MARK: - GeometricParams
-struct GeometricParams {
-    let cellCount: Int
-    let leftInset: CGFloat
-    let rightInset: CGFloat
-    let cellSpacing: CGFloat
-    let cellWidth: CGFloat
-    let cellHeight: CGFloat
-    let paddingWidth: CGFloat
+extension EditNewTrackerViewController: TrackerNameTextFieldManagerDelegateProtocol {
+    func showWarningLabel() {
+        textFieldContainerHightConstraint.constant = 113
+        setupWarningLabel()
+        UIView.animate(withDuration: 0) {
+            self.scrollView.layoutIfNeeded()
+        }
+        isWarningHidden = false
+    }
     
-    init(cellCount: Int, leftInset: CGFloat, rightInset: CGFloat, cellSpacing: CGFloat, cellWidth: CGFloat, cellHeight: CGFloat) {
-        self.cellCount = cellCount
-        self.leftInset = leftInset
-        self.rightInset = rightInset
-        self.cellSpacing = cellSpacing
-        self.cellWidth = cellWidth
-        self.cellHeight = cellHeight
-        self.paddingWidth = leftInset + rightInset + CGFloat(cellCount - 1) * cellSpacing
+    func hideWarningLabel() {
+        textFieldContainerHightConstraint.constant = 75
+        warningLabel.removeFromSuperview()
+        isWarningHidden = true
+    }
+    
+    private func setupWarningLabel() {
+        warningLabel.translatesAutoresizingMaskIntoConstraints = false
+        warningLabel.text = "Ограничение 38 символов"
+        warningLabel.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        warningLabel.textColor = UIColor.projectColor(.borderRed)
+        
+        trackerNameFieldContainer.addSubview(warningLabel)
+        
+        NSLayoutConstraint.activate([
+            warningLabel.centerXAnchor.constraint(equalTo: trackerNameField.centerXAnchor),
+            warningLabel.heightAnchor.constraint(equalToConstant: 22),
+            warningLabel.topAnchor.constraint(equalTo: trackerNameField.bottomAnchor, constant: 8)
+        ])
     }
 }

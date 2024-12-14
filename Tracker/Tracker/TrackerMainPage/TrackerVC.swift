@@ -123,7 +123,7 @@ class TrackerViewController: UIViewController, UIViewControllerTransitioningDele
     
     @objc
     func addTrackerButtonPressed() {
-        let createTrackerVC = CreateTrackerViewController()
+        let createTrackerVC = TrackerTypeMenuViewController()
         createTrackerVC.modalPresentationStyle = .pageSheet
         present(createTrackerVC, animated: true)
     }
