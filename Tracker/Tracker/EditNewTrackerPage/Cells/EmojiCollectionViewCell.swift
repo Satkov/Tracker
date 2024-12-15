@@ -2,11 +2,19 @@ import UIKit
 
 class EmojiCollectionViewCell: UICollectionViewCell {
     let emojiLabel  = UILabel()
+    var emojiBackGroundColor: UIColor {
+        didSet {
+            emojiLabel.backgroundColor = emojiBackGroundColor
+        }
+    }
     
     override init(frame: CGRect) {
+        emojiBackGroundColor = .clear
         super.init(frame: frame)
+        
         emojiLabel.translatesAutoresizingMaskIntoConstraints = false
         emojiLabel.textAlignment = .center
+        contentView.layer.cornerRadius = 16
         
         contentView.addSubview(emojiLabel)
         

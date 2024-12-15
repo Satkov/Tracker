@@ -15,20 +15,28 @@ class EditNewTrackerViewController: UIViewController, SchedulePageViewController
     let trackerNameFieldContainer = UIView()
     var warningLabel = UILabel()
     var textFieldContainerHightConstraint: NSLayoutConstraint!
+    
     var selectedDays: Set<Schedule>? {
         didSet {
             buttonTable.reloadData()
         }
     }
+    
     var selectedCategory: TrackerCategoryModel? {
         didSet {
             buttonTable.reloadData()
         }
     }
     
+    var selectedEmoji: Emojis? {
+        didSet {
+            print(selectedEmoji)
+        }
+    }
+    
     private var emojiCollectionManager: EmojiCollectionViewManager?
     private var colorCollectionManager: ColorCollectionManager?
-    private var trackerNameFieldManager: TrackerNameTextFieldManager?
+    private var trackerNameFieldManager: NameTextFieldManager?
     private let params: GeometricParamsModel
     
     private(set) var isWarningHidden = true
@@ -102,7 +110,7 @@ class EditNewTrackerViewController: UIViewController, SchedulePageViewController
     }
     
     private func setupTrackerNameField() {
-        trackerNameFieldManager = TrackerNameTextFieldManager(
+        trackerNameFieldManager = NameTextFieldManager(
             trackerNameField: trackerNameField,
             delegate: self,
             placeholderText: "Введите название трекера"
@@ -149,7 +157,8 @@ class EditNewTrackerViewController: UIViewController, SchedulePageViewController
     private func setupEmojiCollection() {
         emojiCollectionManager = EmojiCollectionViewManager(
             collectionView: emojiCollection,
-            params: params
+            params: params,
+            delegate: self
         )
         
         emojiCollection.translatesAutoresizingMaskIntoConstraints = false
@@ -298,3 +307,5 @@ extension EditNewTrackerViewController: TrackerNameTextFieldManagerDelegateProto
         ])
     }
 }
+
+extension EditNewTrackerViewController: EmojiCollectionViewManagerProtocol { }

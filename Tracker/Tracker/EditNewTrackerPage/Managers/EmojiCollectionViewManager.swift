@@ -1,12 +1,14 @@
 import UIKit
 
-class EmojiCollectionViewManager: NSObject, UICollectionViewDelegate {
+class EmojiCollectionViewManager: NSObject {
     private let collectionView: UICollectionView
     private let params: GeometricParamsModel
+    private var delegate: EmojiCollectionViewManagerProtocol
     
-    init(collectionView: UICollectionView, params: GeometricParamsModel) {
+    init(collectionView: UICollectionView, params: GeometricParamsModel, delegate: EmojiCollectionViewManagerProtocol) {
         self.collectionView = collectionView
         self.params = params
+        self.delegate = delegate
         super.init()
         configureCollectionView()
     }
@@ -16,6 +18,7 @@ class EmojiCollectionViewManager: NSObject, UICollectionViewDelegate {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.allowsMultipleSelection = true
         collectionView.register(
             EmojiCollectionViewCell.self,
             forCellWithReuseIdentifier: "EmojiCollectionViewCell"
@@ -25,6 +28,24 @@ class EmojiCollectionViewManager: NSObject, UICollectionViewDelegate {
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: "header"
         )
+    }
+}
+
+extension EmojiCollectionViewManager: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        for cell in collectionView.visibleCells {
+            cell.contentView.backgroundColor = .clear
+        }
+        if let cell = collectionView.cellForItem(at: indexPath) {
+            cell.contentView.backgroundColor = UIColor.projectColor(.backgroundLightGray)
+        }
+        delegate.selectedEmoji = Emojis.allCases[indexPath.row]
+    }
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        if let cell = collectionView.cellForItem(at: indexPath) {
+            cell.contentView.backgroundColor = .clear
+        }
+        delegate.selectedEmoji = nil
     }
 }
 

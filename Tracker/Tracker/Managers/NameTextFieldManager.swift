@@ -1,7 +1,7 @@
 import UIKit
 
 
-class TrackerNameTextFieldManager: NSObject {
+class NameTextFieldManager: NSObject {
     private let trackerNameField: UITextField
     private var delegate: TrackerNameTextFieldManagerDelegateProtocol?
     private var placeholderText: String
@@ -38,7 +38,7 @@ class TrackerNameTextFieldManager: NSObject {
     }
 }
 
-extension TrackerNameTextFieldManager: UITextFieldDelegate {
+extension NameTextFieldManager: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if let delegate = delegate {
             let currentText = textField.text ?? ""

@@ -6,7 +6,7 @@ class CreateCategoryViewController: UIViewController {
     private var addCategoryButton = UIButton()
     private var trackerNameField = UITextField()
     
-    private var trackerNameFieldManager: TrackerNameTextFieldManager?
+    private var trackerNameFieldManager: NameTextFieldManager?
     private var categoryManager: TrackerCategoryManager?
     
     override func viewDidLoad() {
@@ -36,7 +36,7 @@ class CreateCategoryViewController: UIViewController {
     }
     
     private func setupTrackerNameField() {
-        trackerNameFieldManager = TrackerNameTextFieldManager(
+        trackerNameFieldManager = NameTextFieldManager(
             trackerNameField: trackerNameField,
             delegate: nil,
             placeholderText: "Введите название категории"

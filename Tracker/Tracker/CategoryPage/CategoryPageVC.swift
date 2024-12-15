@@ -65,10 +65,7 @@ class CategoryPageViewController: UIViewController {
             if self.catregoriesTable.superview == nil {
                 self.setupCatregoriesTable()
             } else {
-                let maxHeight = self.view.frame.height - 90
-//                self.tableHeightConstraint.constant = min(CGFloat(self.trackerCategoryList.count) * 75, maxHeight)
                 self.catregoriesTable.reloadData()
-                self.view.layoutIfNeeded()
             }
             
         }
@@ -195,8 +192,9 @@ extension CategoryPageViewController: UITableViewDataSource {
         let categoryName = trackerCategoryList[indexPath.row].categoryName
         let isSelected = lastSelectedCategory?.categoryName == categoryName
         let isLast = indexPath.row == trackerCategoryList.count - 1
+        let isFirst = indexPath.row == 0
 
-        cell.configureCell(with: categoryName, isSelected: isSelected, isLast: isLast)
+        cell.configureCell(with: categoryName, isSelected: isSelected, isLast: isLast, isFirst: isFirst)
 
         return cell
     }
