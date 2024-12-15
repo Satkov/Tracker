@@ -11,6 +11,7 @@ class CreateCategoryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        categoryManager = TrackerCategoryManager()
         setupUI()
     }
     
@@ -84,7 +85,6 @@ class CreateCategoryViewController: UIViewController {
     private func readyButtonPressed() {
         if let newCategoryName = trackerNameField.text {
             let newTracker = TrackerCategoryModel(categoryName: newCategoryName)
-            categoryManager = TrackerCategoryManager()
             categoryManager?.addCategory(newTracker)
             dismiss(animated: true)
         }
@@ -94,8 +94,14 @@ class CreateCategoryViewController: UIViewController {
 extension CreateCategoryViewController: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if let text = textField.text, !text.isEmpty {
-            enableReadyButton()
+        if let currentText = textField.text as NSString? {
+            let updatedText = currentText.replacingCharacters(in: range, with: string)
+            
+            if !updatedText.isEmpty {
+                enableReadyButton()
+            } else {
+                disableReadyButton()
+            }
         } else {
             disableReadyButton()
         }

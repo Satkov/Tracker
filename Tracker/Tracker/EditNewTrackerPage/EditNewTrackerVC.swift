@@ -1,6 +1,6 @@
 import UIKit
 
-class EditNewTrackerViewController: UIViewController, SchedulePageViewControllerProtocol {
+class EditNewTrackerViewController: UIViewController, SchedulePageViewControllerDelegateProtocol, CategoryPageProtocol {
     // MARK: - Properties
     var isRegular: Bool
     var scrollView = UIScrollView()
@@ -16,6 +16,11 @@ class EditNewTrackerViewController: UIViewController, SchedulePageViewController
     var warningLabel = UILabel()
     var textFieldContainerHightConstraint: NSLayoutConstraint!
     var selectedDays: Set<Schedule>? {
+        didSet {
+            buttonTable.reloadData()
+        }
+    }
+    var selectedCategory: TrackerCategoryModel? {
         didSet {
             buttonTable.reloadData()
         }
@@ -228,6 +233,8 @@ extension EditNewTrackerViewController: UITableViewDelegate {
         if selectedOption == "Категория" {
             let createVC = CategoryPageViewController()
             createVC.modalPresentationStyle = .pageSheet
+            createVC.delegate = self
+            createVC.lastSelectedCategory = selectedCategory
             present(createVC, animated: true)
 
         } else if selectedOption == "Расписание" {
@@ -251,7 +258,7 @@ extension EditNewTrackerViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "ButtonsTableViewCells", for: indexPath) as? ButtonsTableViewCells else { return UITableViewCell() }
         if buttonsIdentifiers[indexPath.row] == "Категория" {
-            cell.configurateTitleButton(title: buttonsIdentifiers[indexPath.row])
+            cell.configurateTitleButton(title: buttonsIdentifiers[indexPath.row], category: selectedCategory)
         } else {
             cell.configureSheduleButton(title: buttonsIdentifiers[indexPath.row], schedule: selectedDays)
         }

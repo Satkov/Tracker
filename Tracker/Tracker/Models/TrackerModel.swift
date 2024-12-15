@@ -79,6 +79,9 @@ enum Schedule: String, CaseIterable, Codable {
     }
     
     static func formattedString(from days: Set<Schedule>) -> String {
+        if days.count == 7 {
+            return "Каждый день"
+        }
         let sortedDays = days.sorted {
             sortedOrder.firstIndex(of: $0)! < sortedOrder.firstIndex(of: $1)!
         }

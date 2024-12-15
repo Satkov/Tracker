@@ -17,9 +17,11 @@
 		912091762D0CB69A0048851D /* CategoryPageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912091752D0CB69A0048851D /* CategoryPageVC.swift */; };
 		912091782D0CBE0F0048851D /* CreateCategoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912091772D0CBE0F0048851D /* CreateCategoryVC.swift */; };
 		9120917D2D0DB33C0048851D /* SchedulePageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9120917C2D0DB33C0048851D /* SchedulePageVC.swift */; };
-		912091822D0DBF1C0048851D /* SchedulePageViewControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912091812D0DBF1C0048851D /* SchedulePageViewControllerProtocol.swift */; };
+		912091822D0DBF1C0048851D /* SchedulePageViewControllerDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912091812D0DBF1C0048851D /* SchedulePageViewControllerDelegateProtocol.swift */; };
 		912091842D0DCAE90048851D /* ButtonsTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912091832D0DCAE90048851D /* ButtonsTableViewCells.swift */; };
 		912091872D0DD5390048851D /* CategoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912091862D0DD5390048851D /* CategoryManager.swift */; };
+		9120918A2D0DE5B40048851D /* CategoryPageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912091892D0DE5B40048851D /* CategoryPageProtocol.swift */; };
+		9120918C2D0F03200048851D /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9120918B2D0F03200048851D /* CategoryTableViewCell.swift */; };
 		91B0283A2CF06F680047E664 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B028392CF06F680047E664 /* AppDelegate.swift */; };
 		91B0283C2CF06F680047E664 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B0283B2CF06F680047E664 /* SceneDelegate.swift */; };
 		91B0283E2CF06F680047E664 /* TrackerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B0283D2CF06F680047E664 /* TrackerVC.swift */; };
@@ -49,9 +51,11 @@
 		912091752D0CB69A0048851D /* CategoryPageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryPageVC.swift; sourceTree = "<group>"; };
 		912091772D0CBE0F0048851D /* CreateCategoryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCategoryVC.swift; sourceTree = "<group>"; };
 		9120917C2D0DB33C0048851D /* SchedulePageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulePageVC.swift; sourceTree = "<group>"; };
-		912091812D0DBF1C0048851D /* SchedulePageViewControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulePageViewControllerProtocol.swift; sourceTree = "<group>"; };
+		912091812D0DBF1C0048851D /* SchedulePageViewControllerDelegateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulePageViewControllerDelegateProtocol.swift; sourceTree = "<group>"; };
 		912091832D0DCAE90048851D /* ButtonsTableViewCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsTableViewCells.swift; sourceTree = "<group>"; };
 		912091862D0DD5390048851D /* CategoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryManager.swift; sourceTree = "<group>"; };
+		912091892D0DE5B40048851D /* CategoryPageProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryPageProtocol.swift; sourceTree = "<group>"; };
+		9120918B2D0F03200048851D /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
 		91B028362CF06F680047E664 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91B028392CF06F680047E664 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91B0283B2CF06F680047E664 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -124,8 +128,10 @@
 		912091732D0CB5FF0048851D /* CategoryPage */ = {
 			isa = PBXGroup;
 			children = (
+				912091882D0DE5A80048851D /* Protocols */,
 				912091752D0CB69A0048851D /* CategoryPageVC.swift */,
 				912091772D0CBE0F0048851D /* CreateCategoryVC.swift */,
+				9120918B2D0F03200048851D /* CategoryTableViewCell.swift */,
 			);
 			path = CategoryPage;
 			sourceTree = "<group>";
@@ -142,7 +148,15 @@
 		912091802D0DBF0D0048851D /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				912091812D0DBF1C0048851D /* SchedulePageViewControllerProtocol.swift */,
+				912091812D0DBF1C0048851D /* SchedulePageViewControllerDelegateProtocol.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		912091882D0DE5A80048851D /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				912091892D0DE5B40048851D /* CategoryPageProtocol.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -348,10 +362,12 @@
 				91B0283A2CF06F680047E664 /* AppDelegate.swift in Sources */,
 				912091762D0CB69A0048851D /* CategoryPageVC.swift in Sources */,
 				9120916B2D0C623D0048851D /* TrackerNameTextFieldManager.swift in Sources */,
+				9120918A2D0DE5B40048851D /* CategoryPageProtocol.swift in Sources */,
 				91B0288B2CF334960047E664 /* EditNewTrackerVC.swift in Sources */,
+				9120918C2D0F03200048851D /* CategoryTableViewCell.swift in Sources */,
 				9120916E2D0C8F930048851D /* EditNewTrackerViewControllerProtocol.swift in Sources */,
 				91B028552CF07AE60047E664 /* UIButton+Extensions.swift in Sources */,
-				912091822D0DBF1C0048851D /* SchedulePageViewControllerProtocol.swift in Sources */,
+				912091822D0DBF1C0048851D /* SchedulePageViewControllerDelegateProtocol.swift in Sources */,
 				912091672D0ADDF80048851D /* ColorCollectionViewCell.swift in Sources */,
 				91B028882CF257BE0047E664 /* TrackerTypeMenuVC.swift in Sources */,
 				91B0288D2CF380B50047E664 /* EmojiCollectionViewCell.swift in Sources */,

@@ -2,22 +2,27 @@ import Foundation
 
 class TrackerCategoryManager {
     private let userDefaults = UserDefaults.standard
-    private let categoriesKey = "trackerCategoriesKey"
+    private let userDefaultsQueue = DispatchQueue(label: "userDefaultsQueue")
+    private let categoriesKey = "trackerCategoriesKey2"
     
     // Загрузка категорий
     func loadCategories() -> [TrackerCategoryModel] {
-        guard let data = userDefaults.data(forKey: categoriesKey) else {
-            return []
+        return userDefaultsQueue.sync {
+            guard let data = userDefaults.data(forKey: categoriesKey) else {
+                return []
+            }
+            let decoder = JSONDecoder()
+            return (try? decoder.decode([TrackerCategoryModel].self, from: data)) ?? []
         }
-        let decoder = JSONDecoder()
-        return (try? decoder.decode([TrackerCategoryModel].self, from: data)) ?? []
     }
     
     // Сохранение категорий
     func saveCategories(_ categories: [TrackerCategoryModel]) {
-        let encoder = JSONEncoder()
-        if let data = try? encoder.encode(categories) {
-            userDefaults.set(data, forKey: categoriesKey)
+        userDefaultsQueue.sync {
+            let encoder = JSONEncoder()
+            if let data = try? encoder.encode(categories) {
+                userDefaults.set(data, forKey: categoriesKey)
+            }
         }
     }
     

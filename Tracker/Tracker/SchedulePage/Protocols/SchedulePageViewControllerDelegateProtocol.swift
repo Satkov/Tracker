@@ -1,5 +1,5 @@
 import Foundation
 
-protocol SchedulePageViewControllerProtocol: AnyObject {
+protocol SchedulePageViewControllerDelegateProtocol: AnyObject {
     var selectedDays: Set<Schedule>? { get set }
 }

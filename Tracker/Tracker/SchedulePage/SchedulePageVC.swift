@@ -6,7 +6,7 @@ class SchedulePageViewController: UIViewController {
     private var scheduleTable = UITableView()
     
     var selectedDays: Set<Schedule> = []
-    weak var delegate: SchedulePageViewControllerProtocol?
+    weak var delegate: SchedulePageViewControllerDelegateProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,7 +104,6 @@ extension SchedulePageViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel?.text = Schedule.allCases[indexPath.row].rawValue
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-        cell.accessoryType = .disclosureIndicator
         cell.backgroundColor = UIColor.systemGray6
         cell.selectionStyle = .none
         

@@ -3,20 +3,75 @@ import UIKit
 class CategoryPageViewController: UIViewController {
     private var placeholderImage = UIImageView()
     private var placeholderText = UILabel()
+    private var catregoriesTable = UITableView()
     private var titleLabel = UILabel()
     private var addCategoryButton = UIButton()
+    private var observer: NSObjectProtocol?
+    private var selectedIndexPath: IndexPath?
+    private let contentViewForTable = UIView()
+    private var tableHeightConstraint: NSLayoutConstraint!
+    
+    private var trackerCategoryList: [TrackerCategoryModel]!
+    private var trackerCategoryManager: TrackerCategoryManager!
+    var delegate: CategoryPageProtocol?
+    var lastSelectedCategory: TrackerCategoryModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        trackerCategoryManager = TrackerCategoryManager()
+        trackerCategoryList = trackerCategoryManager.loadCategories()
         setupUI()
+        addObserver()
+    }
+    
+    deinit {
+        removeObserver()
     }
     
     private func setupUI() {
         view.backgroundColor = UIColor(named: "TrackerBackgroundWhite")
         setupTitleLabel()
-        setupPlaceholderImage()
-        setupPlaceholderText()
         setupAddCategoryButton()
+        if trackerCategoryList.isEmpty {
+            setupPlaceholderImage()
+            setupPlaceholderText()
+        } else {
+            setupCatregoriesTable()
+        }
+    }
+    
+    private func addObserver() {
+        observer = NotificationCenter.default.addObserver(
+            forName: UserDefaults.didChangeNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.userDefaultsDidChange()
+        }
+    }
+    
+    private func removeObserver() {
+        if let observer = observer {
+            NotificationCenter.default.removeObserver(observer)
+        }
+    }
+    
+    private func userDefaultsDidChange() {
+        trackerCategoryList = trackerCategoryManager.loadCategories()
+        DispatchQueue.main.async {
+            self.placeholderImage.removeFromSuperview()
+            self.placeholderText.removeFromSuperview()
+            
+            if self.catregoriesTable.superview == nil {
+                self.setupCatregoriesTable()
+            } else {
+                let maxHeight = self.view.frame.height - 90
+//                self.tableHeightConstraint.constant = min(CGFloat(self.trackerCategoryList.count) * 75, maxHeight)
+                self.catregoriesTable.reloadData()
+                self.view.layoutIfNeeded()
+            }
+            
+        }
     }
     
     private func setupTitleLabel() {
@@ -29,6 +84,33 @@ class CategoryPageViewController: UIViewController {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 13),
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
+    }
+    
+    private func setupCatregoriesTable() {
+        contentViewForTable.translatesAutoresizingMaskIntoConstraints = false
+        contentViewForTable.layer.cornerRadius = 16
+        catregoriesTable.translatesAutoresizingMaskIntoConstraints = false
+        catregoriesTable.delegate = self
+        catregoriesTable.dataSource = self
+        catregoriesTable.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        catregoriesTable.register(CategoryTableViewCell.self, forCellReuseIdentifier: "CategoryTableViewCell")
+        catregoriesTable.layer.cornerRadius = 16
+        catregoriesTable.tableFooterView = UIView()
+        
+        contentViewForTable.addSubview(catregoriesTable)
+        view.addSubview(contentViewForTable)
+        
+        NSLayoutConstraint.activate([
+            contentViewForTable.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
+            contentViewForTable.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            contentViewForTable.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            contentViewForTable.bottomAnchor.constraint(equalTo: addCategoryButton.topAnchor, constant: -20),
+            
+            catregoriesTable.topAnchor.constraint(equalTo: contentViewForTable.topAnchor),
+            catregoriesTable.leadingAnchor.constraint(equalTo: contentViewForTable.leadingAnchor),
+            catregoriesTable.trailingAnchor.constraint(equalTo: contentViewForTable.trailingAnchor),
+            catregoriesTable.bottomAnchor.constraint(equalTo: contentViewForTable.bottomAnchor)
         ])
     }
     
@@ -84,4 +166,40 @@ class CategoryPageViewController: UIViewController {
         createVC.modalPresentationStyle = .pageSheet
         present(createVC, animated: true)
     }
+}
+
+extension CategoryPageViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 75
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedIndexPath = indexPath
+        let cell = tableView.cellForRow(at: indexPath) as? CategoryTableViewCell
+        cell?.setAccessoryType(.checkmark)
+        delegate?.selectedCategory = trackerCategoryList[indexPath.row]
+        dismiss(animated: true)
+    }
+}
+
+extension CategoryPageViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return trackerCategoryList.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTableViewCell", for: indexPath) as? CategoryTableViewCell else {
+            return UITableViewCell()
+        }
+
+        let categoryName = trackerCategoryList[indexPath.row].categoryName
+        let isSelected = lastSelectedCategory?.categoryName == categoryName
+        let isLast = indexPath.row == trackerCategoryList.count - 1
+
+        cell.configureCell(with: categoryName, isSelected: isSelected, isLast: isLast)
+
+        return cell
+    }
+    
+    
 }
