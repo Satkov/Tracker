@@ -1,14 +1,14 @@
 import UIKit
 
-class EmojiCollectionViewManager: NSObject {
+final class EmojiCollectionViewManager: NSObject {
     private let collectionView: UICollectionView
     private let params: GeometricParamsModel
-    private var delegate: EmojiCollectionViewManagerDelegateProtocol
+    private var presenter: EditNewTrackerPresenterProtocol?
     
-    init(collectionView: UICollectionView, params: GeometricParamsModel, delegate: EmojiCollectionViewManagerDelegateProtocol) {
+    init(collectionView: UICollectionView, params: GeometricParamsModel, presenter: EditNewTrackerPresenterProtocol?) {
         self.collectionView = collectionView
         self.params = params
-        self.delegate = delegate
+        self.presenter = presenter
         super.init()
         configureCollectionView()
     }
@@ -39,13 +39,13 @@ extension EmojiCollectionViewManager: UICollectionViewDelegate {
         if let cell = collectionView.cellForItem(at: indexPath) {
             cell.contentView.backgroundColor = UIColor.projectColor(.backgroundLightGray)
         }
-        delegate.selectedEmoji = Emojis.allCases[indexPath.row]
+        presenter?.updateEmoji(new: Emojis.allCases[indexPath.row])
     }
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) {
             cell.contentView.backgroundColor = .clear
         }
-        delegate.selectedEmoji = nil
+        presenter?.updateEmoji(new: nil)
     }
 }
 

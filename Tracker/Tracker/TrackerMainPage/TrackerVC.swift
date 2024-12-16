@@ -1,6 +1,6 @@
 import UIKit
 
-class TrackerViewController: UIViewController, UIViewControllerTransitioningDelegate {
+final class TrackerViewController: UIViewController, UIViewControllerTransitioningDelegate {
     private var headerLabel = UILabel()
     private var searchBar = UISearchBar()
     private var placeholderImage = UIImageView()

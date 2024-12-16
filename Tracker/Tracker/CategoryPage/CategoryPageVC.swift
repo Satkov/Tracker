@@ -1,6 +1,6 @@
 import UIKit
 
-class CategoryPageViewController: UIViewController {
+final class CategoryPageViewController: UIViewController {
     private var placeholderImage = UIImageView()
     private var placeholderText = UILabel()
     private var catregoriesTable = UITableView()
@@ -13,7 +13,7 @@ class CategoryPageViewController: UIViewController {
     
     private var trackerCategoryList: [TrackerCategoryModel]!
     private var trackerCategoryManager: TrackerCategoryManager!
-    var delegate: CategoryPageProtocol?
+    var presenter: EditNewTrackerPresenterProtocol?
     var lastSelectedCategory: TrackerCategoryModel?
     
     override func viewDidLoad() {
@@ -174,7 +174,7 @@ extension CategoryPageViewController: UITableViewDelegate {
         selectedIndexPath = indexPath
         let cell = tableView.cellForRow(at: indexPath) as? CategoryTableViewCell
         cell?.setAccessoryType(.checkmark)
-        delegate?.selectedCategory = trackerCategoryList[indexPath.row]
+        presenter?.updateCategory(new: trackerCategoryList[indexPath.row])
         dismiss(animated: true)
     }
 }

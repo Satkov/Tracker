@@ -1,14 +1,14 @@
 import UIKit
 
-class ColorCollectionManager: NSObject {
+final class ColorCollectionManager: NSObject {
     private let collectionView: UICollectionView
     private let params: GeometricParamsModel
-    private var delegate: ColorCollectionManagerDelegateProtocol
+    private var presenter: EditNewTrackerPresenterProtocol?
     
-    init(collectionView: UICollectionView, params: GeometricParamsModel, delegate: ColorCollectionManagerDelegateProtocol) {
+    init(collectionView: UICollectionView, params: GeometricParamsModel, presenter: EditNewTrackerPresenterProtocol?) {
         self.collectionView = collectionView
         self.params = params
-        self.delegate = delegate
+        self.presenter = presenter
         super.init()
         configureCollectionView()
     }
@@ -40,13 +40,13 @@ extension ColorCollectionManager: UICollectionViewDelegate {
         if let cell = collectionView.cellForItem(at: indexPath) {
             cell.contentView.layer.borderColor = colorInCell.color.withAlphaComponent(0.3).cgColor
         }
-        delegate.selectedColor = colorInCell
+        presenter?.updateColor(new: colorInCell)
     }
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) {
             cell.contentView.layer.borderColor = UIColor.clear.cgColor
         }
-        delegate.selectedColor = nil
+        presenter?.updateColor(new: nil)
     }
 }
 

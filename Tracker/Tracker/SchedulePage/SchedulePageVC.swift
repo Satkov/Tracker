@@ -1,12 +1,12 @@
 import UIKit
 
-class SchedulePageViewController: UIViewController {
+final class SchedulePageViewController: UIViewController {
     private var titleLabel = UILabel()
     private var addScheduleButton = UIButton()
     private var scheduleTable = UITableView()
     
     var selectedDays: Set<Schedule> = []
-    weak var delegate: SchedulePageViewControllerDelegateProtocol?
+    var presenter: EditNewTrackerPresenterProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,7 +72,7 @@ class SchedulePageViewController: UIViewController {
     
     @objc
     private func addSelectedDaysButtonPressed() {
-        delegate?.selectedDays = selectedDays
+        presenter?.updateSchedule(new: selectedDays)
         dismiss(animated: true, completion: nil)
     }
     

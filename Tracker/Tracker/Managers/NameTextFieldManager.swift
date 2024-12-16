@@ -1,15 +1,17 @@
 import UIKit
 
 
-class NameTextFieldManager: NSObject {
+final class NameTextFieldManager: NSObject {
     private let trackerNameField: UITextField
     private var delegate: TrackerNameTextFieldManagerDelegateProtocol?
+    private var presenter: EditNewTrackerPresenterProtocol?
     private var placeholderText: String
     
-    init(trackerNameField: UITextField, delegate: TrackerNameTextFieldManagerDelegateProtocol?, placeholderText: String) {
+    init(trackerNameField: UITextField, delegate: TrackerNameTextFieldManagerDelegateProtocol?, placeholderText: String, presenter: EditNewTrackerPresenterProtocol?) {
         self.trackerNameField = trackerNameField
         self.delegate = delegate
         self.placeholderText = placeholderText
+        self.presenter = presenter
         super.init()
         configure()
     }
@@ -45,7 +47,11 @@ extension NameTextFieldManager: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        delegate?.selectedName = textField.text
+        if let name = textField.text {
+            presenter?.updateName(name: name)
+        } else {
+            // TODO: Обработка ошибки
+        }
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

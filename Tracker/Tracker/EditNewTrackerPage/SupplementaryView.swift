@@ -1,6 +1,6 @@
 import UIKit
 
-class SupplementaryView: UICollectionReusableView {
+final class SupplementaryView: UICollectionReusableView {
     private(set) var titleLabel  = UILabel()
     
     override init(frame: CGRect) {

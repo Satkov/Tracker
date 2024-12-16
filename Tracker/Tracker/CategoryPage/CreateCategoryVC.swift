@@ -1,7 +1,7 @@
 import UIKit
 
 
-class CreateCategoryViewController: UIViewController {
+final class CreateCategoryViewController: UIViewController {
     private var titleLabel = UILabel()
     private var addCategoryButton = UIButton()
     private var trackerNameField = UITextField()
@@ -39,7 +39,8 @@ class CreateCategoryViewController: UIViewController {
         trackerNameFieldManager = NameTextFieldManager(
             trackerNameField: trackerNameField,
             delegate: nil,
-            placeholderText: "Введите название категории"
+            placeholderText: "Введите название категории", 
+            presenter: nil
         )
         trackerNameField.delegate = self
         view.addSubview(trackerNameField)

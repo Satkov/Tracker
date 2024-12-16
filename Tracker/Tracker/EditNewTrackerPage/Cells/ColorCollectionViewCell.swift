@@ -1,6 +1,6 @@
 import UIKit
 
-class ColorCollectionViewCell: UICollectionViewCell {
+final class ColorCollectionViewCell: UICollectionViewCell {
     private let colorSquare = UIView()
     var cellColor: UIColor? {
         didSet {

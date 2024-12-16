@@ -1,9 +1,9 @@
 import Foundation
 
-class TrackerCategoryManager {
+final class TrackerCategoryManager {
     private let userDefaults = UserDefaults.standard
     private let userDefaultsQueue = DispatchQueue(label: "userDefaultsQueue")
-    private let categoriesKey = "trackerCategoriesKey3"
+    private let categoriesKey = "trackerCategories"
     
     // Загрузка категорий
     func loadCategories() -> [TrackerCategoryModel] {

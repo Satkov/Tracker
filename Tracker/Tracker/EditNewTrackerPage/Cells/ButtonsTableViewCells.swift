@@ -1,6 +1,6 @@
 import UIKit
 
-class ButtonsTableViewCells: UITableViewCell {
+final class ButtonsTableViewCells: UITableViewCell {
     var labelsContainer = UIView()
     var titleLabel = UILabel()
     var subtitleLabel = UILabel()
