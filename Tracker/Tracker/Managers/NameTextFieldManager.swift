@@ -39,6 +39,15 @@ class NameTextFieldManager: NSObject {
 }
 
 extension NameTextFieldManager: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder() 
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        delegate?.selectedName = textField.text
+    }
+    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if let delegate = delegate {
             let currentText = textField.text ?? ""

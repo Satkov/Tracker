@@ -2,35 +2,58 @@ import UIKit
 
 class EditNewTrackerViewController: UIViewController, SchedulePageViewControllerDelegateProtocol, CategoryPageProtocol {
     // MARK: - Properties
-    var isRegular: Bool
-    var scrollView = UIScrollView()
-    var titleLabel = UILabel()
-    var trackerNameField = UITextField()
-    var buttonTable = UITableView()
-    var buttonsIdentifiers = ["Категория", "Расписание"]
-    var emojiCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    var colorCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    var cancelButton = UIButton()
-    var createButton = UIButton()
-    let trackerNameFieldContainer = UIView()
-    var warningLabel = UILabel()
-    var textFieldContainerHightConstraint: NSLayoutConstraint!
+    private var isRegular: Bool
+    private var scrollView = UIScrollView()
+    private var titleLabel = UILabel()
+    private var trackerNameField = UITextField()
+    private var buttonTable = UITableView()
+    private var buttonsIdentifiers = ["Категория", "Расписание"]
+    private var emojiCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private var colorCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private var cancelButton = UIButton()
+    private var createButton = UIButton()
+    private let trackerNameFieldContainer = UIView()
+    private var warningLabel = UILabel()
+    private var textFieldContainerHightConstraint: NSLayoutConstraint!
+    
+    private var dataForTrakerModel = DataForTrackerModel() {
+        didSet {
+            if dataForTrakerModel.isAllDataPresented(isRegular: isRegular) {
+                setCreateButtonEnable()
+            } else {
+                setCreateButtonDissable()
+            }
+        }
+    }
+    var selectedName: String? {
+        didSet {
+            dataForTrakerModel.name = selectedName
+        }
+    }
     
     var selectedDays: Set<Schedule>? {
         didSet {
             buttonTable.reloadData()
+            dataForTrakerModel.schudule = selectedDays
         }
     }
     
     var selectedCategory: TrackerCategoryModel? {
         didSet {
             buttonTable.reloadData()
+            dataForTrakerModel.category = selectedCategory
         }
     }
     
     var selectedEmoji: Emojis? {
         didSet {
-            print(selectedEmoji)
+            dataForTrakerModel.emoji = selectedEmoji
+        }
+    }
+    
+    var selectedColor: TrackerColors? {
+        didSet {
+            dataForTrakerModel.color = selectedColor
         }
     }
     
@@ -175,7 +198,8 @@ class EditNewTrackerViewController: UIViewController, SchedulePageViewController
     private func setupColorCollection() {
         colorCollectionManager = ColorCollectionManager(
             collectionView: colorCollection,
-            params: params
+            params: params,
+            delegate: self
         )
         
         colorCollection.translatesAutoresizingMaskIntoConstraints = false
@@ -216,6 +240,7 @@ class EditNewTrackerViewController: UIViewController, SchedulePageViewController
         createButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         createButton.backgroundColor = UIColor.projectColor(.textColorForLightgray)
         createButton.layer.cornerRadius = 16
+        createButton.addTarget(self, action: #selector(createButtonPressed), for: .touchUpInside)
         
         scrollView.addSubview(createButton)
         
@@ -226,6 +251,32 @@ class EditNewTrackerViewController: UIViewController, SchedulePageViewController
             cancelButton.heightAnchor.constraint(equalToConstant: 60),
             createButton.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
         ])
+    }
+    
+    private func setCreateButtonEnable() {
+        createButton.backgroundColor = UIColor.projectColor(.backgroundBlack)
+        createButton.isEnabled = true
+    }
+    
+    private func setCreateButtonDissable() {
+        createButton.backgroundColor = UIColor.projectColor(.textColorForLightgray)
+        createButton.isEnabled = false
+    }
+    
+    @objc
+    private func createButtonPressed() {
+        guard let name = selectedName,
+              let category = selectedCategory,
+              let emoji = selectedEmoji,
+              let color = selectedColor
+        else { return }
+        let tracker = TrackerModel(name: name, 
+                                   color: color,
+                                   emoji: emoji,
+                                   schedule: selectedDays)
+        let categoryManager = TrackerCategoryManager()
+        categoryManager.addTracker(to: category.categoryName, tracker: tracker)
+        self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
     }
 }
 
@@ -308,4 +359,6 @@ extension EditNewTrackerViewController: TrackerNameTextFieldManagerDelegateProto
     }
 }
 
-extension EditNewTrackerViewController: EmojiCollectionViewManagerProtocol { }
+extension EditNewTrackerViewController: EmojiCollectionViewManagerDelegateProtocol { }
+
+extension EditNewTrackerViewController: ColorCollectionManagerDelegateProtocol { }

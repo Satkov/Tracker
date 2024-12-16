@@ -13,6 +13,10 @@ class ColorCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(colorSquare)
         colorSquare.translatesAutoresizingMaskIntoConstraints = false
         colorSquare.layer.cornerRadius = 8
+        contentView.layer.cornerRadius = 16
+        contentView.layer.borderWidth = 3
+        contentView.layer.borderColor = UIColor.clear.cgColor
+        
         NSLayoutConstraint.activate([
             colorSquare.widthAnchor.constraint(equalToConstant: 40),
             colorSquare.heightAnchor.constraint(equalToConstant: 40),

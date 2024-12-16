@@ -22,7 +22,9 @@
 		912091872D0DD5390048851D /* CategoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912091862D0DD5390048851D /* CategoryManager.swift */; };
 		9120918A2D0DE5B40048851D /* CategoryPageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912091892D0DE5B40048851D /* CategoryPageProtocol.swift */; };
 		9120918C2D0F03200048851D /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9120918B2D0F03200048851D /* CategoryTableViewCell.swift */; };
-		912091902D0F0C690048851D /* EmojiCollectionViewManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9120918F2D0F0C690048851D /* EmojiCollectionViewManagerProtocol.swift */; };
+		912091902D0F0C690048851D /* EmojiCollectionViewManagerDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9120918F2D0F0C690048851D /* EmojiCollectionViewManagerDelegateProtocol.swift */; };
+		912091922D0F108E0048851D /* ColorCollectionManagerDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912091912D0F108E0048851D /* ColorCollectionManagerDelegateProtocol.swift */; };
+		912091942D0F15230048851D /* DataForTrackerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912091932D0F15230048851D /* DataForTrackerModel.swift */; };
 		91B0283A2CF06F680047E664 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B028392CF06F680047E664 /* AppDelegate.swift */; };
 		91B0283C2CF06F680047E664 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B0283B2CF06F680047E664 /* SceneDelegate.swift */; };
 		91B0283E2CF06F680047E664 /* TrackerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B0283D2CF06F680047E664 /* TrackerVC.swift */; };
@@ -57,7 +59,9 @@
 		912091862D0DD5390048851D /* CategoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryManager.swift; sourceTree = "<group>"; };
 		912091892D0DE5B40048851D /* CategoryPageProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryPageProtocol.swift; sourceTree = "<group>"; };
 		9120918B2D0F03200048851D /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
-		9120918F2D0F0C690048851D /* EmojiCollectionViewManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCollectionViewManagerProtocol.swift; sourceTree = "<group>"; };
+		9120918F2D0F0C690048851D /* EmojiCollectionViewManagerDelegateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCollectionViewManagerDelegateProtocol.swift; sourceTree = "<group>"; };
+		912091912D0F108E0048851D /* ColorCollectionManagerDelegateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCollectionManagerDelegateProtocol.swift; sourceTree = "<group>"; };
+		912091932D0F15230048851D /* DataForTrackerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataForTrackerModel.swift; sourceTree = "<group>"; };
 		91B028362CF06F680047E664 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91B028392CF06F680047E664 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91B0283B2CF06F680047E664 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -121,6 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				912091712D0CB5810048851D /* GeometricParamsModel.swift */,
+				912091932D0F15230048851D /* DataForTrackerModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -173,7 +178,8 @@
 		9120918E2D0F0C5A0048851D /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				9120918F2D0F0C690048851D /* EmojiCollectionViewManagerProtocol.swift */,
+				9120918F2D0F0C690048851D /* EmojiCollectionViewManagerDelegateProtocol.swift */,
+				912091912D0F108E0048851D /* ColorCollectionManagerDelegateProtocol.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -378,13 +384,14 @@
 				912091842D0DCAE90048851D /* ButtonsTableViewCells.swift in Sources */,
 				91B028522CF078D50047E664 /* TabBarController.swift in Sources */,
 				91B028802CF2061D0047E664 /* UIColor+Extensions.swift in Sources */,
-				912091902D0F0C690048851D /* EmojiCollectionViewManagerProtocol.swift in Sources */,
+				912091902D0F0C690048851D /* EmojiCollectionViewManagerDelegateProtocol.swift in Sources */,
 				91B0283A2CF06F680047E664 /* AppDelegate.swift in Sources */,
 				912091762D0CB69A0048851D /* CategoryPageVC.swift in Sources */,
 				9120916B2D0C623D0048851D /* NameTextFieldManager.swift in Sources */,
 				9120918A2D0DE5B40048851D /* CategoryPageProtocol.swift in Sources */,
 				91B0288B2CF334960047E664 /* EditNewTrackerVC.swift in Sources */,
 				9120918C2D0F03200048851D /* CategoryTableViewCell.swift in Sources */,
+				912091942D0F15230048851D /* DataForTrackerModel.swift in Sources */,
 				9120916E2D0C8F930048851D /* EditNewTrackerViewControllerProtocol.swift in Sources */,
 				91B028552CF07AE60047E664 /* UIButton+Extensions.swift in Sources */,
 				912091822D0DBF1C0048851D /* SchedulePageViewControllerDelegateProtocol.swift in Sources */,
@@ -394,6 +401,7 @@
 				9120917D2D0DB33C0048851D /* SchedulePageVC.swift in Sources */,
 				912091652D0ADCAF0048851D /* ColorCollectionManager.swift in Sources */,
 				912091722D0CB5810048851D /* GeometricParamsModel.swift in Sources */,
+				912091922D0F108E0048851D /* ColorCollectionManagerDelegateProtocol.swift in Sources */,
 				9120915F2D0A364D0048851D /* SupplementaryView.swift in Sources */,
 				91B0283C2CF06F680047E664 /* SceneDelegate.swift in Sources */,
 				91B0287C2CF0C7BD0047E664 /* TrackerRecordModel.swift in Sources */,

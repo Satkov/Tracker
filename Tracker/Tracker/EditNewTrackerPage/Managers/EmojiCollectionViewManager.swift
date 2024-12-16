@@ -3,9 +3,9 @@ import UIKit
 class EmojiCollectionViewManager: NSObject {
     private let collectionView: UICollectionView
     private let params: GeometricParamsModel
-    private var delegate: EmojiCollectionViewManagerProtocol
+    private var delegate: EmojiCollectionViewManagerDelegateProtocol
     
-    init(collectionView: UICollectionView, params: GeometricParamsModel, delegate: EmojiCollectionViewManagerProtocol) {
+    init(collectionView: UICollectionView, params: GeometricParamsModel, delegate: EmojiCollectionViewManagerDelegateProtocol) {
         self.collectionView = collectionView
         self.params = params
         self.delegate = delegate
