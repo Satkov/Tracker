@@ -44,7 +44,10 @@ class TrackerCategoryManager {
     func addTracker(to categoryName: String, tracker: TrackerModel) {
         var categories = loadCategories()
         if let index = categories.firstIndex(where: { $0.categoryName == categoryName }) {
-            categories[index].trackers.append(tracker)
+            var trackers = categories[index].trackers
+            trackers.append(tracker)
+            var newCategory = TrackerCategoryModel(categoryName: categories[index].categoryName, trackers: trackers)
+            categories[index] = newCategory
             saveCategories(categories)
         }
     }
@@ -53,7 +56,10 @@ class TrackerCategoryManager {
     func removeTracker(from categoryName: String, trackerID: UUID) {
         var categories = loadCategories()
         if let index = categories.firstIndex(where: { $0.categoryName == categoryName }) {
-            categories[index].trackers.removeAll { $0.id == trackerID }
+            var trackers = categories[index].trackers
+            trackers.removeAll { $0.id == trackerID }
+            var newCategory = TrackerCategoryModel(categoryName: categories[index].categoryName, trackers: trackers)
+            categories[index] = newCategory
             saveCategories(categories)
         }
     }

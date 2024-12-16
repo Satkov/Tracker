@@ -1,5 +1,5 @@
 import Foundation
 
-protocol EmojiCollectionViewManagerProtocol {
+protocol EmojiCollectionViewManagerDelegateProtocol {
     var selectedEmoji: Emojis? { get set }
 }

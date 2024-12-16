@@ -1,6 +1,6 @@
 struct TrackerCategoryModel: Codable {
-    var categoryName: String
-    var trackers: [TrackerModel]
+    let categoryName: String
+    let trackers: [TrackerModel]
     
     init(categoryName: String, trackers: [TrackerModel] = []) {
         self.categoryName = categoryName
