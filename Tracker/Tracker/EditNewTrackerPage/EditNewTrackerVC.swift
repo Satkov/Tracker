@@ -1,28 +1,34 @@
 import UIKit
 
 final class EditNewTrackerViewController: UIViewController {
-    // MARK: - Properties
+    // MARK: - Constants
+    private let params: GeometricParamsModel
 
+    // MARK: - State Properties
     private(set) var isRegular: Bool
     private(set) var isWarningHidden = true
+
+    // MARK: - UI Elements
     private var scrollView = UIScrollView()
     private var titleLabel = UILabel()
+    private let trackerNameFieldContainer = UIView()
     private var trackerNameField = UITextField()
     private var buttonTable = UITableView()
-    private var buttonsIdentifiers = ["Категория", "Расписание"]
     private var emojiCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private var colorCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private var cancelButton = UIButton()
     private var createButton = UIButton()
-    private let trackerNameFieldContainer = UIView()
     private var warningLabel = UILabel()
+
+    // MARK: - Constraints
     private var textFieldContainerHightConstraint: NSLayoutConstraint!
 
+    // MARK: - Data and Managers
+    private var buttonsIdentifiers = ["Категория", "Расписание"]
     private var presenter: EditNewTrackerPresenterProtocol?
     private var emojiCollectionManager: EmojiCollectionViewManager?
     private var colorCollectionManager: ColorCollectionManager?
     private var trackerNameFieldManager: NameTextFieldManager?
-    private let params: GeometricParamsModel
 
     // MARK: - Initializer
 

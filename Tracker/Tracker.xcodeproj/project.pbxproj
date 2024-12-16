@@ -25,7 +25,7 @@
 		9161CE572D1066A70081A3B4 /* EditNewTrackerViewControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9161CE562D1066A70081A3B4 /* EditNewTrackerViewControllerProtocol.swift */; };
 		91B0283A2CF06F680047E664 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B028392CF06F680047E664 /* AppDelegate.swift */; };
 		91B0283C2CF06F680047E664 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B0283B2CF06F680047E664 /* SceneDelegate.swift */; };
-		91B0283E2CF06F680047E664 /* TrackerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B0283D2CF06F680047E664 /* TrackerVC.swift */; };
+		91B0283E2CF06F680047E664 /* TrackerListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B0283D2CF06F680047E664 /* TrackerListVC.swift */; };
 		91B028432CF06F690047E664 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91B028422CF06F690047E664 /* Assets.xcassets */; };
 		91B028462CF06F690047E664 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 91B028452CF06F690047E664 /* Base */; };
 		91B028522CF078D50047E664 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B028512CF078D50047E664 /* TabBarController.swift */; };
@@ -63,7 +63,7 @@
 		91B028362CF06F680047E664 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91B028392CF06F680047E664 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91B0283B2CF06F680047E664 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		91B0283D2CF06F680047E664 /* TrackerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerVC.swift; sourceTree = "<group>"; };
+		91B0283D2CF06F680047E664 /* TrackerListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerListVC.swift; sourceTree = "<group>"; };
 		91B028422CF06F690047E664 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		91B028452CF06F690047E664 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		91B028472CF06F690047E664 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -213,7 +213,7 @@
 		91B0284E2CF072270047E664 /* TrackerMainPage */ = {
 			isa = PBXGroup;
 			children = (
-				91B0283D2CF06F680047E664 /* TrackerVC.swift */,
+				91B0283D2CF06F680047E664 /* TrackerListVC.swift */,
 			);
 			path = TrackerMainPage;
 			sourceTree = "<group>";
@@ -361,7 +361,7 @@
 				912091782D0CBE0F0048851D /* CreateCategoryVC.swift in Sources */,
 				91B028782CF0C7A70047E664 /* TrackerModel.swift in Sources */,
 				912091982D10571A0048851D /* EditNewTrackerPresenter.swift in Sources */,
-				91B0283E2CF06F680047E664 /* TrackerVC.swift in Sources */,
+				91B0283E2CF06F680047E664 /* TrackerListVC.swift in Sources */,
 				91CC95C02D106AA700ECE101 /* TrackerNameTextFieldManagerDelegateProtocol.swift in Sources */,
 				9161CE572D1066A70081A3B4 /* EditNewTrackerViewControllerProtocol.swift in Sources */,
 				91B028832CF207BF0047E664 /* StatisticPageVC.swift in Sources */,

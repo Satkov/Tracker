@@ -16,7 +16,7 @@ final class TabBarController: UITabBarController {
     }
 
     private func setupTabBarControllers() {
-        let trackerViewController = TrackerViewController()
+        let trackerViewController = TrackerListViewController()
         let trackerNavViewController = UINavigationController(rootViewController: trackerViewController)
 
         let statisticViewController = StatisticPageViewController()

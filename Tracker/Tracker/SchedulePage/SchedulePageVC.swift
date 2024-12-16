@@ -1,23 +1,27 @@
 import UIKit
 
 final class SchedulePageViewController: UIViewController {
-    private var titleLabel = UILabel()
-    private var addScheduleButton = UIButton()
-    private var scheduleTable = UITableView()
+    // MARK: - UI Elements
+    private let titleLabel = UILabel()
+    private let addScheduleButton = UIButton()
+    private let scheduleTable = UITableView()
 
+    // MARK: - Properties
     var selectedDays: Set<Schedule> = []
     var presenter: EditNewTrackerPresenterProtocol?
 
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
 
+    // MARK: - Setup UI
     private func setupUI() {
         view.backgroundColor = UIColor(named: "TrackerBackgroundWhite")
         setupTitleLabel()
-        setupAddScheduleButton()
         setupScheduleTableView()
+        setupAddScheduleButton()
     }
 
     private func setupTitleLabel() {
@@ -25,6 +29,7 @@ final class SchedulePageViewController: UIViewController {
         titleLabel.text = "Расписание"
         titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         titleLabel.textAlignment = .center
+
         view.addSubview(titleLabel)
 
         NSLayoutConstraint.activate([
@@ -70,6 +75,7 @@ final class SchedulePageViewController: UIViewController {
         ])
     }
 
+    // MARK: - Actions
     @objc
     private func addSelectedDaysButtonPressed() {
         presenter?.updateSchedule(new: selectedDays)
@@ -87,37 +93,44 @@ final class SchedulePageViewController: UIViewController {
     }
 }
 
+// MARK: - UITableViewDelegate
 extension SchedulePageViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 75
+        75
     }
 }
 
+// MARK: - UITableViewDataSource
 extension SchedulePageViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(Schedule.allCases.count)
-        return Schedule.allCases.count
+        Schedule.allCases.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = Schedule.allCases[indexPath.row].rawValue
+        configureCell(cell, for: indexPath)
+        return cell
+    }
+
+    // MARK: - Cell Configuration
+    private func configureCell(_ cell: UITableViewCell, for indexPath: IndexPath) {
+        let schedule = Schedule.allCases[indexPath.row]
+
+        cell.textLabel?.text = schedule.rawValue
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         cell.backgroundColor = UIColor.systemGray6
         cell.selectionStyle = .none
 
-        let switchView = UISwitch()
-        if selectedDays.contains(Schedule.getDayByNumberWeekday(indexPath.row)) {
-            switchView.isOn = true
-        } else {
-            switchView.isOn = false
-        }
-        switchView.tag = indexPath.row
-        switchView.addTarget(self, action: #selector(switchChanged(_:)), for: .valueChanged)
-        switchView.onTintColor = UIColor.projectColor(.blue)
-
+        let switchView = createSwitch(for: indexPath)
         cell.accessoryView = switchView
+    }
 
-        return cell
+    private func createSwitch(for indexPath: IndexPath) -> UISwitch {
+        let switchView = UISwitch()
+        switchView.tag = indexPath.row
+        switchView.isOn = selectedDays.contains(Schedule.getDayByNumberWeekday(indexPath.row))
+        switchView.onTintColor = UIColor.projectColor(.blue)
+        switchView.addTarget(self, action: #selector(switchChanged(_:)), for: .valueChanged)
+        return switchView
     }
 }

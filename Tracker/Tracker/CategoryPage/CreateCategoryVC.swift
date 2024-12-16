@@ -1,24 +1,28 @@
 import UIKit
 
 final class CreateCategoryViewController: UIViewController {
-    private var titleLabel = UILabel()
-    private var addCategoryButton = UIButton()
-    private var trackerNameField = UITextField()
+    // MARK: - UI Elements
+    private let titleLabel = UILabel()
+    private let addCategoryButton = UIButton()
+    private let trackerNameField = UITextField()
 
+    // MARK: - Managers
     private var trackerNameFieldManager: NameTextFieldManager?
     private var categoryManager: TrackerCategoryManager?
 
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         categoryManager = TrackerCategoryManager()
         setupUI()
     }
 
+    // MARK: - UI Setup
     private func setupUI() {
         view.backgroundColor = UIColor(named: "TrackerBackgroundWhite")
         setupTitleLabel()
         setupTrackerNameField()
-        setupReadyButton()
+        setupAddCategoryButton()
     }
 
     private func setupTitleLabel() {
@@ -53,14 +57,14 @@ final class CreateCategoryViewController: UIViewController {
         ])
     }
 
-    private func setupReadyButton() {
+    private func setupAddCategoryButton() {
         addCategoryButton.translatesAutoresizingMaskIntoConstraints = false
         addCategoryButton.setTitle("Готово", for: .normal)
         addCategoryButton.setTitleColor(UIColor.projectColor(.backgroundWhite), for: .normal)
         addCategoryButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         addCategoryButton.layer.cornerRadius = 16
-        addCategoryButton.addTarget(self, action: #selector(readyButtonPressed), for: .touchUpInside)
-        disableReadyButton()
+        addCategoryButton.addTarget(self, action: #selector(addCategoryButtonPressed), for: .touchUpInside)
+        disableAddCategoryButton()
         view.addSubview(addCategoryButton)
 
         NSLayoutConstraint.activate([
@@ -71,40 +75,37 @@ final class CreateCategoryViewController: UIViewController {
         ])
     }
 
-    private func enableReadyButton() {
+    // MARK: - Button State Management
+    private func enableAddCategoryButton() {
         addCategoryButton.backgroundColor = UIColor.projectColor(.backgroundBlack)
         addCategoryButton.isEnabled = true
     }
 
-    private func disableReadyButton() {
+    private func disableAddCategoryButton() {
         addCategoryButton.backgroundColor = UIColor.projectColor(.textColorForLightgray)
         addCategoryButton.isEnabled = false
     }
 
+    // MARK: - Actions
     @objc
-    private func readyButtonPressed() {
-        if let newCategoryName = trackerNameField.text {
-            let newTracker = TrackerCategoryModel(categoryName: newCategoryName)
-            categoryManager?.addCategory(newTracker)
-            dismiss(animated: true)
-        }
+    private func addCategoryButtonPressed() {
+        guard let newCategoryName = trackerNameField.text, !newCategoryName.isEmpty else { return }
+        let newTracker = TrackerCategoryModel(categoryName: newCategoryName)
+        categoryManager?.addCategory(newTracker)
+        dismiss(animated: true)
     }
 }
 
+// MARK: - UITextFieldDelegate
 extension CreateCategoryViewController: UITextFieldDelegate {
-
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if let currentText = textField.text as NSString? {
-            let updatedText = currentText.replacingCharacters(in: range, with: string)
-
-            if !updatedText.isEmpty {
-                enableReadyButton()
-            } else {
-                disableReadyButton()
-            }
-        } else {
-            disableReadyButton()
+        guard let currentText = textField.text as NSString? else {
+            disableAddCategoryButton()
+            return true
         }
+
+        let updatedText = currentText.replacingCharacters(in: range, with: string)
+        updatedText.isEmpty ? disableAddCategoryButton() : enableAddCategoryButton()
         return true
     }
 }

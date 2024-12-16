@@ -57,7 +57,6 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
             // TODO: Обработка ошибки
             return
         }
-        print(tracker)
         let categoryManager = TrackerCategoryManager()
         categoryManager.addTracker(to: category.categoryName, tracker: tracker)
     }

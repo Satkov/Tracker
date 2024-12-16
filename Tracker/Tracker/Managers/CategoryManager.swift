@@ -46,7 +46,7 @@ final class TrackerCategoryManager {
         if let index = categories.firstIndex(where: { $0.categoryName == categoryName }) {
             var trackers = categories[index].trackers
             trackers.append(tracker)
-            var newCategory = TrackerCategoryModel(categoryName: categories[index].categoryName, trackers: trackers)
+            let newCategory = TrackerCategoryModel(categoryName: categories[index].categoryName, trackers: trackers)
             categories[index] = newCategory
             saveCategories(categories)
         }
@@ -58,7 +58,7 @@ final class TrackerCategoryManager {
         if let index = categories.firstIndex(where: { $0.categoryName == categoryName }) {
             var trackers = categories[index].trackers
             trackers.removeAll { $0.id == trackerID }
-            var newCategory = TrackerCategoryModel(categoryName: categories[index].categoryName, trackers: trackers)
+            let newCategory = TrackerCategoryModel(categoryName: categories[index].categoryName, trackers: trackers)
             categories[index] = newCategory
             saveCategories(categories)
         }
