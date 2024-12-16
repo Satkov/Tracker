@@ -11,33 +11,33 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
             }
         }
     }
-    
+
     init(view: EditNewTrackerViewControllerProtocol) {
         self.view = view
     }
-    
+
     func updateName(name: String?) {
         dataModel.name = name
     }
-    
+
     func updateSchedule(new: Set<Schedule>?) {
         view.reloadButtonTable()
         dataModel.schudule = new
     }
-    
+
     func updateCategory(new: TrackerCategoryModel?) {
         view.reloadButtonTable()
         dataModel.category = new
     }
-    
+
     func updateEmoji(new: Emojis?) {
         dataModel.emoji = new
     }
-    
-    func updateColor(new:TrackerColors?) {
+
+    func updateColor(new: TrackerColors?) {
         dataModel.color = new
     }
-    
+
     func createTracker() -> TrackerModel? {
         guard let name = dataModel.name,
               let emoji = dataModel.emoji,
@@ -49,7 +49,7 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
                                    schedule: dataModel.schudule)
         return tracker
     }
-    
+
     func saveTrackerInUserDefaults(tracker: TrackerModel?) {
         guard let tracker = tracker,
               let category = dataModel.category

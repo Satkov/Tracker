@@ -4,7 +4,7 @@ final class TrackerCategoryManager {
     private let userDefaults = UserDefaults.standard
     private let userDefaultsQueue = DispatchQueue(label: "userDefaultsQueue")
     private let categoriesKey = "trackerCategories"
-    
+
     // Загрузка категорий
     func loadCategories() -> [TrackerCategoryModel] {
         return userDefaultsQueue.sync {
@@ -15,7 +15,7 @@ final class TrackerCategoryManager {
             return (try? decoder.decode([TrackerCategoryModel].self, from: data)) ?? []
         }
     }
-    
+
     // Сохранение категорий
     func saveCategories(_ categories: [TrackerCategoryModel]) {
         userDefaultsQueue.sync {
@@ -25,21 +25,21 @@ final class TrackerCategoryManager {
             }
         }
     }
-    
+
     // Добавление новой категории
     func addCategory(_ category: TrackerCategoryModel) {
         var categories = loadCategories()
         categories.append(category)
         saveCategories(categories)
     }
-    
+
     // Удаление категории
     func removeCategory(byName name: String) {
         var categories = loadCategories()
         categories.removeAll { $0.categoryName == name }
         saveCategories(categories)
     }
-    
+
     // Добавление трекера в категорию
     func addTracker(to categoryName: String, tracker: TrackerModel) {
         var categories = loadCategories()
@@ -51,7 +51,7 @@ final class TrackerCategoryManager {
             saveCategories(categories)
         }
     }
-    
+
     // Удаление трекера из категории
     func removeTracker(from categoryName: String, trackerID: UUID) {
         var categories = loadCategories()

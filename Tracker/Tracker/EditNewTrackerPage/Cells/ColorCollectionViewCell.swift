@@ -7,7 +7,7 @@ final class ColorCollectionViewCell: UICollectionViewCell {
             colorSquare.backgroundColor = cellColor
         }
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.addSubview(colorSquare)
@@ -16,7 +16,7 @@ final class ColorCollectionViewCell: UICollectionViewCell {
         contentView.layer.cornerRadius = 16
         contentView.layer.borderWidth = 3
         contentView.layer.borderColor = UIColor.clear.cgColor
-        
+
         NSLayoutConstraint.activate([
             colorSquare.widthAnchor.constraint(equalToConstant: 40),
             colorSquare.heightAnchor.constraint(equalToConstant: 40),
@@ -24,9 +24,9 @@ final class ColorCollectionViewCell: UICollectionViewCell {
             colorSquare.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
 }

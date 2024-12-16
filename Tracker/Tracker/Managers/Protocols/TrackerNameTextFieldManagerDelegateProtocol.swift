@@ -1,7 +1,7 @@
 import Foundation
 
 protocol TrackerNameTextFieldManagerDelegateProtocol {
-    func showWarningLabel() -> Void
-    func hideWarningLabel() -> Void
+    func showWarningLabel()
+    func hideWarningLabel()
     var isWarningHidden: Bool { get }
 }

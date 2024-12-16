@@ -28,7 +28,7 @@ enum TrackerColors: String, CaseIterable, Codable {
     case violet = "0xAD56DA" // Виолетовый
     case teal = "0x8D72E6" // Бирюзовый
     case salad = "0x2FD058" // Салатовый
-    
+
     var color: UIColor {
         return UIColor(hex: self.rawValue)
     }
@@ -42,13 +42,13 @@ enum Schedule: String, CaseIterable, Codable {
     case friday = "Пятница"
     case saturday = "Суббота"
     case sunday = "Воскресенье"
-    
+
     static func dayOfWeek(for date: Date) -> Schedule {
         let calendar = Calendar.current
         let weekday = calendar.component(.weekday, from: date)
         return getDayByNumberWeekday(weekday - 1)
     }
-    
+
     static func getDayByNumberWeekday(_ weekday: Int) -> Schedule {
         switch weekday {
         case 0: return .monday
@@ -61,7 +61,7 @@ enum Schedule: String, CaseIterable, Codable {
         default: return .monday // По умолчанию
         }
     }
-    
+
     func shortName() -> String {
         switch self {
         case .monday: return "Пн"
@@ -73,11 +73,11 @@ enum Schedule: String, CaseIterable, Codable {
         case .sunday: return "Вс"
         }
     }
-    
+
     static var sortedOrder: [Schedule] {
         return [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
     }
-    
+
     static func formattedString(from days: Set<Schedule>) -> String {
         if days.count == 7 {
             return "Каждый день"
@@ -109,4 +109,3 @@ enum Emojis: String, CaseIterable, Codable {
     case desertIsland = "🏝"
     case sleepyFace = "😪"
 }
-

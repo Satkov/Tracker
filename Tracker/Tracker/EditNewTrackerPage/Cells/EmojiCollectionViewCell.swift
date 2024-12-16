@@ -7,17 +7,17 @@ final class EmojiCollectionViewCell: UICollectionViewCell {
             emojiLabel.backgroundColor = emojiBackGroundColor
         }
     }
-    
+
     override init(frame: CGRect) {
         emojiBackGroundColor = .clear
         super.init(frame: frame)
-        
+
         emojiLabel.translatesAutoresizingMaskIntoConstraints = false
         emojiLabel.textAlignment = .center
         contentView.layer.cornerRadius = 16
-        
+
         contentView.addSubview(emojiLabel)
-        
+
         NSLayoutConstraint.activate([
             emojiLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             emojiLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
@@ -25,11 +25,11 @@ final class EmojiCollectionViewCell: UICollectionViewCell {
             emojiLabel.heightAnchor.constraint(equalToConstant: 38)
         ])
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func configure(with emoji: String) {
             emojiLabel.text = emoji
         }

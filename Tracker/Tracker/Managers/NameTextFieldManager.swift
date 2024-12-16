@@ -1,12 +1,11 @@
 import UIKit
 
-
 final class NameTextFieldManager: NSObject {
     private let trackerNameField: UITextField
     private var delegate: TrackerNameTextFieldManagerDelegateProtocol?
     private var presenter: EditNewTrackerPresenterProtocol?
     private var placeholderText: String
-    
+
     init(trackerNameField: UITextField, delegate: TrackerNameTextFieldManagerDelegateProtocol?, placeholderText: String, presenter: EditNewTrackerPresenterProtocol?) {
         self.trackerNameField = trackerNameField
         self.delegate = delegate
@@ -15,7 +14,7 @@ final class NameTextFieldManager: NSObject {
         super.init()
         configure()
     }
-    
+
     private func configure() {
         trackerNameField.translatesAutoresizingMaskIntoConstraints = false
         trackerNameField.delegate = self
@@ -30,7 +29,7 @@ final class NameTextFieldManager: NSObject {
         trackerNameField.backgroundColor = UIColor(named: "TrackerBackgroundLightGray")
         setupPadding()
     }
-    
+
     private func setupPadding() {
         let paddingView = UIView(
             frame: CGRect(x: 0, y: 0, width: 16, height: trackerNameField.frame.height)
@@ -42,10 +41,10 @@ final class NameTextFieldManager: NSObject {
 
 extension NameTextFieldManager: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder() 
+        textField.resignFirstResponder()
         return true
     }
-    
+
     func textFieldDidEndEditing(_ textField: UITextField) {
         if let name = textField.text {
             presenter?.updateName(name: name)
@@ -53,14 +52,14 @@ extension NameTextFieldManager: UITextFieldDelegate {
             // TODO: Обработка ошибки
         }
     }
-    
+
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if let delegate = delegate {
             let currentText = textField.text ?? ""
-            
+
             guard let stringRange = Range(range, in: currentText) else { return false }
             let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-            
+
             if updatedText.count <= 38 {
                 if !delegate.isWarningHidden {
                     delegate.hideWarningLabel()

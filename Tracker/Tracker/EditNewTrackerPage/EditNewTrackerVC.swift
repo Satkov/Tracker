@@ -95,7 +95,7 @@ final class EditNewTrackerViewController: UIViewController {
             titleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16)
         ])
     }
-    
+
     private func setupWarningLabel() {
         warningLabel.translatesAutoresizingMaskIntoConstraints = false
         warningLabel.text = "Ограничение 38 символов"
@@ -337,12 +337,12 @@ extension EditNewTrackerViewController: EditNewTrackerViewControllerProtocol {
         createButton.backgroundColor = UIColor.projectColor(.backgroundBlack)
         createButton.isEnabled = true
     }
-    
+
     func setCreateButtonDissable() {
         createButton.backgroundColor = UIColor.projectColor(.textColorForLightgray)
         createButton.isEnabled = false
     }
-    
+
     func reloadButtonTable() {
         buttonTable.reloadData()
     }

@@ -6,7 +6,7 @@ struct DataForTrackerModel {
     var color: TrackerColors?
     var emoji: Emojis?
     var schudule: Set<Schedule>?
-    
+
     func isAllDataPresented(isRegular: Bool) -> Bool {
         let commonDataIsValid = category != nil && color != nil && emoji != nil && name != nil
         if isRegular {

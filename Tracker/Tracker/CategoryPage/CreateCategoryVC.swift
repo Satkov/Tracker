@@ -1,50 +1,49 @@
 import UIKit
 
-
 final class CreateCategoryViewController: UIViewController {
     private var titleLabel = UILabel()
     private var addCategoryButton = UIButton()
     private var trackerNameField = UITextField()
-    
+
     private var trackerNameFieldManager: NameTextFieldManager?
     private var categoryManager: TrackerCategoryManager?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         categoryManager = TrackerCategoryManager()
         setupUI()
     }
-    
+
     private func setupUI() {
         view.backgroundColor = UIColor(named: "TrackerBackgroundWhite")
         setupTitleLabel()
         setupTrackerNameField()
         setupReadyButton()
     }
-    
+
     private func setupTitleLabel() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "Новая категория"
         titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         titleLabel.textAlignment = .center
         view.addSubview(titleLabel)
-        
+
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 13),
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }
-    
+
     private func setupTrackerNameField() {
         trackerNameFieldManager = NameTextFieldManager(
             trackerNameField: trackerNameField,
             delegate: nil,
-            placeholderText: "Введите название категории", 
+            placeholderText: "Введите название категории",
             presenter: nil
         )
         trackerNameField.delegate = self
         view.addSubview(trackerNameField)
-        
+
         NSLayoutConstraint.activate([
             trackerNameField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             trackerNameField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
@@ -53,7 +52,7 @@ final class CreateCategoryViewController: UIViewController {
             trackerNameField.heightAnchor.constraint(equalToConstant: 75)
         ])
     }
-    
+
     private func setupReadyButton() {
         addCategoryButton.translatesAutoresizingMaskIntoConstraints = false
         addCategoryButton.setTitle("Готово", for: .normal)
@@ -63,7 +62,7 @@ final class CreateCategoryViewController: UIViewController {
         addCategoryButton.addTarget(self, action: #selector(readyButtonPressed), for: .touchUpInside)
         disableReadyButton()
         view.addSubview(addCategoryButton)
-        
+
         NSLayoutConstraint.activate([
             addCategoryButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
             addCategoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
@@ -71,17 +70,17 @@ final class CreateCategoryViewController: UIViewController {
             addCategoryButton.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
-    
+
     private func enableReadyButton() {
         addCategoryButton.backgroundColor = UIColor.projectColor(.backgroundBlack)
         addCategoryButton.isEnabled = true
     }
-    
+
     private func disableReadyButton() {
         addCategoryButton.backgroundColor = UIColor.projectColor(.textColorForLightgray)
         addCategoryButton.isEnabled = false
     }
-    
+
     @objc
     private func readyButtonPressed() {
         if let newCategoryName = trackerNameField.text {
@@ -93,11 +92,11 @@ final class CreateCategoryViewController: UIViewController {
 }
 
 extension CreateCategoryViewController: UITextFieldDelegate {
-    
+
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if let currentText = textField.text as NSString? {
             let updatedText = currentText.replacingCharacters(in: range, with: string)
-            
+
             if !updatedText.isEmpty {
                 enableReadyButton()
             } else {
