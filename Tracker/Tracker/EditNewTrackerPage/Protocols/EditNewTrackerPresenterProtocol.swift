@@ -7,6 +7,7 @@ protocol EditNewTrackerPresenterProtocol {
     func updateEmoji(new: Emojis?)
     func updateColor(new: TrackerColors?)
     func createTracker() -> TrackerModel?
-    func saveTrackerInUserDefaults(tracker: TrackerModel?)
+    func saveTracker(tracker: TrackerModel?)
     var dataModel: DataForTrackerModel { get }
+    var onTrackerCreation: (() -> Void)? { get set }
 }

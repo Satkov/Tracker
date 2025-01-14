@@ -5,7 +5,7 @@ final class TrackersCollectionManager: NSObject {
     private let collectionView: UICollectionView
     private let params: GeometricParamsModel
     private var categories: [TrackerCategoryModel] = []
-    private let categoryManager = TrackerCategoryManager()
+    private let categoryManager = TrackerCategoryManager.shared
     private let datePicker: UIDatePicker
     private let recordManager = RecordManager.shared
 
@@ -13,7 +13,7 @@ final class TrackersCollectionManager: NSObject {
     init(collectionView: UICollectionView, params: GeometricParamsModel, datePicker: UIDatePicker) {
         self.collectionView = collectionView
         self.params = params
-        self.categories = categoryManager.loadCategoriesWithTrackers()
+        self.categories = categoryManager.getCategories(for: Schedule.dayOfWeek(for: datePicker.date))
         self.datePicker = datePicker
         super.init()
         configureCollectionView()
@@ -35,6 +35,10 @@ final class TrackersCollectionManager: NSObject {
     private func handleButtonAction(at indexPath: IndexPath) {
         let tracker = categories[indexPath.section].trackers[indexPath.row]
         recordManager.toggleRecord(TrackerRecordModel(trackerID: tracker.id, date: datePicker.date))
+    }
+    
+    func updateCategories() {
+        categories = categoryManager.getCategories(for: Schedule.dayOfWeek(for: datePicker.date))
     }
 }
 

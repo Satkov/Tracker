@@ -85,6 +85,13 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
             datePicker.centerYAnchor.constraint(equalTo: addTrackerButton.centerYAnchor),
             datePicker.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ])
+        
+        datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
+    }
+    
+    @objc private func dateChanged(_ sender: UIDatePicker) {
+        trackersCollectionManager?.updateCategories()
+        trackersCollection.reloadData()
     }
 
     private func setupHeaderLabel() {
@@ -169,6 +176,12 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
     @objc
     private func addTrackerButtonPressed() {
         let createTrackerVC = TrackerTypeMenuViewController()
+        createTrackerVC.onTrackerCreation = { [weak self] in
+            guard let self = self else { return }
+            self.trackersCollectionManager?.updateCategories()
+            self.trackersCollection.reloadData()
+            print("LOG: asd")
+        }
         createTrackerVC.modalPresentationStyle = .pageSheet
         present(createTrackerVC, animated: true)
     }

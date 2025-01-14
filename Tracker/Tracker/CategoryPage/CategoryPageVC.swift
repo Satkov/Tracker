@@ -16,22 +16,17 @@ final class CategoryPageViewController: UIViewController {
     private var observer: NSObjectProtocol?
     private var selectedIndexPath: IndexPath?
     private var trackerCategoryList: [TrackerCategoryModel] = []
-    private var trackerCategoryManager: TrackerCategoryManager!
+    private var trackerCategoryManager = TrackerCategoryManager.shared
     var presenter: EditNewTrackerPresenterProtocol?
     var lastSelectedCategory: TrackerCategoryModel?
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        trackerCategoryManager = TrackerCategoryManager()
         trackerCategoryList = trackerCategoryManager.loadCategories()
         setupUI()
-        addObserver()
     }
 
-    deinit {
-        removeObserver()
-    }
 
     // MARK: - Setup UI
     private func setupUI() {
@@ -119,41 +114,12 @@ final class CategoryPageViewController: UIViewController {
         ])
     }
 
-    // MARK: - Observer Management
-    private func addObserver() {
-        observer = NotificationCenter.default.addObserver(
-            forName: UserDefaults.didChangeNotification,
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            self?.handleUserDefaultsChange()
-        }
-    }
-
-    private func removeObserver() {
-        if let observer = observer {
-            NotificationCenter.default.removeObserver(observer)
-        }
-    }
-
-    private func handleUserDefaultsChange() {
-        trackerCategoryList = trackerCategoryManager.loadCategories()
-        DispatchQueue.main.async {
-            if self.trackerCategoryList.isEmpty {
-                self.setupPlaceholder()
-                self.contentViewForTable.removeFromSuperview()
-            } else {
-                self.placeholderImage.removeFromSuperview()
-                self.placeholderText.removeFromSuperview()
-                self.categoriesTable.reloadData()
-            }
-        }
-    }
 
     // MARK: - Actions
     @objc
     private func addCategoryButtonPressed() {
         let createVC = CreateCategoryViewController()
+        createVC.delegate = self
         createVC.modalPresentationStyle = .pageSheet
         present(createVC, animated: true)
     }
@@ -195,5 +161,27 @@ extension CategoryPageViewController: UITableViewDataSource {
         cell.configureCell(with: category.categoryName, isSelected: isSelected, isLast: isLast, isFirst: isFirst)
 
         return cell
+    }
+}
+
+
+extension CategoryPageViewController: CategoryPageViewControllerProtocol {
+    func newCategoryWereAdded() {
+        trackerCategoryList = trackerCategoryManager.loadCategories()
+        
+        DispatchQueue.main.async {
+            if self.trackerCategoryList.isEmpty {
+                self.contentViewForTable.removeFromSuperview()
+                self.setupPlaceholder()
+            } else {
+                self.placeholderImage.removeFromSuperview()
+                self.placeholderText.removeFromSuperview()
+                
+                if self.contentViewForTable.superview == nil {
+                    self.setupCategoriesTable()
+                }
+                self.categoriesTable.reloadData()
+            }
+        }
     }
 }

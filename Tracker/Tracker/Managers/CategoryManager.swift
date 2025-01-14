@@ -1,79 +1,86 @@
 import Foundation
 
 final class TrackerCategoryManager {
-    private let userDefaults = UserDefaults.standard
-    private let userDefaultsQueue = DispatchQueue(label: "userDefaultsQueue")
-    private let categoriesKey = "trackerCategories"
-
+    private var categories: [TrackerCategoryModel] = [
+        
+        TrackerCategoryModel(categoryName: "123", trackers: [TrackerModel(name: "asd",
+                                                                          color: TrackerColors.blue,
+                                                                          emoji: Emojis.broccoli,
+                                                                          schedule: Set(arrayLiteral: Schedule.wednesday)),
+                                                             
+                                                             TrackerModel(name: "asddd",
+                                                                          color: TrackerColors.coral,
+                                                                          emoji: Emojis.broccoli,
+                                                                          schedule: Set(arrayLiteral: Schedule.sunday))])
+        
+    ]
+    private let queue = DispatchQueue(label: "trackerCategoryQueue", attributes: .concurrent)
+    static let shared = TrackerCategoryManager()
+    
+    private init() {}
+    
     // Загрузка категорий
     func loadCategories() -> [TrackerCategoryModel] {
-        return userDefaultsQueue.sync {
-            guard let data = userDefaults.data(forKey: categoriesKey) else {
-                return []
-            }
-            let decoder = JSONDecoder()
-            return (try? decoder.decode([TrackerCategoryModel].self, from: data)) ?? []
+        queue.sync {
+            return categories
         }
     }
-
-    // Загрузка категорий c трекерами
-    func loadCategoriesWithTrackers() -> [TrackerCategoryModel] {
-        return userDefaultsQueue.sync {
-            guard let data = userDefaults.data(forKey: categoriesKey) else {
-                return []
+    
+    func getCategories(for day: Schedule) -> [TrackerCategoryModel] {
+        queue.sync {
+            return categories.compactMap { category in
+                let filteredTrackers = category.trackers.filter { tracker in
+                    guard let schedule = tracker.schedule else { return false }
+                    return schedule.contains(day)
+                }
+                return filteredTrackers.isEmpty ? nil : TrackerCategoryModel(categoryName: category.categoryName, trackers: filteredTrackers)
             }
-            let decoder = JSONDecoder()
-            let categories = (try? decoder.decode([TrackerCategoryModel].self, from: data)) ?? []
-            
+        }
+    }
+    
+    // Загрузка категорий с трекерами
+    func loadCategoriesWithTrackers() -> [TrackerCategoryModel] {
+        queue.sync {
+            print("LOG: ", categories)
             return categories.filter { !$0.trackers.isEmpty }
         }
     }
     
-    // Сохранение категорий
-    private func saveCategories(_ categories: [TrackerCategoryModel]) {
-        userDefaultsQueue.sync {
-            let encoder = JSONEncoder()
-            if let data = try? encoder.encode(categories) {
-                userDefaults.set(data, forKey: categoriesKey)
+    // Добавление новой категории
+    func addCategory(_ category: TrackerCategoryModel) {
+        queue.async(flags: .barrier) {
+            self.categories.append(category)
+        }
+    }
+    
+    // Удаление категории
+    func removeCategory(byName name: String) {
+        queue.async(flags: .barrier) {
+            self.categories.removeAll { $0.categoryName == name }
+        }
+    }
+    
+    // Добавление трекера в категорию
+    func addTracker(to categoryName: String, tracker: TrackerModel) {
+        queue.async(flags: .barrier) {
+            if let index = self.categories.firstIndex(where: { $0.categoryName == categoryName }) {
+                var trackers = self.categories[index].trackers
+                trackers.append(tracker)
+                let newCategory = TrackerCategoryModel(categoryName: self.categories[index].categoryName, trackers: trackers)
+                self.categories[index] = newCategory
             }
         }
     }
-
-    // Добавление новой категории
-    func addCategory(_ category: TrackerCategoryModel) {
-        var categories = loadCategories()
-        categories.append(category)
-        saveCategories(categories)
-    }
-
-    // Удаление категории
-    func removeCategory(byName name: String) {
-        var categories = loadCategories()
-        categories.removeAll { $0.categoryName == name }
-        saveCategories(categories)
-    }
-
-    // Добавление трекера в категорию
-    func addTracker(to categoryName: String, tracker: TrackerModel) {
-        var categories = loadCategories()
-        if let index = categories.firstIndex(where: { $0.categoryName == categoryName }) {
-            var trackers = categories[index].trackers
-            trackers.append(tracker)
-            let newCategory = TrackerCategoryModel(categoryName: categories[index].categoryName, trackers: trackers)
-            categories[index] = newCategory
-            saveCategories(categories)
-        }
-    }
-
+    
     // Удаление трекера из категории
     func removeTracker(from categoryName: String, trackerID: UUID) {
-        var categories = loadCategories()
-        if let index = categories.firstIndex(where: { $0.categoryName == categoryName }) {
-            var trackers = categories[index].trackers
-            trackers.removeAll { $0.id == trackerID }
-            let newCategory = TrackerCategoryModel(categoryName: categories[index].categoryName, trackers: trackers)
-            categories[index] = newCategory
-            saveCategories(categories)
+        queue.async(flags: .barrier) {
+            if let index = self.categories.firstIndex(where: { $0.categoryName == categoryName }) {
+                var trackers = self.categories[index].trackers
+                trackers.removeAll { $0.id == trackerID }
+                let newCategory = TrackerCategoryModel(categoryName: self.categories[index].categoryName, trackers: trackers)
+                self.categories[index] = newCategory
+            }
         }
     }
 }

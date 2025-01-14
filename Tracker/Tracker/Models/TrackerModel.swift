@@ -46,18 +46,18 @@ enum Schedule: String, CaseIterable, Codable {
     static func dayOfWeek(for date: Date) -> Schedule {
         let calendar = Calendar.current
         let weekday = calendar.component(.weekday, from: date)
-        return getDayByNumberWeekday(weekday - 1)
+        return getDayByNumberWeekday(weekday)
     }
 
     static func getDayByNumberWeekday(_ weekday: Int) -> Schedule {
         switch weekday {
-        case 0: return .monday
-        case 1: return .tuesday
-        case 2: return .wednesday
-        case 3: return .thursday
-        case 4: return .friday
-        case 5: return .saturday
-        case 6: return .sunday
+        case 2: return .monday
+        case 3: return .tuesday
+        case 4: return .wednesday
+        case 5: return .thursday
+        case 6: return .friday
+        case 7: return .saturday
+        case 1: return .sunday
         default: return .monday // По умолчанию
         }
     }

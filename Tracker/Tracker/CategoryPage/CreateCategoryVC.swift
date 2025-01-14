@@ -8,12 +8,13 @@ final class CreateCategoryViewController: UIViewController {
 
     // MARK: - Managers
     private var trackerNameFieldManager: NameTextFieldManager?
-    private var categoryManager: TrackerCategoryManager?
-
+    private var categoryManager = TrackerCategoryManager.shared
+    
+    var delegate: CategoryPageViewControllerProtocol?
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        categoryManager = TrackerCategoryManager()
         setupUI()
     }
 
@@ -91,7 +92,8 @@ final class CreateCategoryViewController: UIViewController {
     private func addCategoryButtonPressed() {
         guard let newCategoryName = trackerNameField.text, !newCategoryName.isEmpty else { return }
         let newTracker = TrackerCategoryModel(categoryName: newCategoryName)
-        categoryManager?.addCategory(newTracker)
+        categoryManager.addCategory(newTracker)
+        delegate?.newCategoryWereAdded()
         dismiss(animated: true)
     }
 }

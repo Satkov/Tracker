@@ -2,6 +2,7 @@ import UIKit
 
 final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
     var view: EditNewTrackerViewControllerProtocol
+    var onTrackerCreation: (() -> Void)?
     private(set) var dataModel = DataForTrackerModel() {
         didSet {
             if dataModel.isAllDataPresented(isRegular: view.isRegular) {
@@ -12,7 +13,7 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
         }
     }
 
-    init(view: EditNewTrackerViewControllerProtocol) {
+    init(view: EditNewTrackerViewControllerProtocol){
         self.view = view
     }
 
@@ -50,14 +51,15 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
         return tracker
     }
 
-    func saveTrackerInUserDefaults(tracker: TrackerModel?) {
+    func saveTracker(tracker: TrackerModel?) {
         guard let tracker = tracker,
               let category = dataModel.category
         else {
             // TODO: Обработка ошибки
             return
         }
-        let categoryManager = TrackerCategoryManager()
+        let categoryManager = TrackerCategoryManager.shared
         categoryManager.addTracker(to: category.categoryName, tracker: tracker)
+        onTrackerCreation?()
     }
 }
