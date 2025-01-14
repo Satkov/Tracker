@@ -4,7 +4,7 @@ class TrackerTypeMenuViewController: UIViewController {
     private var habbitTrackerButton = UIButton()
     private var unregularTrackerButton = UIButton()
     private var titleLabel = UILabel()
-    
+
     var onTrackerCreation: (() -> Void)?
 
     override func viewDidLoad() {

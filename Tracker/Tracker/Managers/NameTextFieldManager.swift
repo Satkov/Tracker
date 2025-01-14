@@ -65,7 +65,7 @@ extension NameTextFieldManager: UITextFieldDelegate {
 
     private func handleCharacterLimit(for updatedText: String) {
         guard let delegate = delegate else { return }
-        
+
         if updatedText.count > 38 {
             delegate.showWarningLabel()
         } else {

@@ -3,7 +3,7 @@ import UIKit
 final class TrackerListViewController: UIViewController, UIViewControllerTransitioningDelegate {
     // MARK: - Constants
     private let params: GeometricParamsModel
-    
+
     // MARK: - UI Elements
     private let headerLabel = UILabel()
     private let searchBar = UISearchBar()
@@ -15,8 +15,6 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
 
     // MARK: - Properties
     private var trackersCollectionManager: TrackersCollectionManager?
-    
-    
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -44,7 +42,7 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - Setup UI
     private func setupUI() {
         view.backgroundColor = UIColor(named: "TrackerBackgroundWhite")
@@ -78,17 +76,17 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
         datePicker.backgroundColor = UIColor(hex: "#F0F0F0")
         datePicker.layer.cornerRadius = 8
         datePicker.locale = Locale(identifier: "ru_RU")
-        
+
         view.addSubview(datePicker)
 
         NSLayoutConstraint.activate([
             datePicker.centerYAnchor.constraint(equalTo: addTrackerButton.centerYAnchor),
             datePicker.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ])
-        
+
         datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
     }
-    
+
     @objc private func dateChanged(_ sender: UIDatePicker) {
         trackersCollectionManager?.updateCategories()
         trackersCollection.reloadData()
@@ -157,13 +155,13 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
             placeholderText.topAnchor.constraint(equalTo: placeholderImage.bottomAnchor, constant: 8)
         ])
     }
-    
+
     private func setupTrackersCollectionView() {
         trackersCollectionManager = TrackersCollectionManager(collectionView: trackersCollection,
                                                               params: params,
                                                               datePicker: datePicker)
         view.addSubview(trackersCollection)
-        
+
         NSLayoutConstraint.activate([
             trackersCollection.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
             trackersCollection.leadingAnchor.constraint(equalTo: view.leadingAnchor),

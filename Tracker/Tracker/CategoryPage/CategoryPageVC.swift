@@ -8,7 +8,7 @@ final class CategoryPageViewController: UIViewController {
     private let titleLabel = UILabel()
     private let addCategoryButton = UIButton()
     private let contentViewForTable = UIView()
-    
+
     // MARK: - Constraints
     private var tableHeightConstraint: NSLayoutConstraint!
 
@@ -26,7 +26,6 @@ final class CategoryPageViewController: UIViewController {
         trackerCategoryList = trackerCategoryManager.loadCategories()
         setupUI()
     }
-
 
     // MARK: - Setup UI
     private func setupUI() {
@@ -114,7 +113,6 @@ final class CategoryPageViewController: UIViewController {
         ])
     }
 
-
     // MARK: - Actions
     @objc
     private func addCategoryButtonPressed() {
@@ -164,11 +162,10 @@ extension CategoryPageViewController: UITableViewDataSource {
     }
 }
 
-
 extension CategoryPageViewController: CategoryPageViewControllerProtocol {
     func newCategoryWereAdded() {
         trackerCategoryList = trackerCategoryManager.loadCategories()
-        
+
         DispatchQueue.main.async {
             if self.trackerCategoryList.isEmpty {
                 self.contentViewForTable.removeFromSuperview()
@@ -176,7 +173,7 @@ extension CategoryPageViewController: CategoryPageViewControllerProtocol {
             } else {
                 self.placeholderImage.removeFromSuperview()
                 self.placeholderText.removeFromSuperview()
-                
+
                 if self.contentViewForTable.superview == nil {
                     self.setupCategoriesTable()
                 }

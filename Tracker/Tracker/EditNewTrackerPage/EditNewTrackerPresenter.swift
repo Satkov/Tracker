@@ -13,7 +13,7 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
         }
     }
 
-    init(view: EditNewTrackerViewControllerProtocol){
+    init(view: EditNewTrackerViewControllerProtocol) {
         self.view = view
     }
 

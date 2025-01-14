@@ -8,7 +8,7 @@ final class ColorCollectionViewCell: UICollectionViewCell {
         view.layer.cornerRadius = 8
         return view
     }()
-    
+
     var cellColor: UIColor? {
         didSet {
             colorSquare.backgroundColor = cellColor
@@ -31,7 +31,7 @@ final class ColorCollectionViewCell: UICollectionViewCell {
         contentView.layer.cornerRadius = 16
         contentView.layer.borderWidth = 3
         contentView.layer.borderColor = UIColor.clear.cgColor
-        
+
         NSLayoutConstraint.activate([
             colorSquare.widthAnchor.constraint(equalToConstant: 40),
             colorSquare.heightAnchor.constraint(equalToConstant: 40),

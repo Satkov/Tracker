@@ -31,12 +31,12 @@ final class TrackersCollectionManager: NSObject {
             withReuseIdentifier: "header"
         )
     }
-    
+
     private func handleButtonAction(at indexPath: IndexPath) {
         let tracker = categories[indexPath.section].trackers[indexPath.row]
         recordManager.toggleRecord(TrackerRecordModel(trackerID: tracker.id, date: datePicker.date))
     }
-    
+
     func updateCategories() {
         categories = categoryManager.getCategories(for: Schedule.dayOfWeek(for: datePicker.date))
     }
@@ -86,7 +86,7 @@ extension TrackersCollectionManager: UICollectionViewDataSource {
         view.titleLabel.text = categories[indexPath.section].categoryName
         return view
     }
-    
+
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return categories.count
     }

@@ -84,7 +84,9 @@ final class SchedulePageViewController: UIViewController {
 
     @objc
     private func switchChanged(_ sender: UISwitch) {
-        let selectedDay = Schedule.getDayByNumberWeekday(sender.tag)
+        let selectedDayIndex = ((sender.tag + 1)) % 7 + 1
+        let selectedDay = Schedule.getDayByNumberWeekday(selectedDayIndex)
+        print("LOG: ", selectedDay, selectedDayIndex)
         if sender.isOn {
             selectedDays.insert(selectedDay)
         } else {

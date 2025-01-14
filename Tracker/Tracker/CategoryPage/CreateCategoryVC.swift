@@ -9,9 +9,9 @@ final class CreateCategoryViewController: UIViewController {
     // MARK: - Managers
     private var trackerNameFieldManager: NameTextFieldManager?
     private var categoryManager = TrackerCategoryManager.shared
-    
+
     var delegate: CategoryPageViewControllerProtocol?
-    
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
