@@ -16,8 +16,21 @@ final class TrackerCategoryManager {
         }
     }
 
+    // Загрузка категорий c трекерами
+    func loadCategoriesWithTrackers() -> [TrackerCategoryModel] {
+        return userDefaultsQueue.sync {
+            guard let data = userDefaults.data(forKey: categoriesKey) else {
+                return []
+            }
+            let decoder = JSONDecoder()
+            let categories = (try? decoder.decode([TrackerCategoryModel].self, from: data)) ?? []
+            
+            return categories.filter { !$0.trackers.isEmpty }
+        }
+    }
+    
     // Сохранение категорий
-    func saveCategories(_ categories: [TrackerCategoryModel]) {
+    private func saveCategories(_ categories: [TrackerCategoryModel]) {
         userDefaultsQueue.sync {
             let encoder = JSONEncoder()
             if let data = try? encoder.encode(categories) {

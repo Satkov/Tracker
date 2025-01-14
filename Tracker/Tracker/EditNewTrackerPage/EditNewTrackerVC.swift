@@ -283,6 +283,7 @@ extension EditNewTrackerViewController: UITableViewDelegate {
             present(createVC, animated: true)
 
         default:
+            // TODO: обработка ошибки
             break
         }
     }
