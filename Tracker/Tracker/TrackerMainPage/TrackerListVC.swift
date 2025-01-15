@@ -20,8 +20,8 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-//        showTrackerPlaceholder()
         setupTrackersCollectionView()
+        updateUI()
     }
 
     // MARK: - Initializer
@@ -36,7 +36,6 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
             cellHeight: 148
         )
         super.init(nibName: nil, bundle: nil)
-//        self.presenter =
     }
 
     required init?(coder: NSCoder) {
@@ -50,6 +49,8 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
         setupHeaderLabel()
         setupSearchBar()
         setupDatePicker()
+        setupPlaceholderImage()
+        setupPlaceholderText()
         navigationController?.setNavigationBarHidden(true, animated: true)
     }
 
@@ -89,7 +90,7 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
 
     @objc private func dateChanged(_ sender: UIDatePicker) {
         trackersCollectionManager?.updateCategories()
-        trackersCollection.reloadData()
+        updateUI()
     }
 
     private func setupHeaderLabel() {
@@ -127,8 +128,6 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
     }
 
     private func showTrackerPlaceholder() {
-        setupPlaceholderImage()
-        setupPlaceholderText()
     }
 
     private func setupPlaceholderImage() {
@@ -169,6 +168,15 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
             trackersCollection.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
+    
+    private func updateUI() {
+        let selectedDay = Schedule.dayOfWeek(for: datePicker.date)
+        let hasTrackers = TrackerCategoryManager.shared.hasAnyTrackers(for: selectedDay)
+        trackersCollection.isHidden = !hasTrackers
+        placeholderImage.isHidden = hasTrackers
+        placeholderText.isHidden = hasTrackers
+        trackersCollection.reloadData()
+    }
 
     // MARK: - Actions
     @objc
@@ -177,8 +185,7 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
         createTrackerVC.onTrackerCreation = { [weak self] in
             guard let self = self else { return }
             self.trackersCollectionManager?.updateCategories()
-            self.trackersCollection.reloadData()
-            print("LOG: asd")
+            self.updateUI()
         }
         createTrackerVC.modalPresentationStyle = .pageSheet
         present(createTrackerVC, animated: true)

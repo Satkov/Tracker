@@ -1,14 +1,7 @@
 import Foundation
 
 final class TrackerCategoryManager {
-    private var categories: [TrackerCategoryModel] = [
-        TrackerCategoryModel(categoryName: "mock",
-                             trackers: [
-                                TrackerModel(name: "test1", color: TrackerColors.mint, emoji: Emojis.dogFace,
-                                             schedule: Set(arrayLiteral: Schedule.saturday)),
-                             ])
-        
-    ]
+    private var categories: [TrackerCategoryModel] = []
     private let queue = DispatchQueue(label: "trackerCategoryQueue", attributes: .concurrent)
     static let shared = TrackerCategoryManager()
 
@@ -29,6 +22,16 @@ final class TrackerCategoryManager {
                     return schedule.contains(day)
                 }
                 return filteredTrackers.isEmpty ? nil : TrackerCategoryModel(categoryName: category.categoryName, trackers: filteredTrackers)
+            }
+        }
+    }
+    
+    func hasAnyTrackers(for day: Schedule) -> Bool {
+        queue.sync {
+            return categories.contains { category in
+                category.trackers.contains { tracker in
+                    tracker.schedule?.contains(day) ?? false
+                }
             }
         }
     }
