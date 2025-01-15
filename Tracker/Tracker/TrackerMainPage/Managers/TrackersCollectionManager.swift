@@ -8,14 +8,17 @@ final class TrackersCollectionManager: NSObject {
     private let categoryManager = TrackerCategoryManager.shared
     private let datePicker: UIDatePicker
     private let recordManager = RecordManager.shared
+    private var currentDate: Date {
+        datePicker.date
+    }
 
     // MARK: - Initializer
     init(collectionView: UICollectionView, params: GeometricParamsModel, datePicker: UIDatePicker) {
         self.collectionView = collectionView
         self.params = params
-        self.categories = categoryManager.getCategories(for: Schedule.dayOfWeek(for: datePicker.date))
         self.datePicker = datePicker
         super.init()
+        self.categories = categoryManager.getCategories(for: Schedule.dayOfWeek(for: self.currentDate))
         configureCollectionView()
     }
 
@@ -34,13 +37,13 @@ final class TrackersCollectionManager: NSObject {
 
     private func handleButtonAction(at indexPath: IndexPath) {
         let tracker = categories[indexPath.section].trackers[indexPath.row]
-        guard datePicker.date <= Date() else { return }
-        recordManager.toggleRecord(TrackerRecordModel(trackerID: tracker.id, date: datePicker.date))
+        guard currentDate <= Date() else { return }
+        recordManager.toggleRecord(TrackerRecordModel(trackerID: tracker.id, date: currentDate))
         collectionView.reloadItems(at: [indexPath])
     }
 
     func updateCategories() {
-        categories = categoryManager.getCategories(for: Schedule.dayOfWeek(for: datePicker.date))
+        categories = categoryManager.getCategories(for: Schedule.dayOfWeek(for: currentDate))
     }
 }
 
