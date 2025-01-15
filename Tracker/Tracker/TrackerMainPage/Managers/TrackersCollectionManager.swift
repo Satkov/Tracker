@@ -34,6 +34,7 @@ final class TrackersCollectionManager: NSObject {
 
     private func handleButtonAction(at indexPath: IndexPath) {
         let tracker = categories[indexPath.section].trackers[indexPath.row]
+        guard datePicker.date <= Date() else { return }
         recordManager.toggleRecord(TrackerRecordModel(trackerID: tracker.id, date: datePicker.date))
         collectionView.reloadItems(at: [indexPath])
     }
