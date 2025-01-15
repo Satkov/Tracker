@@ -84,9 +84,8 @@ final class SchedulePageViewController: UIViewController {
 
     @objc
     private func switchChanged(_ sender: UISwitch) {
-        let selectedDayIndex = ((sender.tag + 1)) % 7 + 1
-        let selectedDay = Schedule.getDayByNumberWeekday(selectedDayIndex)
-        print("LOG: ", selectedDay, selectedDayIndex)
+        let selectedDay = Schedule.getDayByNumberWeekday(sender.tag)
+        
         if sender.isOn {
             selectedDays.insert(selectedDay)
         } else {
@@ -129,8 +128,10 @@ extension SchedulePageViewController: UITableViewDataSource {
 
     private func createSwitch(for indexPath: IndexPath) -> UISwitch {
         let switchView = UISwitch()
-        switchView.tag = indexPath.row
-        switchView.isOn = selectedDays.contains(Schedule.getDayByNumberWeekday(indexPath.row))
+        let dayIndex = (indexPath.row + 2) % 7
+        switchView.tag = dayIndex == 0 ? 7 : dayIndex
+        switchView.isOn = selectedDays.contains(Schedule.getDayByNumberWeekday(switchView.tag))
+        
         switchView.onTintColor = UIColor.projectColor(.blue)
         switchView.addTarget(self, action: #selector(switchChanged(_:)), for: .valueChanged)
         return switchView

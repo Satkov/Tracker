@@ -1,7 +1,13 @@
 import Foundation
 
 final class TrackerCategoryManager {
-    private var categories: [TrackerCategoryModel] = []
+    private var categories: [TrackerCategoryModel] = [
+        TrackerCategoryModel(categoryName: "mock",
+                             trackers: [
+                                TrackerModel(name: "test1", color: TrackerColors.mint, emoji: Emojis.dogFace,
+                                             schedule: Set(arrayLiteral: Schedule.saturday))
+                             ])
+    ]
     private let queue = DispatchQueue(label: "trackerCategoryQueue", attributes: .concurrent)
     static let shared = TrackerCategoryManager()
 
