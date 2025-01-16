@@ -21,7 +21,10 @@ final class TrackerCategoryManager {
                     guard let schedule = tracker.schedule else { return false }
                     return schedule.contains(day)
                 }
-                return filteredTrackers.isEmpty ? nil : TrackerCategoryModel(categoryName: category.categoryName, trackers: filteredTrackers)
+                return filteredTrackers.isEmpty ? nil : TrackerCategoryModel(
+                                                            categoryName: category.categoryName,
+                                                            trackers: filteredTrackers
+                                                        )
             }
         }
     }

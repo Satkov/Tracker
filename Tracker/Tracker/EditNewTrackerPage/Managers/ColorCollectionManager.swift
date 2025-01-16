@@ -7,7 +7,11 @@ final class ColorCollectionManager: NSObject {
     private let presenter: EditNewTrackerPresenterProtocol
 
     // MARK: - Initializer
-    init(collectionView: UICollectionView, params: GeometricParamsModel, presenter: EditNewTrackerPresenterProtocol) {
+    init(
+        collectionView: UICollectionView,
+        params: GeometricParamsModel,
+        presenter: EditNewTrackerPresenterProtocol
+    ) {
         self.collectionView = collectionView
         self.params = params
         self.presenter = presenter
@@ -32,7 +36,10 @@ final class ColorCollectionManager: NSObject {
 
 // MARK: - UICollectionViewDelegate
 extension ColorCollectionManager: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
         // Сбрасываем обводку для всех видимых ячеек
         collectionView.visibleCells.forEach { cell in
             cell.contentView.layer.borderColor = UIColor.clear.cgColor
@@ -47,7 +54,10 @@ extension ColorCollectionManager: UICollectionViewDelegate {
         presenter.updateColor(new: TrackerColors.allCases[indexPath.row])
     }
 
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didDeselectItemAt indexPath: IndexPath
+    ) {
         // Сбрасываем обводку для отмененной ячейки
         if let cell = collectionView.cellForItem(at: indexPath) {
             cell.contentView.layer.borderColor = UIColor.clear.cgColor
@@ -59,11 +69,17 @@ extension ColorCollectionManager: UICollectionViewDelegate {
 
 // MARK: - UICollectionViewDataSource
 extension ColorCollectionManager: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
         return TrackerColors.allCases.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ColorCollectionViewCell", for: indexPath) as? ColorCollectionViewCell else {
             fatalError("Failed to dequeue ColorCollectionViewCell")
         }
@@ -72,7 +88,11 @@ extension ColorCollectionManager: UICollectionViewDataSource {
         return cell
     }
 
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        viewForSupplementaryElementOfKind kind: String,
+        at indexPath: IndexPath
+    ) -> UICollectionReusableView {
         guard let view = collectionView.dequeueReusableSupplementaryView(
             ofKind: kind,
             withReuseIdentifier: "header",
@@ -88,7 +108,11 @@ extension ColorCollectionManager: UICollectionViewDataSource {
 
 // MARK: - UICollectionViewDelegateFlowLayout
 extension ColorCollectionManager: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForHeaderInSection section: Int
+    ) -> CGSize {
         let indexPath = IndexPath(row: 0, section: section)
         let headerView = self.collectionView(collectionView, viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader, at: indexPath)
 
@@ -99,15 +123,27 @@ extension ColorCollectionManager: UICollectionViewDelegateFlowLayout {
         )
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: params.leftInset, bottom: 0, right: params.rightInset)
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        UIEdgeInsets(top: 0, left: params.leftInset, bottom: 0, right: params.rightInset)
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return params.cellSpacing
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        minimumInteritemSpacingForSectionAt section: Int
+    ) -> CGFloat {
+        params.cellSpacing
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: params.cellWidth, height: params.cellHeight)
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        CGSize(width: params.cellWidth, height: params.cellHeight)
     }
 }

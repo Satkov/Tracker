@@ -36,7 +36,10 @@ final class EmojiCollectionViewManager: NSObject {
 
 // MARK: - UICollectionViewDelegate
 extension EmojiCollectionViewManager: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
         // Сбрасываем фон для всех видимых ячеек
         collectionView.visibleCells.forEach {
             $0.contentView.backgroundColor = .clear
@@ -50,7 +53,10 @@ extension EmojiCollectionViewManager: UICollectionViewDelegate {
         presenter.updateEmoji(new: Emojis.allCases[indexPath.row])
     }
 
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didDeselectItemAt indexPath: IndexPath
+    ) {
         // Сбрасываем фон для отмененной ячейки
         if let cell = collectionView.cellForItem(at: indexPath) {
             cell.contentView.backgroundColor = .clear
@@ -62,11 +68,17 @@ extension EmojiCollectionViewManager: UICollectionViewDelegate {
 
 // MARK: - UICollectionViewDataSource
 extension EmojiCollectionViewManager: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
         return Emojis.allCases.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: "EmojiCollectionViewCell",
             for: indexPath
@@ -78,7 +90,11 @@ extension EmojiCollectionViewManager: UICollectionViewDataSource {
         return cell
     }
 
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        viewForSupplementaryElementOfKind kind: String,
+        at indexPath: IndexPath
+    ) -> UICollectionReusableView {
         guard let view = collectionView.dequeueReusableSupplementaryView(
             ofKind: kind,
             withReuseIdentifier: "header",
@@ -94,7 +110,11 @@ extension EmojiCollectionViewManager: UICollectionViewDataSource {
 
 // MARK: - UICollectionViewDelegateFlowLayout
 extension EmojiCollectionViewManager: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForHeaderInSection section: Int
+    ) -> CGSize {
         let indexPath = IndexPath(row: 0, section: section)
         let headerView = self.collectionView(collectionView, viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader, at: indexPath)
 
@@ -108,8 +128,12 @@ extension EmojiCollectionViewManager: UICollectionViewDelegateFlowLayout {
         )
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        UIEdgeInsets(
             top: 0,
             left: params.leftInset,
             bottom: 0,
@@ -117,14 +141,19 @@ extension EmojiCollectionViewManager: UICollectionViewDelegateFlowLayout {
         )
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return params.cellSpacing
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        minimumInteritemSpacingForSectionAt section: Int
+    ) -> CGFloat {
+         params.cellSpacing
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(
-            width: params.cellWidth,
-            height: params.cellHeight
-        )
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+         CGSize(width: params.cellWidth, height: params.cellHeight)
     }
 }

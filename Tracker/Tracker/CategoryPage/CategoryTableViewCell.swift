@@ -30,7 +30,10 @@ final class CategoryTableViewCell: UITableViewCell {
     }()
     
     // MARK: - Initializers
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    override init(
+        style: UITableViewCell.CellStyle,
+        reuseIdentifier: String?
+    ) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
         setupConstraints()

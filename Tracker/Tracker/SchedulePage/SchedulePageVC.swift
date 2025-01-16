@@ -113,25 +113,37 @@ final class SchedulePageViewController: UIViewController {
 
 // MARK: - UITableViewDelegate
 extension SchedulePageViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(
+        _ tableView: UITableView,
+        heightForRowAt indexPath: IndexPath
+    ) -> CGFloat {
         75
     }
 }
 
 // MARK: - UITableViewDataSource
 extension SchedulePageViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(
+        _ tableView: UITableView,
+        numberOfRowsInSection section: Int
+    ) -> Int {
         Schedule.allCases.count
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath
+    ) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         configureCell(cell, for: indexPath)
         return cell
     }
 
     // MARK: - Cell Configuration
-    private func configureCell(_ cell: UITableViewCell, for indexPath: IndexPath) {
+    private func configureCell(
+        _ cell: UITableViewCell,
+        for indexPath: IndexPath
+    ) {
         let schedule = Schedule.allCases[indexPath.row]
 
         cell.textLabel?.text = schedule.rawValue
@@ -143,7 +155,9 @@ extension SchedulePageViewController: UITableViewDataSource {
         cell.accessoryView = switchView
     }
 
-    private func createSwitch(for indexPath: IndexPath) -> UISwitch {
+    private func createSwitch(
+        for indexPath: IndexPath
+    ) -> UISwitch {
         let switchView = UISwitch()
         let dayIndex = (indexPath.row + 2) % 7
         switchView.tag = dayIndex == 0 ? 7 : dayIndex

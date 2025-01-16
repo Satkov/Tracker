@@ -150,11 +150,17 @@ final class CategoryPageViewController: UIViewController {
 
 // MARK: - UITableViewDelegate
 extension CategoryPageViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(
+        _ tableView: UITableView,
+        heightForRowAt indexPath: IndexPath
+    ) -> CGFloat {
         75
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(
+        _ tableView: UITableView,
+        didSelectRowAt indexPath: IndexPath
+    ) {
         let selectedCategory = trackerCategoryList[indexPath.row]
         presenter.updateCategory(new: selectedCategory)
         dismiss(animated: true)
@@ -163,11 +169,17 @@ extension CategoryPageViewController: UITableViewDelegate {
 
 // MARK: - UITableViewDataSource
 extension CategoryPageViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(
+        _ tableView: UITableView,
+        numberOfRowsInSection section: Int
+    ) -> Int {
         trackerCategoryList.count
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath
+    ) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: "CategoryTableViewCell",
             for: indexPath

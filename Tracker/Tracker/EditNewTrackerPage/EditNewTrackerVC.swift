@@ -284,11 +284,17 @@ final class EditNewTrackerViewController: UIViewController {
 
 // MARK: - UITableViewDelegate
 extension EditNewTrackerViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(
+        _ tableView: UITableView,
+        heightForRowAt indexPath: IndexPath
+    ) -> CGFloat {
         return 75
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(
+        _ tableView: UITableView,
+        didSelectRowAt indexPath: IndexPath
+    ) {
         tableView.deselectRow(at: indexPath, animated: true)
         let selectedOption = buttonsIdentifiers[indexPath.row]
 
@@ -317,11 +323,17 @@ extension EditNewTrackerViewController: UITableViewDelegate {
 
 // MARK: - UITableViewDataSource
 extension EditNewTrackerViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(
+        _ tableView: UITableView,
+        numberOfRowsInSection section: Int
+    ) -> Int {
         return isRegular ? buttonsIdentifiers.count : buttonsIdentifiers.count - 1
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath
+    ) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: "ButtonsTableViewCells",
             for: indexPath

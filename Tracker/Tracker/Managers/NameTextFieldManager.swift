@@ -41,7 +41,14 @@ final class NameTextFieldManager: NSObject {
     }
 
     private func setupPadding() {
-        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: trackerNameField.frame.height))
+        let paddingView = UIView(
+            frame: CGRect(
+                x: 0,
+                y: 0,
+                width: 16,
+                height: trackerNameField.frame.height
+            )
+        )
         trackerNameField.leftView = paddingView
         trackerNameField.leftViewMode = .always
     }
@@ -61,7 +68,11 @@ extension NameTextFieldManager: UITextFieldDelegate {
         presenter?.updateName(name: name)
     }
 
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
         guard let currentText = textField.text,
               let stringRange = Range(range, in: currentText) else { return false }
 

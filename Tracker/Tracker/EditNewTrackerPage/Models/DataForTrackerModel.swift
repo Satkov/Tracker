@@ -1,6 +1,8 @@
 import Foundation
 
 struct DataForTrackerModel {
+    // в данном случае переменные здесь для того, чтобы было
+    // удобнее работать с EditNewTrackerPresenter. такой подход не стоит применять?
     var name: String?
     var category: TrackerCategoryModel?
     var color: TrackerColors?
