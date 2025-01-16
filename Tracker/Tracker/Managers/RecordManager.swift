@@ -42,7 +42,10 @@ final class RecordManager {
     // Добавление или удаление записи
     func toggleRecord(_ record: TrackerRecordModel) {
         if self.hasRecord(trackerID: record.trackerID, date: record.date) {
+            print("LOG: BEFORE Removed", records)
+            print("LOG: RECORD FOR REMOVE", record)
             self.records.remove(record)
+            print("LOG: Removed", records)
         } else {
             self.records.insert(record)
         }

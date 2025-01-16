@@ -37,6 +37,7 @@ final class TrackersCollectionManager: NSObject {
 
     private func handleButtonAction(at indexPath: IndexPath) {
         let tracker = categories[indexPath.section].trackers[indexPath.row]
+        print("LOG: Tapped - status: ", currentDate <= Date(), "//  ")
         guard currentDate <= Date() else { return }
         recordManager.toggleRecord(TrackerRecordModel(trackerID: tracker.id, date: currentDate))
         collectionView.reloadItems(at: [indexPath])

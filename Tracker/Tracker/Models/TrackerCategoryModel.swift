@@ -1,4 +1,4 @@
-struct TrackerCategoryModel: Codable {
+struct TrackerCategoryModel {
     let categoryName: String
     let trackers: [TrackerModel]
 

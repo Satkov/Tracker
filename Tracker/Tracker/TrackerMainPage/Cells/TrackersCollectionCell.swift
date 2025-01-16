@@ -41,12 +41,6 @@ final class TrackersCollectionCell: UICollectionViewCell {
         setupRecordLabel()
     }
 
-    @objc
-    private func recordButtonTapped() {
-        buttonAction?()
-        setButtonStyle()
-    }
-
     func setupCardView() {
         cardView.translatesAutoresizingMaskIntoConstraints = false
         cardView.layer.cornerRadius = 16
@@ -108,6 +102,12 @@ final class TrackersCollectionCell: UICollectionViewCell {
             trackerNameLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -12)
         ])
     }
+    
+    @objc
+    private func recordButtonTapped() {
+        buttonAction?()
+        setButtonStyle()
+    }
 
     func setupRecordButton() {
         recordButton.translatesAutoresizingMaskIntoConstraints = false
@@ -129,6 +129,7 @@ final class TrackersCollectionCell: UICollectionViewCell {
         guard let tracker = tracker,
               let datePicker = datePicker
         else { return }
+        print("LOG: ", recordManager.hasRecord(trackerID: tracker.id, date: datePicker.date) )
         if !recordManager.hasRecord(trackerID: tracker.id, date: datePicker.date) {
             recordButton.backgroundColor = tracker.color.color
             recordButton.setImage(UIImage(systemName: "plus"), for: .normal)
