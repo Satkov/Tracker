@@ -10,26 +10,66 @@ final class EditNewTrackerViewController: UIViewController {
     var onTrackerCreation: (() -> Void)?
 
     // MARK: - UI Elements
-    private var scrollView = UIScrollView()
-    private var titleLabel = UILabel()
+    private let scrollView = UIScrollView()
     private let trackerNameFieldContainer = UIView()
-    private var trackerNameField = UITextField()
-    private var buttonTable = UITableView()
-    private var emojiCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    private var colorCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    private var cancelButton = UIButton()
-    private var createButton = UIButton()
-    private var warningLabel = UILabel()
+    private let emojiCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private let colorCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
 
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        label.textAlignment = .center
+        return label
+    }()
+
+    private let trackerNameField = UITextField()
+
+    private let warningLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Ограничение 38 символов"
+        label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        label.textColor = UIColor.projectColor(.borderRed)
+        return label
+    }()
+
+    private let buttonTable: UITableView = {
+        let table = UITableView()
+        table.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        table.layer.cornerRadius = 16
+        return table
+    }()
+
+    private let cancelButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Отменить", for: .normal)
+        button.setTitleColor(UIColor.projectColor(.borderRed), for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.projectColor(.borderRed).cgColor
+        button.layer.cornerRadius = 16
+        return button
+    }()
+
+    private let createButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Создать", for: .normal)
+        button.setTitleColor(UIColor.projectColor(.backgroundWhite), for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        button.backgroundColor = UIColor.projectColor(.textColorForLightgray)
+        button.layer.cornerRadius = 16
+        return button
+    }()
+    
     // MARK: - Constraints
-    private var textFieldContainerHightConstraint: NSLayoutConstraint!
+    private var textFieldContainerHeightConstraint: NSLayoutConstraint!
 
     // MARK: - Data and Managers
-    private var buttonsIdentifiers = ["Категория", "Расписание"]
+    private let buttonsIdentifiers = ["Категория", "Расписание"]
     private var presenter: EditNewTrackerPresenterProtocol?
     private var emojiCollectionManager: EmojiCollectionViewManager?
     private var colorCollectionManager: ColorCollectionManager?
     private var trackerNameFieldManager: NameTextFieldManager?
+
 
     // MARK: - Initializer
 
@@ -94,8 +134,6 @@ final class EditNewTrackerViewController: UIViewController {
     private func setupTitleLabel() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = isRegular ? "Новая привычка" : "Новое нерегулярное событие"
-        titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        titleLabel.textAlignment = .center
         scrollView.addSubview(titleLabel)
 
         NSLayoutConstraint.activate([
@@ -106,10 +144,6 @@ final class EditNewTrackerViewController: UIViewController {
 
     private func setupWarningLabel() {
         warningLabel.translatesAutoresizingMaskIntoConstraints = false
-        warningLabel.text = "Ограничение 38 символов"
-        warningLabel.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-        warningLabel.textColor = UIColor.projectColor(.borderRed)
-
         trackerNameFieldContainer.addSubview(warningLabel)
 
         NSLayoutConstraint.activate([
@@ -127,12 +161,12 @@ final class EditNewTrackerViewController: UIViewController {
             presenter: presenter
         )
         trackerNameFieldContainer.translatesAutoresizingMaskIntoConstraints = false
-
         trackerNameFieldContainer.addSubview(trackerNameField)
+        
         scrollView.addSubview(trackerNameFieldContainer)
 
-        textFieldContainerHightConstraint = trackerNameFieldContainer.heightAnchor.constraint(equalToConstant: 75)
-        textFieldContainerHightConstraint.isActive = true
+        textFieldContainerHeightConstraint = trackerNameFieldContainer.heightAnchor.constraint(equalToConstant: 75)
+        textFieldContainerHeightConstraint.isActive = true
 
         NSLayoutConstraint.activate([
             trackerNameFieldContainer.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
@@ -150,10 +184,7 @@ final class EditNewTrackerViewController: UIViewController {
         buttonTable.translatesAutoresizingMaskIntoConstraints = false
         buttonTable.delegate = self
         buttonTable.dataSource = self
-        buttonTable.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         buttonTable.register(ButtonsTableViewCells.self, forCellReuseIdentifier: "ButtonsTableViewCells")
-        buttonTable.layer.cornerRadius = 16
-
         scrollView.addSubview(buttonTable)
 
         let visibleRows = isRegular ? buttonsIdentifiers.count : buttonsIdentifiers.count - 1
@@ -203,12 +234,6 @@ final class EditNewTrackerViewController: UIViewController {
 
     private func setupCancelButton() {
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
-        cancelButton.setTitle("Отменить", for: .normal)
-        cancelButton.setTitleColor(UIColor.projectColor(.borderRed), for: .normal)
-        cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        cancelButton.layer.borderWidth = 1
-        cancelButton.layer.borderColor = UIColor.projectColor(.borderRed).cgColor
-        cancelButton.layer.cornerRadius = 16
         cancelButton.addTarget(self, action: #selector(cancelButtonPressed), for: .touchUpInside)
 
         scrollView.addSubview(cancelButton)
@@ -224,11 +249,6 @@ final class EditNewTrackerViewController: UIViewController {
 
     private func setupCreateButton() {
         createButton.translatesAutoresizingMaskIntoConstraints = false
-        createButton.setTitle("Создать", for: .normal)
-        createButton.setTitleColor(UIColor.projectColor(.backgroundWhite), for: .normal)
-        createButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        createButton.backgroundColor = UIColor.projectColor(.textColorForLightgray)
-        createButton.layer.cornerRadius = 16
         createButton.addTarget(self, action: #selector(createButtonPressed), for: .touchUpInside)
 
         scrollView.addSubview(createButton)
@@ -326,7 +346,7 @@ extension EditNewTrackerViewController: UITableViewDataSource {
 // MARK: - TrackerNameTextFieldManagerDelegateProtocol
 extension EditNewTrackerViewController: TrackerNameTextFieldManagerDelegateProtocol {
     func showWarningLabel() {
-        textFieldContainerHightConstraint.constant = 113
+        textFieldContainerHeightConstraint.constant = 113
         setupWarningLabel()
         UIView.animate(withDuration: 0) {
             self.scrollView.layoutIfNeeded()
@@ -335,7 +355,7 @@ extension EditNewTrackerViewController: TrackerNameTextFieldManagerDelegateProto
     }
 
     func hideWarningLabel() {
-        textFieldContainerHightConstraint.constant = 75
+        textFieldContainerHeightConstraint.constant = 75
         warningLabel.removeFromSuperview()
         isWarningHidden = true
     }

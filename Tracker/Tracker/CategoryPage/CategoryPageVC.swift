@@ -2,18 +2,43 @@ import UIKit
 
 final class CategoryPageViewController: UIViewController {
     // MARK: - UI Elements
-    private let placeholderImage = UIImageView()
-    private let placeholderText = UILabel()
+    private let placeholderImage: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(named: "StarPlaceholder")
+        return view
+    }()
+    private let placeholderText: UILabel = {
+        let label = UILabel()
+        label.text = "Привычки и события можно\nобъединить по смыслу"
+        label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        return label
+    }()
     private let categoriesTable = UITableView()
-    private let titleLabel = UILabel()
-    private let addCategoryButton = UIButton()
-    private let contentViewForTable = UIView()
-
-    // MARK: - Constraints
-    private var tableHeightConstraint: NSLayoutConstraint!
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Категория"
+        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        label.textAlignment = .center
+        return label
+    }()
+    private let addCategoryButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Добавить категорию", for: .normal)
+        button.setTitleColor(UIColor.projectColor(.backgroundWhite), for: .normal)
+        button.backgroundColor = UIColor.projectColor(.backgroundBlack)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        button.layer.cornerRadius = 16
+        return button
+    }()
+    private let contentViewForTable: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 16
+        return view
+    }()
 
     // MARK: - Properties
-    private var observer: NSObjectProtocol?
     private var selectedIndexPath: IndexPath?
     private var trackerCategoryList: [TrackerCategoryModel] = []
     private var trackerCategoryManager = TrackerCategoryManager.shared
@@ -37,9 +62,6 @@ final class CategoryPageViewController: UIViewController {
 
     private func setupTitleLabel() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = "Категория"
-        titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        titleLabel.textAlignment = .center
         view.addSubview(titleLabel)
 
         NSLayoutConstraint.activate([
@@ -50,11 +72,6 @@ final class CategoryPageViewController: UIViewController {
 
     private func setupAddCategoryButton() {
         addCategoryButton.translatesAutoresizingMaskIntoConstraints = false
-        addCategoryButton.setTitle("Добавить категорию", for: .normal)
-        addCategoryButton.setTitleColor(UIColor.projectColor(.backgroundWhite), for: .normal)
-        addCategoryButton.backgroundColor = UIColor.projectColor(.backgroundBlack)
-        addCategoryButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        addCategoryButton.layer.cornerRadius = 16
         addCategoryButton.addTarget(self, action: #selector(addCategoryButtonPressed), for: .touchUpInside)
         view.addSubview(addCategoryButton)
 
@@ -68,7 +85,6 @@ final class CategoryPageViewController: UIViewController {
 
     private func setupCategoriesTable() {
         contentViewForTable.translatesAutoresizingMaskIntoConstraints = false
-        contentViewForTable.layer.cornerRadius = 16
         categoriesTable.translatesAutoresizingMaskIntoConstraints = false
         categoriesTable.delegate = self
         categoriesTable.dataSource = self
@@ -92,14 +108,9 @@ final class CategoryPageViewController: UIViewController {
 
     private func setupPlaceholder() {
         placeholderImage.translatesAutoresizingMaskIntoConstraints = false
-        placeholderImage.image = UIImage(named: "StarPlaceholder")
         view.addSubview(placeholderImage)
 
         placeholderText.translatesAutoresizingMaskIntoConstraints = false
-        placeholderText.text = "Привычки и события можно\nобъединить по смыслу"
-        placeholderText.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        placeholderText.numberOfLines = 0
-        placeholderText.textAlignment = .center
         view.addSubview(placeholderText)
 
         NSLayoutConstraint.activate([

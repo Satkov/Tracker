@@ -2,9 +2,28 @@ import UIKit
 
 final class SchedulePageViewController: UIViewController {
     // MARK: - UI Elements
-    private let titleLabel = UILabel()
-    private let addScheduleButton = UIButton()
-    private let scheduleTable = UITableView()
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Расписание"
+        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        label.textAlignment = .center
+        return label
+    }()
+    private let addScheduleButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Готово", for: .normal)
+        button.setTitleColor(UIColor.projectColor(.backgroundWhite), for: .normal)
+        button.backgroundColor = UIColor.projectColor(.backgroundBlack)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        button.layer.cornerRadius = 16
+        return button
+    }()
+    private let scheduleTable: UITableView = {
+        let tableView = UITableView()
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.layer.cornerRadius = 16
+        return tableView
+    }()
 
     // MARK: - Properties
     var selectedDays: Set<Schedule> = []
@@ -26,9 +45,6 @@ final class SchedulePageViewController: UIViewController {
 
     private func setupTitleLabel() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = "Расписание"
-        titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        titleLabel.textAlignment = .center
 
         view.addSubview(titleLabel)
 
@@ -42,10 +58,7 @@ final class SchedulePageViewController: UIViewController {
         scheduleTable.translatesAutoresizingMaskIntoConstraints = false
         scheduleTable.delegate = self
         scheduleTable.dataSource = self
-        scheduleTable.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         scheduleTable.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        scheduleTable.layer.cornerRadius = 16
-
         view.addSubview(scheduleTable)
 
         NSLayoutConstraint.activate([
@@ -58,11 +71,6 @@ final class SchedulePageViewController: UIViewController {
 
     private func setupAddScheduleButton() {
         addScheduleButton.translatesAutoresizingMaskIntoConstraints = false
-        addScheduleButton.setTitle("Готово", for: .normal)
-        addScheduleButton.setTitleColor(UIColor.projectColor(.backgroundWhite), for: .normal)
-        addScheduleButton.backgroundColor = UIColor.projectColor(.backgroundBlack)
-        addScheduleButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        addScheduleButton.layer.cornerRadius = 16
         addScheduleButton.addTarget(self, action: #selector(addSelectedDaysButtonPressed), for: .touchUpInside)
 
         view.addSubview(addScheduleButton)

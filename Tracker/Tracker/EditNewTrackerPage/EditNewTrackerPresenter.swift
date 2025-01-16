@@ -1,7 +1,7 @@
 import UIKit
 
 final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
-    var view: EditNewTrackerViewControllerProtocol
+    private var view: EditNewTrackerViewControllerProtocol
     var onTrackerCreation: (() -> Void)?
     private(set) var dataModel = DataForTrackerModel() {
         didSet {

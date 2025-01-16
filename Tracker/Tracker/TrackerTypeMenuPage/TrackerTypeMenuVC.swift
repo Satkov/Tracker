@@ -1,9 +1,14 @@
 import UIKit
 
-class TrackerTypeMenuViewController: UIViewController {
+final class TrackerTypeMenuViewController: UIViewController {
     private var habbitTrackerButton = UIButton()
     private var unregularTrackerButton = UIButton()
-    private var titleLabel = UILabel()
+    private var titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Создание трекера"
+        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        return label
+    }()
 
     var onTrackerCreation: (() -> Void)?
 
@@ -20,8 +25,6 @@ class TrackerTypeMenuViewController: UIViewController {
 
     private func setupTitleLabel() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = "Создание трекера"
-        titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         view.addSubview(titleLabel)
 
         NSLayoutConstraint.activate([

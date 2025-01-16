@@ -2,8 +2,21 @@ import UIKit
 
 final class CreateCategoryViewController: UIViewController {
     // MARK: - UI Elements
-    private let titleLabel = UILabel()
-    private let addCategoryButton = UIButton()
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Новая категория"
+        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        label.textAlignment = .center
+        return label
+    }()
+    private let addCategoryButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Готово", for: .normal)
+        button.setTitleColor(UIColor.projectColor(.backgroundWhite), for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        button.layer.cornerRadius = 16
+        return button
+    }()
     private let trackerNameField = UITextField()
 
     // MARK: - Managers
@@ -28,9 +41,6 @@ final class CreateCategoryViewController: UIViewController {
 
     private func setupTitleLabel() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = "Новая категория"
-        titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        titleLabel.textAlignment = .center
         view.addSubview(titleLabel)
 
         NSLayoutConstraint.activate([
@@ -60,10 +70,6 @@ final class CreateCategoryViewController: UIViewController {
 
     private func setupAddCategoryButton() {
         addCategoryButton.translatesAutoresizingMaskIntoConstraints = false
-        addCategoryButton.setTitle("Готово", for: .normal)
-        addCategoryButton.setTitleColor(UIColor.projectColor(.backgroundWhite), for: .normal)
-        addCategoryButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        addCategoryButton.layer.cornerRadius = 16
         addCategoryButton.addTarget(self, action: #selector(addCategoryButtonPressed), for: .touchUpInside)
         disableAddCategoryButton()
         view.addSubview(addCategoryButton)

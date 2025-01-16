@@ -5,12 +5,57 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
     private let params: GeometricParamsModel
 
     // MARK: - UI Elements
-    private let headerLabel = UILabel()
-    private let searchBar = UISearchBar()
-    private let placeholderImage = UIImageView()
-    private let placeholderText = UILabel()
-    private let addTrackerButton = UIButton(type: .system)
-    private let datePicker = UIDatePicker()
+    private let headerLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Трекеры"
+        label.font = UIFont.systemFont(ofSize: 34, weight: .bold)
+        return label
+    }()
+
+    private let searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.searchBarStyle = .minimal
+        searchBar.placeholder = "Поиск"
+
+        if let textField = searchBar.value(forKey: "searchField") as? UITextField {
+            textField.layer.cornerRadius = 10
+            textField.layer.masksToBounds = true
+            textField.leftView = UIImageView(image: UIImage(named: "SearchBarIcon"))
+            textField.leftViewMode = .always
+        }
+        return searchBar
+    }()
+
+    private let placeholderImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "StarPlaceholder")
+        return imageView
+    }()
+
+    private let placeholderText: UILabel = {
+        let label = UILabel()
+        label.text = "Что будем отслеживать?"
+        label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        return label
+    }()
+
+    private let addTrackerButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "PlusIcon"), for: .normal)
+        button.tintColor = UIColor.projectColor(.backgroundBlack)
+        return button
+    }()
+
+    private let datePicker: UIDatePicker = {
+        let picker = UIDatePicker()
+        picker.preferredDatePickerStyle = .compact
+        picker.datePickerMode = .date
+        picker.backgroundColor = UIColor(hex: "#F0F0F0")
+        picker.layer.cornerRadius = 8
+        picker.locale = Locale(identifier: "ru_RU")
+        return picker
+    }()
+
     private let trackersCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
 
     // MARK: - Properties
@@ -55,12 +100,10 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
     }
 
     private func setupAddTrackerButton() {
-        addTrackerButton.setImage(UIImage(named: "PlusIcon"), for: .normal)
-        addTrackerButton.tintColor = UIColor.projectColor(.backgroundBlack)
-        addTrackerButton.addTarget(self, action: #selector(addTrackerButtonPressed), for: .touchUpInside)
         addTrackerButton.translatesAutoresizingMaskIntoConstraints = false
-
         view.addSubview(addTrackerButton)
+        
+        addTrackerButton.addTarget(self, action: #selector(addTrackerButtonPressed), for: .touchUpInside)
 
         NSLayoutConstraint.activate([
             addTrackerButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -72,12 +115,6 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
 
     private func setupDatePicker() {
         datePicker.translatesAutoresizingMaskIntoConstraints = false
-        datePicker.preferredDatePickerStyle = .compact
-        datePicker.datePickerMode = .date
-        datePicker.backgroundColor = UIColor(hex: "#F0F0F0")
-        datePicker.layer.cornerRadius = 8
-        datePicker.locale = Locale(identifier: "ru_RU")
-
         view.addSubview(datePicker)
 
         NSLayoutConstraint.activate([
@@ -95,9 +132,6 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
 
     private func setupHeaderLabel() {
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
-        headerLabel.text = "Трекеры"
-        headerLabel.font = UIFont.systemFont(ofSize: 34, weight: .bold)
-
         view.addSubview(headerLabel)
 
         NSLayoutConstraint.activate([
@@ -108,16 +142,6 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
 
     private func setupSearchBar() {
         searchBar.translatesAutoresizingMaskIntoConstraints = false
-        searchBar.searchBarStyle = .minimal
-        searchBar.placeholder = "Поиск"
-
-        if let textField = searchBar.value(forKey: "searchField") as? UITextField {
-            textField.layer.cornerRadius = 10
-            textField.layer.masksToBounds = true
-            textField.leftView = UIImageView(image: UIImage(named: "SearchBarIcon"))
-            textField.leftViewMode = .always
-        }
-
         view.addSubview(searchBar)
 
         NSLayoutConstraint.activate([
@@ -127,13 +151,8 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
         ])
     }
 
-    private func showTrackerPlaceholder() {
-    }
-
     private func setupPlaceholderImage() {
         placeholderImage.translatesAutoresizingMaskIntoConstraints = false
-        placeholderImage.image = UIImage(named: "StarPlaceholder")
-
         view.addSubview(placeholderImage)
 
         NSLayoutConstraint.activate([
@@ -144,9 +163,6 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
 
     private func setupPlaceholderText() {
         placeholderText.translatesAutoresizingMaskIntoConstraints = false
-        placeholderText.text = "Что будем отслеживать?"
-        placeholderText.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-
         view.addSubview(placeholderText)
 
         NSLayoutConstraint.activate([
@@ -183,7 +199,7 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
     private func addTrackerButtonPressed() {
         let createTrackerVC = TrackerTypeMenuViewController()
         createTrackerVC.onTrackerCreation = { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             self.trackersCollectionManager?.updateCategories()
             self.updateUI()
         }
