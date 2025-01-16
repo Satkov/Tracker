@@ -294,17 +294,17 @@ extension EditNewTrackerViewController: UITableViewDelegate {
 
         switch selectedOption {
         case "Категория":
-            let lastSelectedCategory = presenter.dataModel.category
-            let createVC = CategoryPageViewController(presenter: presenter, lastSelectedCategory: lastSelectedCategory)
+            let createVC = CategoryPageViewController(
+                presenter: presenter,
+                lastSelectedCategory: presenter.dataModel.category
+            )
             createVC.modalPresentationStyle = .pageSheet
             present(createVC, animated: true)
 
         case "Расписание":
-            let createVC = SchedulePageViewController()
-            createVC.presenter = presenter
-            if let schedule = presenter.dataModel.schudule {
-                createVC.selectedDays = schedule
-            }
+            let createVC = SchedulePageViewController(
+                presenter: presenter,
+                selectedDays: presenter.dataModel.schudule)
             createVC.modalPresentationStyle = .pageSheet
             present(createVC, animated: true)
 

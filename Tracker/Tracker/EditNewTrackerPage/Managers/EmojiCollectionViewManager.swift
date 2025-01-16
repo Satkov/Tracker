@@ -2,9 +2,9 @@ import UIKit
 
 final class EmojiCollectionViewManager: NSObject {
     // MARK: - Properties
-    private var collectionView: UICollectionView
-    private var params: GeometricParamsModel
-    private var presenter: EditNewTrackerPresenterProtocol
+    private let collectionView: UICollectionView
+    private let params: GeometricParamsModel
+    private let presenter: EditNewTrackerPresenterProtocol
 
     // MARK: - Initializer
     init(

@@ -26,9 +26,23 @@ final class SchedulePageViewController: UIViewController {
     }()
 
     // MARK: - Properties
-    var selectedDays: Set<Schedule> = []
-    var presenter: EditNewTrackerPresenterProtocol?
+    private var selectedDays: Set<Schedule>
+    private var presenter: EditNewTrackerPresenterProtocol
 
+    
+    init(
+        presenter: EditNewTrackerPresenterProtocol,
+        selectedDays: Set<Schedule>?
+    ) {
+        self.presenter = presenter
+        self.selectedDays = selectedDays ?? []
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,7 +100,7 @@ final class SchedulePageViewController: UIViewController {
     // MARK: - Actions
     @objc
     private func addSelectedDaysButtonPressed() {
-        presenter?.updateSchedule(new: selectedDays)
+        presenter.updateSchedule(new: selectedDays)
         dismiss(animated: true, completion: nil)
     }
 

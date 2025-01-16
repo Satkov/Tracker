@@ -20,11 +20,24 @@ final class CreateCategoryViewController: UIViewController {
     private let trackerNameField = UITextField()
 
     // MARK: - Managers
-    private var trackerNameFieldManager: NameTextFieldManager?
-    private var categoryManager = TrackerCategoryManager.shared
+    private let trackerNameFieldManager: NameTextFieldManager?
+    private let categoryManager = TrackerCategoryManager.shared
 
-    var delegate: CategoryPageViewControllerProtocol?
+    private let delegate: CategoryPageViewControllerProtocol
 
+    init(delegate: CategoryPageViewControllerProtocol) {
+        trackerNameFieldManager = NameTextFieldManager(
+            trackerNameField: trackerNameField,
+            placeholderText: "Введите название категории",
+            presenter: nil
+        )
+        self.delegate = delegate
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,11 +63,6 @@ final class CreateCategoryViewController: UIViewController {
     }
 
     private func setupTrackerNameField() {
-        trackerNameFieldManager = NameTextFieldManager(
-            trackerNameField: trackerNameField,
-            placeholderText: "Введите название категории",
-            presenter: nil
-        )
         trackerNameField.delegate = self
         view.addSubview(trackerNameField)
 
@@ -98,7 +106,7 @@ final class CreateCategoryViewController: UIViewController {
         guard let newCategoryName = trackerNameField.text, !newCategoryName.isEmpty else { return }
         let newTracker = TrackerCategoryModel(categoryName: newCategoryName)
         categoryManager.addCategory(newTracker)
-        delegate?.newCategoryWereAdded()
+        delegate.newCategoryWereAdded()
         dismiss(animated: true)
     }
 }

@@ -41,11 +41,14 @@ final class CategoryPageViewController: UIViewController {
     // MARK: - Properties
     private var trackerCategoryList: [TrackerCategoryModel] = []
     private var trackerCategoryManager = TrackerCategoryManager.shared
-    private var presenter: EditNewTrackerPresenterProtocol?
+    private var presenter: EditNewTrackerPresenterProtocol
     private var lastSelectedCategory: TrackerCategoryModel?
 
     
-    init(presenter: EditNewTrackerPresenterProtocol?, lastSelectedCategory: TrackerCategoryModel?) {
+    init(
+        presenter: EditNewTrackerPresenterProtocol,
+        lastSelectedCategory: TrackerCategoryModel?
+    ) {
         self.presenter = presenter
         self.lastSelectedCategory = lastSelectedCategory
         super.init(nibName: nil, bundle: nil)
@@ -137,8 +140,7 @@ final class CategoryPageViewController: UIViewController {
     // MARK: - Actions
     @objc
     private func addCategoryButtonPressed() {
-        let createVC = CreateCategoryViewController()
-        createVC.delegate = self
+        let createVC = CreateCategoryViewController(delegate: self)
         createVC.modalPresentationStyle = .pageSheet
         present(createVC, animated: true)
     }
@@ -152,7 +154,7 @@ extension CategoryPageViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedCategory = trackerCategoryList[indexPath.row]
-        presenter?.updateCategory(new: selectedCategory)
+        presenter.updateCategory(new: selectedCategory)
         dismiss(animated: true)
     }
 }

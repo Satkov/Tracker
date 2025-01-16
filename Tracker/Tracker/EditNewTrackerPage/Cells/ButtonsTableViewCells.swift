@@ -1,10 +1,10 @@
 import UIKit
 
 final class ButtonsTableViewCells: UITableViewCell {
-    var labelsContainer = UIView()
-    var titleLabel = UILabel()
-    var subtitleLabel = UILabel()
-    var arrowImageView = UIImageView()
+    private let labelsContainer = UIView()
+    private let titleLabel = UILabel()
+    private let subtitleLabel = UILabel()
+    private let arrowImageView = UIImageView()
 
     // MARK: - Initializer
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

@@ -4,7 +4,7 @@ final class ColorCollectionManager: NSObject {
     // MARK: - Properties
     private let collectionView: UICollectionView
     private let params: GeometricParamsModel
-    private var presenter: EditNewTrackerPresenterProtocol
+    private let presenter: EditNewTrackerPresenterProtocol
 
     // MARK: - Initializer
     init(collectionView: UICollectionView, params: GeometricParamsModel, presenter: EditNewTrackerPresenterProtocol) {

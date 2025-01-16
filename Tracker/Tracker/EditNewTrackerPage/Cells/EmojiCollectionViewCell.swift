@@ -2,7 +2,7 @@ import UIKit
 
 final class EmojiCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
-    let emojiLabel: UILabel = {
+    private let emojiLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
@@ -11,7 +11,7 @@ final class EmojiCollectionViewCell: UICollectionViewCell {
         return label
     }()
 
-    var emojiBackGroundColor: UIColor {
+    private var emojiBackGroundColor: UIColor {
         didSet {
             emojiLabel.backgroundColor = emojiBackGroundColor
         }

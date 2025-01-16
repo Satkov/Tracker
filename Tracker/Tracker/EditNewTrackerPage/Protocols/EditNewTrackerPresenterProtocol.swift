@@ -1,6 +1,6 @@
 import Foundation
 
-protocol EditNewTrackerPresenterProtocol {
+protocol EditNewTrackerPresenterProtocol: AnyObject {
     func configure(view: EditNewTrackerViewControllerProtocol)
     func updateName(name: String?)
     func updateSchedule(new: Set<Schedule>?)
