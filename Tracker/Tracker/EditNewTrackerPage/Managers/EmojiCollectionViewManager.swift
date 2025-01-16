@@ -2,12 +2,16 @@ import UIKit
 
 final class EmojiCollectionViewManager: NSObject {
     // MARK: - Properties
-    private let collectionView: UICollectionView
-    private let params: GeometricParamsModel
-    private var presenter: EditNewTrackerPresenterProtocol?
+    private var collectionView: UICollectionView
+    private var params: GeometricParamsModel
+    private var presenter: EditNewTrackerPresenterProtocol
 
     // MARK: - Initializer
-    init(collectionView: UICollectionView, params: GeometricParamsModel, presenter: EditNewTrackerPresenterProtocol?) {
+    init(
+        collectionView: UICollectionView,
+        params: GeometricParamsModel,
+        presenter: EditNewTrackerPresenterProtocol
+    ) {
         self.collectionView = collectionView
         self.params = params
         self.presenter = presenter
@@ -43,7 +47,7 @@ extension EmojiCollectionViewManager: UICollectionViewDelegate {
             cell.contentView.backgroundColor = UIColor.projectColor(.backgroundLightGray)
         }
 
-        presenter?.updateEmoji(new: Emojis.allCases[indexPath.row])
+        presenter.updateEmoji(new: Emojis.allCases[indexPath.row])
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -52,7 +56,7 @@ extension EmojiCollectionViewManager: UICollectionViewDelegate {
             cell.contentView.backgroundColor = .clear
         }
 
-        presenter?.updateEmoji(new: nil)
+        presenter.updateEmoji(new: nil)
     }
 }
 
@@ -95,14 +99,22 @@ extension EmojiCollectionViewManager: UICollectionViewDelegateFlowLayout {
         let headerView = self.collectionView(collectionView, viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader, at: indexPath)
 
         return headerView.systemLayoutSizeFitting(
-            CGSize(width: collectionView.frame.width, height: UIView.layoutFittingExpandedSize.height),
+            CGSize(
+                width: collectionView.frame.width,
+                height: UIView.layoutFittingExpandedSize.height
+            ),
             withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel
         )
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: params.leftInset, bottom: 0, right: params.rightInset)
+        return UIEdgeInsets(
+            top: 0,
+            left: params.leftInset,
+            bottom: 0,
+            right: params.rightInset
+        )
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -110,6 +122,9 @@ extension EmojiCollectionViewManager: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: params.cellWidth, height: params.cellHeight)
+        return CGSize(
+            width: params.cellWidth,
+            height: params.cellHeight
+        )
     }
 }

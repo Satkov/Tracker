@@ -1,10 +1,12 @@
 import UIKit
 
 final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
-    private var view: EditNewTrackerViewControllerProtocol
+    private weak var view: EditNewTrackerViewControllerProtocol?
     var onTrackerCreation: (() -> Void)?
     private(set) var dataModel = DataForTrackerModel() {
         didSet {
+            // TODO: обработка ошибки если вью не предоставлена
+            guard let view else { return }
             if dataModel.isAllDataPresented(isRegular: view.isRegular) {
                 view.setCreateButtonEnable()
             } else {
@@ -12,8 +14,8 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
             }
         }
     }
-
-    init(view: EditNewTrackerViewControllerProtocol) {
+    
+    func configure(view: EditNewTrackerViewControllerProtocol) {
         self.view = view
     }
 
@@ -22,12 +24,12 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
     }
 
     func updateSchedule(new: Set<Schedule>?) {
-        view.reloadButtonTable()
+        view?.reloadButtonTable()
         dataModel.schudule = new
     }
 
     func updateCategory(new: TrackerCategoryModel?) {
-        view.reloadButtonTable()
+        view?.reloadButtonTable()
         dataModel.category = new
     }
 

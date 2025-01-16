@@ -4,17 +4,24 @@ final class NameTextFieldManager: NSObject {
     // MARK: - Properties
     private let trackerNameField: UITextField
     private var delegate: TrackerNameTextFieldManagerDelegateProtocol?
-    private var presenter: EditNewTrackerPresenterProtocol?
+    private let presenter: EditNewTrackerPresenterProtocol?
     private let placeholderText: String
 
     // MARK: - Initializer
-    init(trackerNameField: UITextField, delegate: TrackerNameTextFieldManagerDelegateProtocol?, placeholderText: String, presenter: EditNewTrackerPresenterProtocol?) {
+    init(
+        trackerNameField: UITextField,
+        placeholderText: String,
+        presenter: EditNewTrackerPresenterProtocol?
+    ) {
         self.trackerNameField = trackerNameField
-        self.delegate = delegate
         self.placeholderText = placeholderText
         self.presenter = presenter
         super.init()
         configureTextField()
+    }
+    
+    func addDelegate(delegate: TrackerNameTextFieldManagerDelegateProtocol) {
+        self.delegate = delegate
     }
 
     // MARK: - Configuration
@@ -64,8 +71,7 @@ extension NameTextFieldManager: UITextFieldDelegate {
     }
 
     private func handleCharacterLimit(for updatedText: String) {
-        guard let delegate = delegate else { return }
-
+        guard let delegate else { return }
         if updatedText.count > 38 {
             delegate.showWarningLabel()
         } else {

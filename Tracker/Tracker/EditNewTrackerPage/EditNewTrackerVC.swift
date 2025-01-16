@@ -2,7 +2,14 @@ import UIKit
 
 final class EditNewTrackerViewController: UIViewController {
     // MARK: - Constants
-    private let params: GeometricParamsModel
+    private let params = GeometricParamsModel(
+        cellCount: 6,
+        leftInset: 18,
+        rightInset: 19,
+        cellSpacing: 5,
+        cellWidth: 52,
+        cellHeight: 52
+    )
 
     // MARK: - State Properties
     private(set) var isRegular: Bool
@@ -65,26 +72,41 @@ final class EditNewTrackerViewController: UIViewController {
 
     // MARK: - Data and Managers
     private let buttonsIdentifiers = ["Категория", "Расписание"]
-    private var presenter: EditNewTrackerPresenterProtocol?
-    private var emojiCollectionManager: EmojiCollectionViewManager?
-    private var colorCollectionManager: ColorCollectionManager?
-    private var trackerNameFieldManager: NameTextFieldManager?
+    private var presenter: EditNewTrackerPresenterProtocol
+    private var emojiCollectionManager: EmojiCollectionViewManager
+    private var colorCollectionManager: ColorCollectionManager
+    private var trackerNameFieldManager: NameTextFieldManager
 
 
     // MARK: - Initializer
 
-    init(type: Bool) {
+    init(
+        type: Bool,
+        presenter: EditNewTrackerPresenterProtocol
+    ) {
         self.isRegular = type
-        self.params = GeometricParamsModel(
-            cellCount: 6,
-            leftInset: 18,
-            rightInset: 19,
-            cellSpacing: 5,
-            cellWidth: 52,
-            cellHeight: 52
+        self.presenter = presenter
+        self.emojiCollectionManager = EmojiCollectionViewManager(
+            collectionView: emojiCollection,
+            params: params,
+            presenter: presenter
+        )
+        
+        self.trackerNameFieldManager = NameTextFieldManager(
+            trackerNameField: trackerNameField,
+            placeholderText: "Введите название трекера",
+            presenter: presenter
+        )
+        
+        self.colorCollectionManager = ColorCollectionManager(
+            collectionView: colorCollection,
+            params: params,
+            presenter: presenter
         )
         super.init(nibName: nil, bundle: nil)
-        self.presenter = EditNewTrackerPresenter(view: self)
+        
+        presenter.configure(view: self)
+        trackerNameFieldManager.addDelegate(delegate: self)
     }
 
     required init?(coder: NSCoder) {
@@ -96,7 +118,7 @@ final class EditNewTrackerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        presenter?.onTrackerCreation = onTrackerCreation
+        presenter.onTrackerCreation = onTrackerCreation
     }
 
     // MARK: - UI Setup
@@ -154,12 +176,6 @@ final class EditNewTrackerViewController: UIViewController {
     }
 
     private func setupTrackerNameField() {
-        trackerNameFieldManager = NameTextFieldManager(
-            trackerNameField: trackerNameField,
-            delegate: self,
-            placeholderText: "Введите название трекера",
-            presenter: presenter
-        )
         trackerNameFieldContainer.translatesAutoresizingMaskIntoConstraints = false
         trackerNameFieldContainer.addSubview(trackerNameField)
         
@@ -197,11 +213,6 @@ final class EditNewTrackerViewController: UIViewController {
     }
 
     private func setupEmojiCollection() {
-        emojiCollectionManager = EmojiCollectionViewManager(
-            collectionView: emojiCollection,
-            params: params,
-            presenter: presenter
-        )
 
         emojiCollection.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(emojiCollection)
@@ -215,12 +226,6 @@ final class EditNewTrackerViewController: UIViewController {
     }
 
     private func setupColorCollection() {
-        colorCollectionManager = ColorCollectionManager(
-            collectionView: colorCollection,
-            params: params,
-            presenter: presenter
-        )
-
         colorCollection.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(colorCollection)
 
@@ -271,8 +276,8 @@ final class EditNewTrackerViewController: UIViewController {
 
     @objc
     private func createButtonPressed() {
-        let tracker = presenter?.createTracker()
-        presenter?.saveTracker(tracker: tracker)
+        let tracker = presenter.createTracker()
+        presenter.saveTracker(tracker: tracker)
         self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
     }
 }
@@ -289,16 +294,15 @@ extension EditNewTrackerViewController: UITableViewDelegate {
 
         switch selectedOption {
         case "Категория":
-            let createVC = CategoryPageViewController()
+            let lastSelectedCategory = presenter.dataModel.category
+            let createVC = CategoryPageViewController(presenter: presenter, lastSelectedCategory: lastSelectedCategory)
             createVC.modalPresentationStyle = .pageSheet
-            createVC.presenter = presenter
-            createVC.lastSelectedCategory = presenter?.dataModel.category
             present(createVC, animated: true)
 
         case "Расписание":
             let createVC = SchedulePageViewController()
             createVC.presenter = presenter
-            if let schedule = presenter?.dataModel.schudule {
+            if let schedule = presenter.dataModel.schudule {
                 createVC.selectedDays = schedule
             }
             createVC.modalPresentationStyle = .pageSheet
@@ -327,11 +331,11 @@ extension EditNewTrackerViewController: UITableViewDataSource {
 
         switch identifier {
         case "Категория":
-            let selectedCategory = presenter?.dataModel.category
+            let selectedCategory = presenter.dataModel.category
             cell.configurateTitleButton(title: identifier, category: selectedCategory)
 
         case "Расписание":
-            let schedule = presenter?.dataModel.schudule
+            let schedule = presenter.dataModel.schudule
             cell.configureSheduleButton(title: identifier, schedule: schedule)
 
         default:

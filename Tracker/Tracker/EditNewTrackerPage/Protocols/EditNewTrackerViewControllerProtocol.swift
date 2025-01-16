@@ -1,6 +1,6 @@
 import Foundation
 
-protocol EditNewTrackerViewControllerProtocol {
+protocol EditNewTrackerViewControllerProtocol: AnyObject {
     var isRegular: Bool { get }
     func setCreateButtonEnable()
     func setCreateButtonDissable()

@@ -4,10 +4,10 @@ final class ColorCollectionManager: NSObject {
     // MARK: - Properties
     private let collectionView: UICollectionView
     private let params: GeometricParamsModel
-    private var presenter: EditNewTrackerPresenterProtocol?
+    private var presenter: EditNewTrackerPresenterProtocol
 
     // MARK: - Initializer
-    init(collectionView: UICollectionView, params: GeometricParamsModel, presenter: EditNewTrackerPresenterProtocol?) {
+    init(collectionView: UICollectionView, params: GeometricParamsModel, presenter: EditNewTrackerPresenterProtocol) {
         self.collectionView = collectionView
         self.params = params
         self.presenter = presenter
@@ -44,7 +44,7 @@ extension ColorCollectionManager: UICollectionViewDelegate {
             cell.contentView.layer.borderColor = color.withAlphaComponent(0.3).cgColor
         }
 
-        presenter?.updateColor(new: TrackerColors.allCases[indexPath.row])
+        presenter.updateColor(new: TrackerColors.allCases[indexPath.row])
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -53,7 +53,7 @@ extension ColorCollectionManager: UICollectionViewDelegate {
             cell.contentView.layer.borderColor = UIColor.clear.cgColor
         }
 
-        presenter?.updateColor(new: nil)
+        presenter.updateColor(new: nil)
     }
 }
 

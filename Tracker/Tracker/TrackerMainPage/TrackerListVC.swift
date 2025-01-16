@@ -2,7 +2,14 @@ import UIKit
 
 final class TrackerListViewController: UIViewController, UIViewControllerTransitioningDelegate {
     // MARK: - Constants
-    private let params: GeometricParamsModel
+    private let params = GeometricParamsModel(
+        cellCount: 2,
+        leftInset: 16,
+        rightInset: 16,
+        cellSpacing: 9,
+        cellWidth: 167,
+        cellHeight: 148
+    )
 
     // MARK: - UI Elements
     private let headerLabel: UILabel = {
@@ -67,24 +74,6 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
         setupUI()
         setupTrackersCollectionView()
         updateUI()
-    }
-
-    // MARK: - Initializer
-
-    init() {
-        self.params = GeometricParamsModel(
-            cellCount: 2,
-            leftInset: 16,
-            rightInset: 16,
-            cellSpacing: 9,
-            cellWidth: 167,
-            cellHeight: 148
-        )
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - Setup UI

@@ -1,6 +1,7 @@
 import Foundation
 
 protocol EditNewTrackerPresenterProtocol {
+    func configure(view: EditNewTrackerViewControllerProtocol)
     func updateName(name: String?)
     func updateSchedule(new: Set<Schedule>?)
     func updateCategory(new: TrackerCategoryModel?)

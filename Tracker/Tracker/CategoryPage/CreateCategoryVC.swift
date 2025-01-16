@@ -52,7 +52,6 @@ final class CreateCategoryViewController: UIViewController {
     private func setupTrackerNameField() {
         trackerNameFieldManager = NameTextFieldManager(
             trackerNameField: trackerNameField,
-            delegate: nil,
             placeholderText: "Введите название категории",
             presenter: nil
         )

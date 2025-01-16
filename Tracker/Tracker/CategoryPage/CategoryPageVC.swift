@@ -39,12 +39,22 @@ final class CategoryPageViewController: UIViewController {
     }()
 
     // MARK: - Properties
-    private var selectedIndexPath: IndexPath?
     private var trackerCategoryList: [TrackerCategoryModel] = []
     private var trackerCategoryManager = TrackerCategoryManager.shared
-    var presenter: EditNewTrackerPresenterProtocol?
-    var lastSelectedCategory: TrackerCategoryModel?
+    private var presenter: EditNewTrackerPresenterProtocol?
+    private var lastSelectedCategory: TrackerCategoryModel?
 
+    
+    init(presenter: EditNewTrackerPresenterProtocol?, lastSelectedCategory: TrackerCategoryModel?) {
+        self.presenter = presenter
+        self.lastSelectedCategory = lastSelectedCategory
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -141,7 +151,6 @@ extension CategoryPageViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedIndexPath = indexPath
         let selectedCategory = trackerCategoryList[indexPath.row]
         presenter?.updateCategory(new: selectedCategory)
         dismiss(animated: true)
