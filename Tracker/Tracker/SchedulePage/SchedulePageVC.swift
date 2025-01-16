@@ -52,44 +52,39 @@ final class SchedulePageViewController: UIViewController {
     // MARK: - Setup UI
     private func setupUI() {
         view.backgroundColor = UIColor(named: "TrackerBackgroundWhite")
-        setupTitleLabel()
+        prepareViews()
         setupScheduleTableView()
         setupAddScheduleButton()
+        setupConstraints()
     }
-
-    private func setupTitleLabel() {
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        view.addSubview(titleLabel)
-
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 13),
-            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ])
+    
+    private func prepareViews() {
+        [titleLabel, scheduleTable, addScheduleButton].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview($0)
+        }
     }
 
     private func setupScheduleTableView() {
-        scheduleTable.translatesAutoresizingMaskIntoConstraints = false
         scheduleTable.delegate = self
         scheduleTable.dataSource = self
         scheduleTable.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        view.addSubview(scheduleTable)
-
-        NSLayoutConstraint.activate([
-            scheduleTable.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
-            scheduleTable.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            scheduleTable.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            scheduleTable.heightAnchor.constraint(equalToConstant: CGFloat(Schedule.allCases.count) * 75)
-        ])
     }
 
     private func setupAddScheduleButton() {
-        addScheduleButton.translatesAutoresizingMaskIntoConstraints = false
         addScheduleButton.addTarget(self, action: #selector(addSelectedDaysButtonPressed), for: .touchUpInside)
-
-        view.addSubview(addScheduleButton)
-
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 13),
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            scheduleTable.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
+            scheduleTable.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            scheduleTable.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            scheduleTable.heightAnchor.constraint(equalToConstant: CGFloat(Schedule.allCases.count) * 75),
+            
             addScheduleButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
             addScheduleButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             addScheduleButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),

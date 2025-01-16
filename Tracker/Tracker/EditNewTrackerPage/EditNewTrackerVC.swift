@@ -332,11 +332,11 @@ extension EditNewTrackerViewController: UITableViewDataSource {
         switch identifier {
         case "Категория":
             let selectedCategory = presenter.dataModel.category
-            cell.configurateTitleButton(title: identifier, category: selectedCategory)
+            cell.configureTitleButton(title: identifier, category: selectedCategory)
 
         case "Расписание":
             let schedule = presenter.dataModel.schudule
-            cell.configureSheduleButton(title: identifier, schedule: schedule)
+            cell.configureScheduleButton(title: identifier, schedule: schedule)
 
         default:
             break

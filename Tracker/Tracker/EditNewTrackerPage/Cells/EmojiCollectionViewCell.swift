@@ -1,7 +1,7 @@
 import UIKit
 
 final class EmojiCollectionViewCell: UICollectionViewCell {
-    // MARK: - Properties
+    // MARK: - UI Elements
     private let emojiLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -11,7 +11,8 @@ final class EmojiCollectionViewCell: UICollectionViewCell {
         return label
     }()
 
-    private var emojiBackGroundColor: UIColor {
+    // MARK: - Properties
+    private var emojiBackGroundColor: UIColor = .clear {
         didSet {
             emojiLabel.backgroundColor = emojiBackGroundColor
         }
@@ -19,9 +20,9 @@ final class EmojiCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Initializer
     override init(frame: CGRect) {
-        emojiBackGroundColor = .clear
         super.init(frame: frame)
         setupUI()
+        setupConstraints()
     }
 
     required init?(coder: NSCoder) {
@@ -29,15 +30,19 @@ final class EmojiCollectionViewCell: UICollectionViewCell {
     }
 
     // MARK: - Configuration
-    func configure(with emoji: String) {
+    func configure(with emoji: String, backgroundColor: UIColor = .clear) {
         emojiLabel.text = emoji
+        emojiBackGroundColor = backgroundColor
     }
 
     // MARK: - Setup UI
     private func setupUI() {
         contentView.layer.cornerRadius = 16
         contentView.addSubview(emojiLabel)
+    }
 
+    // MARK: - Setup Constraints
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             emojiLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             emojiLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),

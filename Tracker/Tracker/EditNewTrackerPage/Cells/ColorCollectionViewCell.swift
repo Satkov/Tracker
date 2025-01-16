@@ -1,7 +1,7 @@
 import UIKit
 
 final class ColorCollectionViewCell: UICollectionViewCell {
-    // MARK: - Properties
+    // MARK: - UI Elements
     private let colorSquare: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -9,6 +9,7 @@ final class ColorCollectionViewCell: UICollectionViewCell {
         return view
     }()
 
+    // MARK: - Properties
     var cellColor: UIColor? {
         didSet {
             colorSquare.backgroundColor = cellColor
@@ -19,6 +20,7 @@ final class ColorCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
+        setupConstraints()
     }
 
     required init?(coder: NSCoder) {
@@ -31,7 +33,10 @@ final class ColorCollectionViewCell: UICollectionViewCell {
         contentView.layer.cornerRadius = 16
         contentView.layer.borderWidth = 3
         contentView.layer.borderColor = UIColor.clear.cgColor
+    }
 
+    // MARK: - Setup Constraints
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             colorSquare.widthAnchor.constraint(equalToConstant: 40),
             colorSquare.heightAnchor.constraint(equalToConstant: 40),

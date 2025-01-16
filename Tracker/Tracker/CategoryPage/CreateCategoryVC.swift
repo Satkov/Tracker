@@ -47,41 +47,41 @@ final class CreateCategoryViewController: UIViewController {
     // MARK: - UI Setup
     private func setupUI() {
         view.backgroundColor = UIColor(named: "TrackerBackgroundWhite")
-        setupTitleLabel()
+        prepareViews()
         setupTrackerNameField()
         setupAddCategoryButton()
+        setupConstraints()
     }
-
-    private func setupTitleLabel() {
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(titleLabel)
-
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 13),
-            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ])
+    
+    private func prepareViews() {
+        [titleLabel,
+         trackerNameField,
+         addCategoryButton].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview($0)
+        }
     }
 
     private func setupTrackerNameField() {
         trackerNameField.delegate = self
-        view.addSubview(trackerNameField)
+    }
 
+    private func setupAddCategoryButton() {
+        addCategoryButton.addTarget(self, action: #selector(addCategoryButtonPressed), for: .touchUpInside)
+        disableAddCategoryButton()
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 13),
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
             trackerNameField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             trackerNameField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
             trackerNameField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             trackerNameField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            trackerNameField.heightAnchor.constraint(equalToConstant: 75)
-        ])
-    }
-
-    private func setupAddCategoryButton() {
-        addCategoryButton.translatesAutoresizingMaskIntoConstraints = false
-        addCategoryButton.addTarget(self, action: #selector(addCategoryButtonPressed), for: .touchUpInside)
-        disableAddCategoryButton()
-        view.addSubview(addCategoryButton)
-
-        NSLayoutConstraint.activate([
+            trackerNameField.heightAnchor.constraint(equalToConstant: 75),
+            
             addCategoryButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
             addCategoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             addCategoryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),

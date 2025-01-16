@@ -13,6 +13,7 @@ final class TrackerTypeMenuViewController: UIViewController {
     var onTrackerCreation: (() -> Void)?
 
     override func viewDidLoad() {
+        super.viewDidLoad()
         setupUI()
     }
 

@@ -1,15 +1,37 @@
 import UIKit
 
 final class ButtonsTableViewCells: UITableViewCell {
+    // MARK: - UI Elements
     private let labelsContainer = UIView()
-    private let titleLabel = UILabel()
-    private let subtitleLabel = UILabel()
-    private let arrowImageView = UIImageView()
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        label.textColor = UIColor.projectColor(.backgroundBlack)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let subtitleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        label.textColor = UIColor.projectColor(.textColorForLightgray)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let arrowImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.tintColor = .gray
+        imageView.image = UIImage(systemName: "chevron.right")
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
 
     // MARK: - Initializer
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
+        setupConstraints()
     }
 
     required init?(coder: NSCoder) {
@@ -18,30 +40,16 @@ final class ButtonsTableViewCells: UITableViewCell {
 
     // MARK: - Setup UI
     private func setupUI() {
-        // Add labels container to cell
         contentView.addSubview(labelsContainer)
+        labelsContainer.addSubview(titleLabel)
+        labelsContainer.addSubview(subtitleLabel)
+        contentView.addSubview(arrowImageView)
         contentView.backgroundColor = UIColor.projectColor(.backgroundLightGray)
         labelsContainer.translatesAutoresizingMaskIntoConstraints = false
+    }
 
-        // Configure title label
-        labelsContainer.addSubview(titleLabel)
-        titleLabel.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-        titleLabel.textColor = UIColor.projectColor(.backgroundBlack)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        // Configure subtitle label
-        labelsContainer.addSubview(subtitleLabel)
-        subtitleLabel.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-        subtitleLabel.textColor = UIColor.projectColor(.textColorForLightgray)
-        subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        // Configure arrow image
-        contentView.addSubview(arrowImageView)
-        arrowImageView.tintColor = .gray
-        arrowImageView.image = UIImage(systemName: "chevron.right")
-        arrowImageView.translatesAutoresizingMaskIntoConstraints = false
-
-        // Constraints
+    // MARK: - Constraints
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             // Labels container
             labelsContainer.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
@@ -68,23 +76,15 @@ final class ButtonsTableViewCells: UITableViewCell {
     }
 
     // MARK: - Configuration
-    func configurateTitleButton(title: String, category: TrackerCategoryModel?) {
+    func configureTitleButton(title: String, category: TrackerCategoryModel?) {
         titleLabel.text = title
-        if let subtitle = category {
-            subtitleLabel.text = subtitle.categoryName
-            subtitleLabel.isHidden = false
-        } else {
-            subtitleLabel.isHidden = true
-        }
+        subtitleLabel.text = category?.categoryName
+        subtitleLabel.isHidden = category == nil
     }
 
-    func configureSheduleButton(title: String, schedule: Set<Schedule>?) {
+    func configureScheduleButton(title: String, schedule: Set<Schedule>?) {
         titleLabel.text = title
-        if let subtitle = schedule, !subtitle.isEmpty {
-            subtitleLabel.text = Schedule.formattedString(from: subtitle)
-            subtitleLabel.isHidden = false
-        } else {
-            subtitleLabel.isHidden = true
-        }
+        subtitleLabel.text = schedule?.isEmpty == false ? Schedule.formattedString(from: schedule!) : nil
+        subtitleLabel.isHidden = schedule?.isEmpty ?? true
     }
 }

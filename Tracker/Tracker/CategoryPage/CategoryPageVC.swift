@@ -66,34 +66,25 @@ final class CategoryPageViewController: UIViewController {
     }
 
     // MARK: - Setup UI
+    
     private func setupUI() {
         view.backgroundColor = UIColor(named: "TrackerBackgroundWhite")
-        setupTitleLabel()
+        prepareViews()
         setupAddCategoryButton()
+        setupConstraints()
         trackerCategoryList.isEmpty ? setupPlaceholder() : setupCategoriesTable()
     }
-
-    private func setupTitleLabel() {
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(titleLabel)
-
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 13),
-            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ])
+    
+    private func prepareViews() {
+        [titleLabel,
+         addCategoryButton].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview($0)
+        }
     }
 
     private func setupAddCategoryButton() {
-        addCategoryButton.translatesAutoresizingMaskIntoConstraints = false
         addCategoryButton.addTarget(self, action: #selector(addCategoryButtonPressed), for: .touchUpInside)
-        view.addSubview(addCategoryButton)
-
-        NSLayoutConstraint.activate([
-            addCategoryButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
-            addCategoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            addCategoryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            addCategoryButton.heightAnchor.constraint(equalToConstant: 60)
-        ])
     }
 
     private func setupCategoriesTable() {
@@ -136,7 +127,18 @@ final class CategoryPageViewController: UIViewController {
             placeholderText.topAnchor.constraint(equalTo: placeholderImage.bottomAnchor, constant: 8)
         ])
     }
-
+    
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 13),
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                
+            addCategoryButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
+            addCategoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            addCategoryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            addCategoryButton.heightAnchor.constraint(equalToConstant: 60)
+        ])
+    }
     // MARK: - Actions
     @objc
     private func addCategoryButtonPressed() {
