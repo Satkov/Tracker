@@ -44,7 +44,7 @@ final class TrackersCollectionCell: UICollectionViewCell {
     func setupCardView() {
         cardView.translatesAutoresizingMaskIntoConstraints = false
         cardView.layer.cornerRadius = 16
-        cardView.backgroundColor = tracker?.color.color
+        cardView.backgroundColor = tracker?.color.getUIColor()
 
         contentView.addSubview(cardView)
 
@@ -129,13 +129,12 @@ final class TrackersCollectionCell: UICollectionViewCell {
         guard let tracker = tracker,
               let datePicker = datePicker
         else { return }
-        print("LOG: ", recordManager.hasRecord(trackerID: tracker.id, date: datePicker.date) )
         if !recordManager.hasRecord(trackerID: tracker.id, date: datePicker.date) {
-            recordButton.backgroundColor = tracker.color.color
+            recordButton.backgroundColor = tracker.color.getUIColor()
             recordButton.setImage(UIImage(systemName: "plus"), for: .normal)
             recordButton.tintColor = .white
         } else {
-            recordButton.backgroundColor = tracker.color.color.withAlphaComponent(0.3)
+            recordButton.backgroundColor = tracker.color.getUIColor().withAlphaComponent(0.3)
             recordButton.setImage(UIImage(named: "Done"), for: .normal)
             recordButton.tintColor = .white
         }

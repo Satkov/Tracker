@@ -4,16 +4,16 @@ final class TrackerCategoryManager {
     private var categories: [TrackerCategoryModel] = []
     private let queue = DispatchQueue(label: "trackerCategoryQueue", attributes: .concurrent)
     static let shared = TrackerCategoryManager()
-
+    
     private init() {}
-
+    
     // Загрузка категорий
     func loadCategories() -> [TrackerCategoryModel] {
         queue.sync {
             return categories
         }
     }
-
+    
     func getCategories(for day: Schedule) -> [TrackerCategoryModel] {
         queue.sync {
             return categories.compactMap { category in
@@ -22,9 +22,9 @@ final class TrackerCategoryManager {
                     return schedule.contains(day)
                 }
                 return filteredTrackers.isEmpty ? nil : TrackerCategoryModel(
-                                                            categoryName: category.categoryName,
-                                                            trackers: filteredTrackers
-                                                        )
+                    categoryName: category.categoryName,
+                    trackers: filteredTrackers
+                )
             }
         }
     }
@@ -38,29 +38,28 @@ final class TrackerCategoryManager {
             }
         }
     }
-
+    
     // Загрузка категорий с трекерами
     func loadCategoriesWithTrackers() -> [TrackerCategoryModel] {
         queue.sync {
-            print("LOG: ", categories)
             return categories.filter { !$0.trackers.isEmpty }
         }
     }
-
+    
     // Добавление новой категории
     func addCategory(_ category: TrackerCategoryModel) {
         queue.async(flags: .barrier) {
             self.categories.append(category)
         }
     }
-
+    
     // Удаление категории
     func removeCategory(byName name: String) {
         queue.async(flags: .barrier) {
             self.categories.removeAll { $0.categoryName == name }
         }
     }
-
+    
     // Добавление трекера в категорию
     func addTracker(to categoryName: String, tracker: TrackerModel) {
         queue.async(flags: .barrier) {
@@ -72,7 +71,7 @@ final class TrackerCategoryManager {
             }
         }
     }
-
+    
     // Удаление трекера из категории
     func removeTracker(from categoryName: String, trackerID: UUID) {
         queue.async(flags: .barrier) {

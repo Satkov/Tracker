@@ -47,7 +47,7 @@ extension ColorCollectionManager: UICollectionViewDelegate {
 
         // Устанавливаем обводку для выбранной ячейки
         if let cell = collectionView.cellForItem(at: indexPath) {
-            let color = TrackerColors.allCases[indexPath.row].color
+            let color = TrackerColors.allCases[indexPath.row].getUIColor()
             cell.contentView.layer.borderColor = color.withAlphaComponent(0.3).cgColor
         }
 
@@ -84,7 +84,7 @@ extension ColorCollectionManager: UICollectionViewDataSource {
             fatalError("Failed to dequeue ColorCollectionViewCell")
         }
 
-        cell.cellColor = TrackerColors.allCases[indexPath.item].color
+        cell.cellColor = TrackerColors.allCases[indexPath.item].getUIColor()
         return cell
     }
 

@@ -20,7 +20,7 @@ enum TrackerColors: String, CaseIterable, Codable {
     case teal = "0x8D72E6" // Бирюзовый
     case salad = "0x2FD058" // Салатовый
 
-    var color: UIColor {
+    func getUIColor() -> UIColor {
         return UIColor(hex: self.rawValue)
     }
 }

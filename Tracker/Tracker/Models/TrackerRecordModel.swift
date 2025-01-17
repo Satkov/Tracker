@@ -6,8 +6,6 @@ struct TrackerRecordModel: Codable, Hashable {
 
     init(trackerID: UUID, date: Date) {
         self.trackerID = trackerID
-        // Обнуляем время потому что иначе отметка о выполнении не будет удаляться,
-        // из-за разницы в секундах
         self.date = Calendar.current.startOfDay(for: date)
     }
 }

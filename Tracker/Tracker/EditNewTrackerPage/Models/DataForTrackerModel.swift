@@ -1,13 +1,25 @@
 import Foundation
 
 struct DataForTrackerModel {
-    // в данном случае переменные здесь для того, чтобы было
-    // удобнее работать с EditNewTrackerPresenter. такой подход не стоит применять?
-    var name: String?
-    var category: TrackerCategoryModel?
-    var color: TrackerColors?
-    var emoji: Emojis?
-    var schudule: Set<Schedule>?
+    let name: String?
+    let category: TrackerCategoryModel?
+    let color: TrackerColors?
+    let emoji: Emojis?
+    let schudule: Set<Schedule>?
+
+    init(
+        name: String? = nil,
+        category: TrackerCategoryModel? = nil,
+        color: TrackerColors? = nil,
+        emoji: Emojis? = nil,
+        schudule: Set<Schedule>? = nil
+    ) {
+        self.name = name
+        self.category = category
+        self.color = color
+        self.emoji = emoji
+        self.schudule = schudule
+    }
 
     func isAllDataPresented(isRegular: Bool) -> Bool {
         let commonDataIsValid = category != nil && color != nil && emoji != nil && name != nil
@@ -18,3 +30,4 @@ struct DataForTrackerModel {
         }
     }
 }
+

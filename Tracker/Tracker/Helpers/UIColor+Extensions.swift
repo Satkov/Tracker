@@ -1,6 +1,5 @@
-// Расширение для удобного создания UIColor из hex
-
 import UIKit
+
 extension UIColor {
     convenience init(hex: String) {
         var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)

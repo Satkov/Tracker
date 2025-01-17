@@ -15,30 +15,47 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
         }
     }
     
+    private func updateDataModel(
+        name: String? = nil,
+        category: TrackerCategoryModel? = nil,
+        color: TrackerColors? = nil,
+        emoji: Emojis? = nil,
+        schudule: Set<Schedule>? = nil
+    ) {
+        let updatedModel = DataForTrackerModel(
+            name: name ?? dataModel.name,
+            category: category ?? dataModel.category,
+            color: color ?? dataModel.color,
+            emoji: emoji ?? dataModel.emoji,
+            schudule: schudule ?? dataModel.schudule
+        )
+        dataModel = updatedModel
+    }
+    
     func configure(view: EditNewTrackerViewControllerProtocol) {
         self.view = view
     }
 
     func updateName(name: String?) {
-        dataModel.name = name
+        updateDataModel(name: name)
     }
 
     func updateSchedule(new: Set<Schedule>?) {
         view?.reloadButtonTable()
-        dataModel.schudule = new
+        updateDataModel(schudule: new)
     }
 
     func updateCategory(new: TrackerCategoryModel?) {
         view?.reloadButtonTable()
-        dataModel.category = new
+        updateDataModel(category: new)
     }
 
     func updateEmoji(new: Emojis?) {
-        dataModel.emoji = new
+        updateDataModel(emoji: new)
     }
 
     func updateColor(new: TrackerColors?) {
-        dataModel.color = new
+        updateDataModel(color: new)
     }
 
     func createTracker() -> TrackerModel? {

@@ -35,9 +35,10 @@ final class TrackersCollectionManager: NSObject {
         )
     }
 
+    // Эта функция отрабатывает, когда нвжимаем на +
+    // Она передается через замыкание в методе cellForItemAt
     private func handleButtonAction(at indexPath: IndexPath) {
         let tracker = categories[indexPath.section].trackers[indexPath.row]
-        print("LOG: Tapped - status: ", currentDate <= Date(), "//  ")
         guard currentDate <= Date() else { return }
         recordManager.toggleRecord(TrackerRecordModel(trackerID: tracker.id, date: currentDate))
         collectionView.reloadItems(at: [indexPath])
@@ -68,6 +69,7 @@ extension TrackersCollectionManager: UICollectionViewDataSource {
             fatalError("Failed to dequeue TrackersCollectionCell")
         }
         let currentTracker = categories[indexPath.section].trackers[indexPath.row]
+        
         let buttonAction = { [weak self] in
             guard let self = self else { return }
             self.handleButtonAction(at: indexPath)
