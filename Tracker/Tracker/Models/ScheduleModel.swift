@@ -40,9 +40,7 @@ enum Schedule: String, CaseIterable, Codable {
         }
     }
 
-    static var sortedOrder: [Schedule] {
-        return [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
-    }
+    static let sortedOrder: [Schedule] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
 
     static func formattedString(from days: Set<Schedule>) -> String {
         if days.count == 7 {

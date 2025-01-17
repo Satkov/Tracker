@@ -32,6 +32,7 @@ final class EmojiCollectionViewCell: UICollectionViewCell {
     // MARK: - Configuration
     func configure(with emoji: String, backgroundColor: UIColor = .clear) {
         emojiLabel.text = emoji
+        emojiLabel.font = UIFont.systemFont(ofSize: 32)
         emojiBackGroundColor = backgroundColor
     }
 

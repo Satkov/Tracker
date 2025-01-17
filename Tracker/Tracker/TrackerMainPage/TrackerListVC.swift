@@ -30,6 +30,7 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
             textField.leftView = UIImageView(image: UIImage(named: "SearchBarIcon"))
             textField.leftViewMode = .always
         }
+        
         return searchBar
     }()
 
@@ -87,6 +88,12 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
         setupPlaceholderText()
         navigationController?.setNavigationBarHidden(true, animated: true)
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print("Header frame: \(headerLabel.frame)")
+        print("Search bar frame: \(searchBar.frame)")
+    }
 
     private func setupAddTrackerButton() {
         addTrackerButton.translatesAutoresizingMaskIntoConstraints = false
@@ -134,7 +141,7 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
         view.addSubview(searchBar)
 
         NSLayoutConstraint.activate([
-            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             searchBar.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 7),
             searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ])

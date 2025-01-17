@@ -25,7 +25,10 @@ final class ColorCollectionManager: NSObject {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.allowsMultipleSelection = true
-        collectionView.register(ColorCollectionViewCell.self, forCellWithReuseIdentifier: "ColorCollectionViewCell")
+        collectionView.register(
+            ColorCollectionViewCell.self,
+            forCellWithReuseIdentifier: "ColorCollectionViewCell"
+        )
         collectionView.register(
             SupplementaryView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
@@ -80,7 +83,9 @@ extension ColorCollectionManager: UICollectionViewDataSource {
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ColorCollectionViewCell", for: indexPath) as? ColorCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: "ColorCollectionViewCell", for: indexPath
+        ) as? ColorCollectionViewCell else {
             fatalError("Failed to dequeue ColorCollectionViewCell")
         }
 
@@ -114,10 +119,15 @@ extension ColorCollectionManager: UICollectionViewDelegateFlowLayout {
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
         let indexPath = IndexPath(row: 0, section: section)
-        let headerView = self.collectionView(collectionView, viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader, at: indexPath)
+        let headerView = self.collectionView(
+                            collectionView,
+                            viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader,
+                            at: indexPath
+                        )
 
         return headerView.systemLayoutSizeFitting(
-            CGSize(width: collectionView.frame.width, height: UIView.layoutFittingExpandedSize.height),
+            CGSize(width: collectionView.frame.width, 
+                   height: UIView.layoutFittingExpandedSize.height),
             withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel
         )
@@ -128,7 +138,12 @@ extension ColorCollectionManager: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         insetForSectionAt section: Int
     ) -> UIEdgeInsets {
-        UIEdgeInsets(top: 0, left: params.leftInset, bottom: 0, right: params.rightInset)
+        UIEdgeInsets(
+            top: 24,
+            left: params.leftInset,
+            bottom: 0,
+            right: params.rightInset
+        )
     }
 
     func collectionView(

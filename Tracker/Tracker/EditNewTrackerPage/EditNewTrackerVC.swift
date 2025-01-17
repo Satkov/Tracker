@@ -218,10 +218,10 @@ final class EditNewTrackerViewController: UIViewController {
         scrollView.addSubview(emojiCollection)
 
         NSLayoutConstraint.activate([
-            emojiCollection.topAnchor.constraint(equalTo: buttonTable.bottomAnchor, constant: 50),
+            emojiCollection.topAnchor.constraint(equalTo: buttonTable.bottomAnchor, constant: 34),
             emojiCollection.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             emojiCollection.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            emojiCollection.heightAnchor.constraint(equalToConstant: 204)
+            emojiCollection.heightAnchor.constraint(equalToConstant: 228)
         ])
     }
 
@@ -233,7 +233,7 @@ final class EditNewTrackerViewController: UIViewController {
             colorCollection.topAnchor.constraint(equalTo: emojiCollection.bottomAnchor, constant: 34),
             colorCollection.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             colorCollection.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            colorCollection.heightAnchor.constraint(equalToConstant: 204)
+            colorCollection.heightAnchor.constraint(equalToConstant: 228)
         ])
     }
 

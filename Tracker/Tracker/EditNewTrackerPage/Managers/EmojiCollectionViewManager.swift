@@ -134,7 +134,7 @@ extension EmojiCollectionViewManager: UICollectionViewDelegateFlowLayout {
         insetForSectionAt section: Int
     ) -> UIEdgeInsets {
         UIEdgeInsets(
-            top: 0,
+            top: 24,
             left: params.leftInset,
             bottom: 0,
             right: params.rightInset
