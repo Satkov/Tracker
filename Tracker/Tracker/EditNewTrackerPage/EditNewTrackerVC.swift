@@ -119,6 +119,7 @@ final class EditNewTrackerViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         presenter.onTrackerCreation = onTrackerCreation
+        setupGestureRecognizer()
     }
 
     // MARK: - UI Setup
@@ -266,9 +267,18 @@ final class EditNewTrackerViewController: UIViewController {
             createButton.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
         ])
     }
+    
+    private func setupGestureRecognizer() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+    }
+
+    @objc private func hideKeyboard() {
+        view.endEditing(true)
+    }
 
     // MARK: - Actions
-
     @objc
     private func cancelButtonPressed() {
         self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)

@@ -8,6 +8,7 @@ final class TrackersCollectionManager: NSObject {
     private let categoryManager = TrackerCategoryManager.shared
     private let datePicker: UIDatePicker
     private let recordManager = RecordManager.shared
+    
     private var currentDate: Date {
         datePicker.date
     }
@@ -35,7 +36,7 @@ final class TrackersCollectionManager: NSObject {
         )
     }
 
-    // Эта функция отрабатывает, когда нвжимаем на +
+    // MARK: - Actions
     private func handleButtonAction(at indexPath: IndexPath) {
         let tracker = categories[indexPath.section].trackers[indexPath.row]
         guard currentDate <= Date() else { return }
@@ -43,6 +44,7 @@ final class TrackersCollectionManager: NSObject {
         collectionView.reloadItems(at: [indexPath])
     }
 
+    // MARK: - Public Methods
     func updateCategories() {
         categories = categoryManager.getCategories(for: Schedule.dayOfWeek(for: currentDate))
     }
@@ -73,8 +75,8 @@ extension TrackersCollectionManager: UICollectionViewDataSource {
             guard let self = self else { return }
             self.handleButtonAction(at: indexPath)
         }
+        
         cell.configure(with: currentTracker, buttonAction: buttonAction, datePicker: datePicker)
-
         return cell
     }
 
@@ -90,7 +92,6 @@ extension TrackersCollectionManager: UICollectionViewDataSource {
         ) as? SupplementaryView else {
             fatalError("Failed to dequeue SupplementaryView")
         }
-
         view.titleLabel.text = categories[indexPath.section].categoryName
         return view
     }

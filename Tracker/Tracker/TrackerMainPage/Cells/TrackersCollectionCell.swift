@@ -1,28 +1,29 @@
 import UIKit
 
 final class TrackersCollectionCell: UICollectionViewCell {
-    private var cardView = UIView()
-    private var footerView = UIView()
-    private var emojiLabel = UILabel()
-    private var trackerNameLabel = UILabel()
-    private var recordLabel = UILabel()
-    private var recordButton = UIButton()
-    private let recordManager = RecordManager.shared
-
+    // MARK: - UI Elements
+    private let cardView = UIView()
+    private let footerView = UIView()
+    private let emojiLabel = UILabel()
+    private let trackerNameLabel = UILabel()
+    private let recordLabel = UILabel()
+    private let recordButton = UIButton()
+    
     // MARK: - Properties
+    private let recordManager = RecordManager.shared
     private var tracker: TrackerModel?
     private var buttonAction: (() -> Void)?
     private var datePicker: UIDatePicker?
-
+    
     // MARK: - Initializer
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     // MARK: - Configuration
     func configure(with tracker: TrackerModel, buttonAction: (() -> Void)?, datePicker: UIDatePicker) {
         self.tracker = tracker
@@ -30,7 +31,7 @@ final class TrackersCollectionCell: UICollectionViewCell {
         self.datePicker = datePicker
         setupUI()
     }
-
+    
     // MARK: - Setup UI
     private func setupUI() {
         setupCardView()
@@ -40,14 +41,14 @@ final class TrackersCollectionCell: UICollectionViewCell {
         setupRecordButton()
         setupRecordLabel()
     }
-
-    func setupCardView() {
+    
+    private func setupCardView() {
         cardView.translatesAutoresizingMaskIntoConstraints = false
         cardView.layer.cornerRadius = 16
         cardView.backgroundColor = tracker?.color.getUIColor()
-
+        
         contentView.addSubview(cardView)
-
+        
         NSLayoutConstraint.activate([
             cardView.topAnchor.constraint(equalTo: contentView.topAnchor),
             cardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -55,13 +56,13 @@ final class TrackersCollectionCell: UICollectionViewCell {
             cardView.heightAnchor.constraint(equalToConstant: 90)
         ])
     }
-
-    func setupFooterView() {
+    
+    private func setupFooterView() {
         footerView.translatesAutoresizingMaskIntoConstraints = false
         footerView.backgroundColor = .clear
-
+        
         contentView.addSubview(footerView)
-
+        
         NSLayoutConstraint.activate([
             footerView.topAnchor.constraint(equalTo: cardView.bottomAnchor),
             footerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -69,16 +70,16 @@ final class TrackersCollectionCell: UICollectionViewCell {
             footerView.heightAnchor.constraint(equalToConstant: 58)
         ])
     }
-
-    func setupEmojiLabel() {
+    
+    private func setupEmojiLabel() {
         emojiLabel.translatesAutoresizingMaskIntoConstraints = false
         emojiLabel.layer.cornerRadius = 12
         emojiLabel.layer.masksToBounds = true
         emojiLabel.backgroundColor = UIColor.projectColor(.backgroundWhite).withAlphaComponent(0.3)
         emojiLabel.text = tracker?.emoji.rawValue
-
+        
         cardView.addSubview(emojiLabel)
-
+        
         NSLayoutConstraint.activate([
             emojiLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 12),
             emojiLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 12),
@@ -86,16 +87,16 @@ final class TrackersCollectionCell: UICollectionViewCell {
             emojiLabel.heightAnchor.constraint(equalToConstant: 24)
         ])
     }
-
-    func setupTrackerNameLabel() {
+    
+    private func setupTrackerNameLabel() {
         trackerNameLabel.translatesAutoresizingMaskIntoConstraints = false
         trackerNameLabel.textAlignment = .left
         trackerNameLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         trackerNameLabel.textColor = UIColor.projectColor(.backgroundWhite)
         trackerNameLabel.text = tracker?.name
-
+        
         cardView.addSubview(trackerNameLabel)
-
+        
         NSLayoutConstraint.activate([
             trackerNameLabel.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -12),
             trackerNameLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 12),
@@ -103,20 +104,14 @@ final class TrackersCollectionCell: UICollectionViewCell {
         ])
     }
     
-    @objc
-    private func recordButtonTapped() {
-        buttonAction?()
-        setButtonStyle()
-    }
-
-    func setupRecordButton() {
+    private func setupRecordButton() {
         recordButton.translatesAutoresizingMaskIntoConstraints = false
         recordButton.layer.cornerRadius = 16
         recordButton.addTarget(self, action: #selector(recordButtonTapped), for: .touchUpInside)
         setButtonStyle()
-
+        
         footerView.addSubview(recordButton)
-
+        
         NSLayoutConstraint.activate([
             recordButton.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 8),
             recordButton.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -16),
@@ -124,11 +119,35 @@ final class TrackersCollectionCell: UICollectionViewCell {
             recordButton.heightAnchor.constraint(equalToConstant: 34)
         ])
     }
-
+    
+    private func setupRecordLabel() {
+        recordLabel.translatesAutoresizingMaskIntoConstraints = false
+        recordLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        
+        if let tracker = tracker {
+            let countRecords = recordManager.countRecords(for: tracker.id)
+            recordLabel.text = "\(countRecords) дней"
+        }
+        
+        footerView.addSubview(recordLabel)
+        
+        NSLayoutConstraint.activate([
+            recordLabel.centerYAnchor.constraint(equalTo: recordButton.centerYAnchor),
+            recordLabel.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 12),
+            recordLabel.trailingAnchor.constraint(equalTo: recordButton.leadingAnchor, constant: -8)
+        ])
+    }
+    
+    // MARK: - Button Action
+    @objc
+    private func recordButtonTapped() {
+        buttonAction?()
+        setButtonStyle()
+    }
+    
     private func setButtonStyle() {
-        guard let tracker = tracker,
-              let datePicker = datePicker
-        else { return }
+        guard let tracker = tracker, let datePicker = datePicker else { return }
+        
         if !recordManager.hasRecord(trackerID: tracker.id, date: datePicker.date) {
             recordButton.backgroundColor = tracker.color.getUIColor()
             recordButton.setImage(UIImage(systemName: "plus"), for: .normal)
@@ -138,21 +157,5 @@ final class TrackersCollectionCell: UICollectionViewCell {
             recordButton.setImage(UIImage(named: "Done"), for: .normal)
             recordButton.tintColor = .white
         }
-    }
-
-    func setupRecordLabel() {
-        recordLabel.translatesAutoresizingMaskIntoConstraints = false
-        recordLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        if let tracker = tracker {
-            let countRecords = recordManager.countRecords(for: tracker.id)
-            recordLabel.text = "\(countRecords) дней"
-        }
-        footerView.addSubview(recordLabel)
-
-        NSLayoutConstraint.activate([
-            recordLabel.centerYAnchor.constraint(equalTo: recordButton.centerYAnchor),
-            recordLabel.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 12),
-            recordLabel.trailingAnchor.constraint(equalTo: recordButton.leadingAnchor, constant: -8)
-        ])
     }
 }

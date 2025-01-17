@@ -38,7 +38,6 @@ final class NameTextFieldManager: NSObject {
         trackerNameField.textColor = UIColor(named: "TrackerBackgroundBlack")
         trackerNameField.backgroundColor = UIColor(named: "TrackerBackgroundLightGray")
         setupPadding()
-        setupTapGesture()
     }
 
     private func setupPadding() {
@@ -53,16 +52,6 @@ final class NameTextFieldManager: NSObject {
         trackerNameField.leftView = paddingView
         trackerNameField.leftViewMode = .always
     }
-    
-    private func setupTapGesture() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
-        tapGesture.cancelsTouchesInView = false
-        trackerNameField.superview?.addGestureRecognizer(tapGesture)
-    }
-
-    @objc private func hideKeyboard() {
-        trackerNameField.resignFirstResponder()
-    }
 }
 
 // MARK: - UITextFieldDelegate
@@ -73,7 +62,7 @@ extension NameTextFieldManager: UITextFieldDelegate {
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
-        guard let name = textField.text, !name.isEmpty else {
+        guard let name = textField.text else {
             return
         }
         presenter?.updateName(name: name)

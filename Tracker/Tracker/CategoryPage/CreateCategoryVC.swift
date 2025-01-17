@@ -51,6 +51,8 @@ final class CreateCategoryViewController: UIViewController {
         setupTrackerNameField()
         setupAddCategoryButton()
         setupConstraints()
+        setupGestureRecognizer()
+        trackerNameField.delegate = self
     }
     
     private func prepareViews() {
@@ -88,6 +90,16 @@ final class CreateCategoryViewController: UIViewController {
             addCategoryButton.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
+    
+    private func setupGestureRecognizer() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+    }
+
+    @objc private func hideKeyboard() {
+        view.endEditing(true)
+    }
 
     // MARK: - Button State Management
     private func setAddCategoryButtonState(isTextFieldEmpty: Bool){
@@ -122,5 +134,17 @@ extension CreateCategoryViewController: UITextFieldDelegate {
         let updatedText = currentText.replacingCharacters(in: range, with: string)
         setAddCategoryButtonState(isTextFieldEmpty: updatedText.isEmpty)
         return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
+
+extension CreateCategoryViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
     }
 }

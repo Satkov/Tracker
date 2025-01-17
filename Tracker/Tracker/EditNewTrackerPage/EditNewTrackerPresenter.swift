@@ -15,47 +15,71 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
         }
     }
     
-    private func updateDataModel(
-        name: String? = nil,
-        category: TrackerCategoryModel? = nil,
-        color: TrackerColors? = nil,
-        emoji: Emojis? = nil,
-        schudule: Set<Schedule>? = nil
-    ) {
-        let updatedModel = DataForTrackerModel(
-            name: name ?? dataModel.name,
-            category: category ?? dataModel.category,
-            color: color ?? dataModel.color,
-            emoji: emoji ?? dataModel.emoji,
-            schudule: schudule ?? dataModel.schudule
-        )
-        dataModel = updatedModel
-    }
-    
     func configure(view: EditNewTrackerViewControllerProtocol) {
         self.view = view
     }
 
+    
+    // я не смог придумать как это по-человечести сделать красиво, чтобы константы оставить в модельке
+    // чтобы при этом не ломалась логика карточки редактирования трекера.
     func updateName(name: String?) {
-        updateDataModel(name: name)
+        let updatedModel = DataForTrackerModel(
+            name: name,
+            category: dataModel.category,
+            color: dataModel.color,
+            emoji: dataModel.emoji,
+            schudule: dataModel.schudule
+        )
+        dataModel = updatedModel
     }
 
     func updateSchedule(new: Set<Schedule>?) {
         view?.reloadButtonTable()
-        updateDataModel(schudule: new)
+        
+        let newSchedule = new?.isEmpty == true ? nil : new
+        
+        dataModel = DataForTrackerModel(
+            name: dataModel.name,
+            category: dataModel.category,
+            color: dataModel.color,
+            emoji: dataModel.emoji,
+            schudule: newSchedule
+        )
     }
 
     func updateCategory(new: TrackerCategoryModel?) {
         view?.reloadButtonTable()
-        updateDataModel(category: new)
+        
+        let updatedModel = DataForTrackerModel(
+            name: dataModel.name,
+            category: new,
+            color: dataModel.color,
+            emoji: dataModel.emoji,
+            schudule: dataModel.schudule
+        )
+        dataModel = updatedModel
     }
 
     func updateEmoji(new: Emojis?) {
-        updateDataModel(emoji: new)
+        let updatedModel = DataForTrackerModel(
+            name: dataModel.name,
+            category: dataModel.category,
+            color: dataModel.color,
+            emoji: new,
+            schudule: dataModel.schudule
+        )
+        dataModel = updatedModel
     }
 
     func updateColor(new: TrackerColors?) {
-        updateDataModel(color: new)
+        let updatedModel = DataForTrackerModel(
+            name: dataModel.name,
+            category: dataModel.category,
+            color: new,
+            emoji: dataModel.emoji,
+            schudule: dataModel.schudule
+        )
+        dataModel = updatedModel
     }
 
     func createTracker() -> TrackerModel? {

@@ -22,6 +22,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             sessionRole: connectingSceneSession.role
         )
         sceneConfiguration.delegateClass = SceneDelegate.self
+        if #available(iOS 13.0, *) {
+            UIWindow.appearance().overrideUserInterfaceStyle = .light
+        }
         return sceneConfiguration
     }
 
