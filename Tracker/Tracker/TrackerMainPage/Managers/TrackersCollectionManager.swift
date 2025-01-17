@@ -36,7 +36,6 @@ final class TrackersCollectionManager: NSObject {
     }
 
     // Эта функция отрабатывает, когда нвжимаем на +
-    // Она передается через замыкание в методе cellForItemAt
     private func handleButtonAction(at indexPath: IndexPath) {
         let tracker = categories[indexPath.section].trackers[indexPath.row]
         guard currentDate <= Date() else { return }

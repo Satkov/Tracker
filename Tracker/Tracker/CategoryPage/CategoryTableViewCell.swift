@@ -67,7 +67,12 @@ final class CategoryTableViewCell: UITableViewCell {
     }
     
     // MARK: - Public Methods
-    func configureCell(with text: String, isSelected: Bool, isLast: Bool, isFirst: Bool) {
+    func configureCell(
+        with text: String,
+        isSelected: Bool,
+        isLast: Bool,
+        isFirst: Bool
+    ) {
         textLabel?.text = text
         textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         

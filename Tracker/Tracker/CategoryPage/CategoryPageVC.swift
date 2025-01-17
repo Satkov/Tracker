@@ -15,7 +15,10 @@ final class CategoryPageViewController: UIViewController {
         label.textAlignment = .center
         return label
     }()
-    private let categoriesTable = UITableView()
+    private let categoriesTable: UITableView = {
+        let tableView = UITableView()
+        return tableView
+    }()
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Категория"
@@ -37,13 +40,13 @@ final class CategoryPageViewController: UIViewController {
         view.layer.cornerRadius = 16
         return view
     }()
-
+    
     // MARK: - Properties
     private var trackerCategoryList: [TrackerCategoryModel] = []
     private var trackerCategoryManager = TrackerCategoryManager.shared
     private var presenter: EditNewTrackerPresenterProtocol
     private var lastSelectedCategory: TrackerCategoryModel?
-
+    
     
     init(
         presenter: EditNewTrackerPresenterProtocol,
@@ -64,7 +67,7 @@ final class CategoryPageViewController: UIViewController {
         trackerCategoryList = trackerCategoryManager.loadCategories()
         setupUI()
     }
-
+    
     // MARK: - Setup UI
     
     private func setupUI() {
@@ -82,11 +85,11 @@ final class CategoryPageViewController: UIViewController {
             view.addSubview($0)
         }
     }
-
+    
     private func setupAddCategoryButton() {
         addCategoryButton.addTarget(self, action: #selector(addCategoryButtonPressed), for: .touchUpInside)
     }
-
+    
     private func setupCategoriesTable() {
         contentViewForTable.translatesAutoresizingMaskIntoConstraints = false
         categoriesTable.translatesAutoresizingMaskIntoConstraints = false
@@ -96,33 +99,33 @@ final class CategoryPageViewController: UIViewController {
         categoriesTable.register(CategoryTableViewCell.self, forCellReuseIdentifier: "CategoryTableViewCell")
         contentViewForTable.addSubview(categoriesTable)
         view.addSubview(contentViewForTable)
-
+        
         NSLayoutConstraint.activate([
             contentViewForTable.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
             contentViewForTable.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             contentViewForTable.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             contentViewForTable.bottomAnchor.constraint(equalTo: addCategoryButton.topAnchor, constant: -20),
-
+            
             categoriesTable.topAnchor.constraint(equalTo: contentViewForTable.topAnchor),
             categoriesTable.leadingAnchor.constraint(equalTo: contentViewForTable.leadingAnchor),
             categoriesTable.trailingAnchor.constraint(equalTo: contentViewForTable.trailingAnchor),
             categoriesTable.bottomAnchor.constraint(equalTo: contentViewForTable.bottomAnchor)
         ])
     }
-
+    
     private func setupPlaceholder() {
         placeholderImage.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(placeholderImage)
-
+        
         placeholderText.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(placeholderText)
-
+        
         NSLayoutConstraint.activate([
             placeholderImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             placeholderImage.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             placeholderImage.widthAnchor.constraint(equalToConstant: 80),
             placeholderImage.heightAnchor.constraint(equalToConstant: 80),
-
+            
             placeholderText.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             placeholderText.topAnchor.constraint(equalTo: placeholderImage.bottomAnchor, constant: 8)
         ])
@@ -132,7 +135,7 @@ final class CategoryPageViewController: UIViewController {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 13),
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                
+            
             addCategoryButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
             addCategoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             addCategoryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
@@ -156,7 +159,7 @@ extension CategoryPageViewController: UITableViewDelegate {
     ) -> CGFloat {
         75
     }
-
+    
     func tableView(
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath
@@ -175,7 +178,7 @@ extension CategoryPageViewController: UITableViewDataSource {
     ) -> Int {
         trackerCategoryList.count
     }
-
+    
     func tableView(
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
@@ -186,14 +189,20 @@ extension CategoryPageViewController: UITableViewDataSource {
         ) as? CategoryTableViewCell else {
             return UITableViewCell()
         }
-
+        
         let category = trackerCategoryList[indexPath.row]
         let isSelected = lastSelectedCategory?.categoryName == category.categoryName
         let isLast = indexPath.row == trackerCategoryList.count - 1
         let isFirst = indexPath.row == 0
-
+        
         cell.configureCell(with: category.categoryName, isSelected: isSelected, isLast: isLast, isFirst: isFirst)
 
+        if isLast {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: cell.bounds.width)
+        } else {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        }
+        
         return cell
     }
 }
@@ -201,7 +210,7 @@ extension CategoryPageViewController: UITableViewDataSource {
 extension CategoryPageViewController: CategoryPageViewControllerProtocol {
     func newCategoryWereAdded() {
         trackerCategoryList = trackerCategoryManager.loadCategories()
-
+        
         DispatchQueue.main.async {
             if self.trackerCategoryList.isEmpty {
                 self.contentViewForTable.removeFromSuperview()
@@ -209,7 +218,7 @@ extension CategoryPageViewController: CategoryPageViewControllerProtocol {
             } else {
                 self.placeholderImage.removeFromSuperview()
                 self.placeholderText.removeFromSuperview()
-
+                
                 if self.contentViewForTable.superview == nil {
                     self.setupCategoriesTable()
                 }

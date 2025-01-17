@@ -167,7 +167,7 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
         view.addSubview(trackersCollection)
 
         NSLayoutConstraint.activate([
-            trackersCollection.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
+            trackersCollection.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 24),
             trackersCollection.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             trackersCollection.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             trackersCollection.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)

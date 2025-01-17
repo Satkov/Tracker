@@ -136,6 +136,12 @@ extension SchedulePageViewController: UITableViewDataSource {
     ) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         configureCell(cell, for: indexPath)
+        let isLast = indexPath.row == 6
+        
+        if isLast {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: cell.bounds.width)
+        }
+        
         return cell
     }
 
