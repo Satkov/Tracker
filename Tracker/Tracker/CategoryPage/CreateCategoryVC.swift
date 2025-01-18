@@ -34,7 +34,7 @@ final class CreateCategoryViewController: UIViewController {
         self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -54,7 +54,7 @@ final class CreateCategoryViewController: UIViewController {
         setupGestureRecognizer()
         trackerNameField.delegate = self
     }
-    
+
     private func prepareViews() {
         [titleLabel,
          trackerNameField,
@@ -72,25 +72,25 @@ final class CreateCategoryViewController: UIViewController {
         addCategoryButton.addTarget(self, action: #selector(addCategoryButtonPressed), for: .touchUpInside)
         setAddCategoryButtonState(isTextFieldEmpty: true)
     }
-    
+
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 13),
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
+
             trackerNameField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             trackerNameField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
             trackerNameField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             trackerNameField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             trackerNameField.heightAnchor.constraint(equalToConstant: 75),
-            
+
             addCategoryButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
             addCategoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             addCategoryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             addCategoryButton.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
-    
+
     private func setupGestureRecognizer() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         tapGesture.cancelsTouchesInView = false
@@ -102,7 +102,7 @@ final class CreateCategoryViewController: UIViewController {
     }
 
     // MARK: - Button State Management
-    private func setAddCategoryButtonState(isTextFieldEmpty: Bool){
+    private func setAddCategoryButtonState(isTextFieldEmpty: Bool) {
         let backgroundcolor: ProjectColors = isTextFieldEmpty ? .textColorForLightgray : .backgroundBlack
         addCategoryButton.backgroundColor = UIColor.projectColor(backgroundcolor)
         addCategoryButton.isEnabled = !isTextFieldEmpty
@@ -135,13 +135,12 @@ extension CreateCategoryViewController: UITextFieldDelegate {
         setAddCategoryButtonState(isTextFieldEmpty: updatedText.isEmpty)
         return true
     }
-    
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
 }
-
 
 extension CreateCategoryViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {

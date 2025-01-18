@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-struct TrackerModel  {
+struct TrackerModel {
     let id = UUID()
     let name: String
     let color: TrackerColors

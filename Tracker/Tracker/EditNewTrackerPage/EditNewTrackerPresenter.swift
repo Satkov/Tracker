@@ -14,18 +14,17 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
             }
         }
     }
-    
+
     func configure(view: EditNewTrackerViewControllerProtocol) {
         self.view = view
     }
 
-    
     // я не смог придумать как это по-человечести сделать красиво, чтобы константы оставить в модельке
     // чтобы при этом не ломалась логика карточки редактирования трекера.
     func updateName(name: String?) {
-        
+
         let newName = name == "" ? nil : name
-        
+
         let updatedModel = DataForTrackerModel(
             name: newName,
             category: dataModel.category,
@@ -38,9 +37,9 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
 
     func updateSchedule(new: Set<Schedule>?) {
         view?.reloadButtonTable()
-        
+
         let newSchedule = new?.isEmpty == true ? nil : new
-        
+
         dataModel = DataForTrackerModel(
             name: dataModel.name,
             category: dataModel.category,
@@ -52,7 +51,7 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
 
     func updateCategory(new: TrackerCategoryModel?) {
         view?.reloadButtonTable()
-        
+
         let updatedModel = DataForTrackerModel(
             name: dataModel.name,
             category: new,

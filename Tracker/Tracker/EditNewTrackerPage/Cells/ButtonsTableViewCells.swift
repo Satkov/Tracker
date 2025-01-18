@@ -10,7 +10,7 @@ final class ButtonsTableViewCells: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private let subtitleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
@@ -18,7 +18,7 @@ final class ButtonsTableViewCells: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private let arrowImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.tintColor = .gray

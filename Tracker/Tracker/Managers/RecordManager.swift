@@ -7,13 +7,6 @@ final class RecordManager {
 
     private init() {}
 
-    // Загрузка всех записей
-    func loadRecords() -> [TrackerRecordModel] {
-        var result: [TrackerRecordModel] = []
-        result = Array(completedTrackers)
-        return result
-    }
-
     // Добавление новой записи
     func addRecord(_ record: TrackerRecordModel) {
         self.completedTrackers.insert(record)
@@ -27,7 +20,10 @@ final class RecordManager {
     // Проверка наличия записи с указанным ID трекера и датой
     func hasRecord(trackerID: UUID, date: Date) -> Bool {
         var result = false
-        result = completedTrackers.contains { $0.trackerID == trackerID && Calendar.current.isDate($0.date, inSameDayAs: date) }
+        result = completedTrackers.contains {
+            $0.trackerID == trackerID &&
+            Calendar.current.isDate($0.date, inSameDayAs: date)
+        }
         return result
     }
 

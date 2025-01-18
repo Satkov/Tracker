@@ -19,7 +19,7 @@ final class NameTextFieldManager: NSObject {
         super.init()
         configureTextField()
     }
-    
+
     func addDelegate(delegate: TrackerNameTextFieldManagerDelegateProtocol) {
         self.delegate = delegate
     }

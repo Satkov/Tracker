@@ -236,7 +236,6 @@
 		91B0284E2CF072270047E664 /* TrackerMainPage */ = {
 			isa = PBXGroup;
 			children = (
-				91CC95C62D10B50400ECE101 /* Protocols */,
 				91CC95C52D10B4F300ECE101 /* Managers */,
 				91CC95C12D10B4C000ECE101 /* Cells */,
 				91B0283D2CF06F680047E664 /* TrackerListVC.swift */,
@@ -328,13 +327,6 @@
 				91CC95C72D10B51D00ECE101 /* TrackersCollectionManager.swift */,
 			);
 			path = Managers;
-			sourceTree = "<group>";
-		};
-		91CC95C62D10B50400ECE101 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Protocols;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

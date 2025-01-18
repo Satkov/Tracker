@@ -66,7 +66,7 @@ final class EditNewTrackerViewController: UIViewController {
         button.layer.cornerRadius = 16
         return button
     }()
-    
+
     // MARK: - Constraints
     private var textFieldContainerHeightConstraint: NSLayoutConstraint!
 
@@ -76,7 +76,6 @@ final class EditNewTrackerViewController: UIViewController {
     private var emojiCollectionManager: EmojiCollectionViewManager
     private var colorCollectionManager: ColorCollectionManager
     private var trackerNameFieldManager: NameTextFieldManager
-
 
     // MARK: - Initializer
 
@@ -91,20 +90,20 @@ final class EditNewTrackerViewController: UIViewController {
             params: params,
             presenter: presenter
         )
-        
+
         self.trackerNameFieldManager = NameTextFieldManager(
             trackerNameField: trackerNameField,
             placeholderText: "Введите название трекера",
             presenter: presenter
         )
-        
+
         self.colorCollectionManager = ColorCollectionManager(
             collectionView: colorCollection,
             params: params,
             presenter: presenter
         )
         super.init(nibName: nil, bundle: nil)
-        
+
         presenter.configure(view: self)
         trackerNameFieldManager.addDelegate(delegate: self)
     }
@@ -179,7 +178,7 @@ final class EditNewTrackerViewController: UIViewController {
     private func setupTrackerNameField() {
         trackerNameFieldContainer.translatesAutoresizingMaskIntoConstraints = false
         trackerNameFieldContainer.addSubview(trackerNameField)
-        
+
         scrollView.addSubview(trackerNameFieldContainer)
 
         textFieldContainerHeightConstraint = trackerNameFieldContainer.heightAnchor.constraint(equalToConstant: 75)
@@ -267,7 +266,7 @@ final class EditNewTrackerViewController: UIViewController {
             createButton.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
         ])
     }
-    
+
     private func setupGestureRecognizer() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         tapGesture.cancelsTouchesInView = false
@@ -299,8 +298,7 @@ extension EditNewTrackerViewController: UITableViewDelegate {
             cell.separatorInset = UIEdgeInsets(top: 0, left: tableView.bounds.width, bottom: 0, right: 0)
         }
     }
-    
-    
+
     func tableView(
         _ tableView: UITableView,
         heightForRowAt indexPath: IndexPath

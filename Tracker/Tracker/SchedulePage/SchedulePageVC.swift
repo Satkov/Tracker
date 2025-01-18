@@ -29,7 +29,6 @@ final class SchedulePageViewController: UIViewController {
     private var selectedDays: Set<Schedule>
     private var presenter: EditNewTrackerPresenterProtocol
 
-    
     init(
         presenter: EditNewTrackerPresenterProtocol,
         selectedDays: Set<Schedule>?
@@ -38,11 +37,11 @@ final class SchedulePageViewController: UIViewController {
         self.selectedDays = selectedDays ?? []
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,7 +56,7 @@ final class SchedulePageViewController: UIViewController {
         setupAddScheduleButton()
         setupConstraints()
     }
-    
+
     private func prepareViews() {
         [titleLabel, scheduleTable, addScheduleButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -74,17 +73,17 @@ final class SchedulePageViewController: UIViewController {
     private func setupAddScheduleButton() {
         addScheduleButton.addTarget(self, action: #selector(addSelectedDaysButtonPressed), for: .touchUpInside)
     }
-    
+
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 13),
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
+
             scheduleTable.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
             scheduleTable.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             scheduleTable.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             scheduleTable.heightAnchor.constraint(equalToConstant: CGFloat(Schedule.allCases.count) * 75),
-            
+
             addScheduleButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
             addScheduleButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             addScheduleButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
@@ -102,7 +101,7 @@ final class SchedulePageViewController: UIViewController {
     @objc
     private func switchChanged(_ sender: UISwitch) {
         let selectedDay = Schedule.getDayByNumberWeekday(sender.tag)
-        
+
         if sender.isOn {
             selectedDays.insert(selectedDay)
         } else {
@@ -137,11 +136,11 @@ extension SchedulePageViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         configureCell(cell, for: indexPath)
         let isLast = indexPath.row == 6
-        
+
         if isLast {
             cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: cell.bounds.width)
         }
-        
+
         return cell
     }
 
@@ -168,7 +167,7 @@ extension SchedulePageViewController: UITableViewDataSource {
         let dayIndex = (indexPath.row + 2) % 7
         switchView.tag = dayIndex == 0 ? 7 : dayIndex
         switchView.isOn = selectedDays.contains(Schedule.getDayByNumberWeekday(switchView.tag))
-        
+
         switchView.onTintColor = UIColor.projectColor(.blue)
         switchView.addTarget(self, action: #selector(switchChanged(_:)), for: .valueChanged)
         return switchView

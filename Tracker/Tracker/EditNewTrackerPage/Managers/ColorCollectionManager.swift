@@ -126,7 +126,7 @@ extension ColorCollectionManager: UICollectionViewDelegateFlowLayout {
                         )
 
         return headerView.systemLayoutSizeFitting(
-            CGSize(width: collectionView.frame.width, 
+            CGSize(width: collectionView.frame.width,
                    height: UIView.layoutFittingExpandedSize.height),
             withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel

@@ -8,7 +8,7 @@ final class TrackersCollectionManager: NSObject {
     private let categoryManager = TrackerCategoryManager.shared
     private let datePicker: UIDatePicker
     private let recordManager = RecordManager.shared
-    
+
     private var currentDate: Date {
         datePicker.date
     }
@@ -70,12 +70,12 @@ extension TrackersCollectionManager: UICollectionViewDataSource {
             fatalError("Failed to dequeue TrackersCollectionCell")
         }
         let currentTracker = categories[indexPath.section].trackers[indexPath.row]
-        
+
         let buttonAction = { [weak self] in
             guard let self = self else { return }
             self.handleButtonAction(at: indexPath)
         }
-        
+
         cell.configure(with: currentTracker, buttonAction: buttonAction, datePicker: datePicker)
         return cell
     }
