@@ -23,8 +23,11 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
     // я не смог придумать как это по-человечести сделать красиво, чтобы константы оставить в модельке
     // чтобы при этом не ломалась логика карточки редактирования трекера.
     func updateName(name: String?) {
+        
+        let newName = name == "" ? nil : name
+        
         let updatedModel = DataForTrackerModel(
-            name: name,
+            name: newName,
             category: dataModel.category,
             color: dataModel.color,
             emoji: dataModel.emoji,
