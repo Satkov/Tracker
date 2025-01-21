@@ -5,9 +5,9 @@ final class TrackersCollectionManager: NSObject {
     private let collectionView: UICollectionView
     private let params: GeometricParamsModel
     private var categories: [TrackerCategoryModel] = []
-    private let categoryManager = TrackerCategoryManager.shared
+    private let categoryManager = TrackerCategoryManager()
     private let datePicker: UIDatePicker
-    private let recordManager = RecordManager.shared
+    private let recordManager = RecordManager()
 
     private var currentDate: Date {
         datePicker.date
@@ -38,6 +38,7 @@ final class TrackersCollectionManager: NSObject {
 
     // MARK: - Actions
     private func handleButtonAction(at indexPath: IndexPath) {
+        print("LOG: categories ",  categories)
         let tracker = categories[indexPath.section].trackers[indexPath.row]
         guard currentDate <= Date() else { return }
         recordManager.toggleRecord(TrackerRecordModel(trackerID: tracker.id, date: currentDate))

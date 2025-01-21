@@ -89,7 +89,8 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
               let emoji = dataModel.emoji,
               let color = dataModel.color
         else { return nil }
-        let tracker = TrackerModel(name: name,
+        let tracker = TrackerModel(id: UUID(),
+                                   name: name,
                                    color: color,
                                    emoji: emoji,
                                    schedule: dataModel.schudule)
@@ -103,8 +104,8 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
             // TODO: Обработка ошибки
             return
         }
-        let categoryManager = TrackerCategoryManager.shared
-        categoryManager.addTracker(to: category.categoryName, tracker: tracker)
+        let trackerManager = TrackerManager()
+        trackerManager.addTracker(to: category.categoryName, trackerModel: tracker)
         onTrackerCreation?()
     }
 }

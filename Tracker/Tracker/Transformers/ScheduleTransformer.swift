@@ -1,0 +1,22 @@
+import Foundation
+
+@objc(ScheduleTransformer)
+final class ScheduleTransformer: ValueTransformer {
+
+    override func transformedValue(_ value: Any?) -> Any? {
+        guard let scheduleSet = value as? Set<Schedule> else { return nil }
+        let scheduleArray = Array(scheduleSet) // Преобразуем Set в Array
+        return try? JSONEncoder().encode(scheduleArray) // Кодируем в Data
+    }
+
+    override func reverseTransformedValue(_ value: Any?) -> Any? {
+        guard let data = value as? Data else { return nil }
+        guard let scheduleArray = try? JSONDecoder().decode([Schedule].self, from: data) else { return nil }
+        return Set(scheduleArray) // Преобразуем Array обратно в Set
+    }
+
+    static func register() {
+        let transformer = ScheduleTransformer()
+        ValueTransformer.setValueTransformer(transformer, forName: NSValueTransformerName(rawValue: "ScheduleTransformer"))
+    }
+}

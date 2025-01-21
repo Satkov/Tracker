@@ -43,7 +43,7 @@ final class CategoryPageViewController: UIViewController {
 
     // MARK: - Properties
     private var trackerCategoryList: [TrackerCategoryModel] = []
-    private var trackerCategoryManager = TrackerCategoryManager.shared
+    private var trackerCategoryManager = TrackerCategoryManager()
     private var presenter: EditNewTrackerPresenterProtocol
     private var lastSelectedCategory: TrackerCategoryModel?
 

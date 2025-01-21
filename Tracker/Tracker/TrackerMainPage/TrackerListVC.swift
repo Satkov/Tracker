@@ -179,7 +179,7 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
     // MARK: - UI Updates
     private func updateUI() {
         let selectedDay = Schedule.dayOfWeek(for: datePicker.date)
-        let hasTrackers = TrackerCategoryManager.shared.hasAnyTrackers(for: selectedDay)
+        let hasTrackers = TrackerCategoryManager().hasAnyTrackers(for: selectedDay)
         trackersCollection.isHidden = !hasTrackers
         placeholderImage.isHidden = hasTrackers
         placeholderText.isHidden = hasTrackers

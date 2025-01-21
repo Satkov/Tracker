@@ -21,7 +21,7 @@ final class CreateCategoryViewController: UIViewController {
 
     // MARK: - Managers
     private let trackerNameFieldManager: NameTextFieldManager?
-    private let categoryManager = TrackerCategoryManager.shared
+    private let categoryManager = TrackerCategoryManager()
 
     private let delegate: CategoryPageViewControllerProtocol
 

@@ -7,6 +7,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        ScheduleTransformer.register()
         return true
     }
 
@@ -25,6 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if #available(iOS 13.0, *) {
             UIWindow.appearance().overrideUserInterfaceStyle = .light
         }
+        
         return sceneConfiguration
     }
 

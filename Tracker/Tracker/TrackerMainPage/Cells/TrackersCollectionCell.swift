@@ -10,7 +10,7 @@ final class TrackersCollectionCell: UICollectionViewCell {
     private let recordButton = UIButton()
 
     // MARK: - Properties
-    private let recordManager = RecordManager.shared
+    private let recordManager = RecordManager()
     private var tracker: TrackerModel?
     private var buttonAction: (() -> Void)?
     private var datePicker: UIDatePicker?
