@@ -5,8 +5,7 @@ final class TrackersCollectionPresenter: NSObject {
     private let collectionView: UICollectionView
     private let params: GeometricParamsModel
     private let datePicker: UIDatePicker
-    private let recordManager = RecordManager()
-    private lazy var dataProvider: TrackersDataProvider = {
+    private lazy var trackersDataProvider: TrackersDataProvider = {
         try! TrackersDataProvider(TrackerDataStore(), delegate: self)
     }()
 
@@ -38,24 +37,24 @@ final class TrackersCollectionPresenter: NSObject {
     }
 
     // MARK: - Actions
-    private func handleButtonAction(at indexPath: IndexPath) {
-        guard currentDate <= Date() else { return }
-        if let tracker = dataProvider.trackerObject(at: indexPath) {
-            recordManager.toggleRecord(TrackerRecordModel(trackerID: tracker.id, date: currentDate))
-            collectionView.reloadItems(at: [indexPath])
-        }
+    func updateDate(_ newDate: Date) {
+        trackersDataProvider.updateDate(newDate)
+        collectionView.reloadData()
+    }
+    
+    var hasTrackers: Bool {
+        return trackersDataProvider.numberOfSections > 0
     }
     
     @objc private func dateChanged(_ sender: UIDatePicker) {
-        dataProvider.updateDate(sender.date)
-        collectionView.reloadData()
+        updateDate(sender.date)
     }
 }
 
 // MARK: - UICollectionViewDataSource
 extension TrackersCollectionPresenter: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataProvider.numberOfRowsInSection(section)
+        return trackersDataProvider.numberOfRowsInSection(section)
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -66,16 +65,11 @@ extension TrackersCollectionPresenter: UICollectionViewDataSource {
             fatalError("Failed to dequeue TrackersCollectionCell")
         }
 
-        guard let currentTracker = dataProvider.trackerObject(at: indexPath) else {
+        guard let currentTracker = trackersDataProvider.trackerObject(at: indexPath) else {
             return cell
         }
 
-        let buttonAction = { [weak self] in
-            guard let self = self else { return }
-            self.handleButtonAction(at: indexPath)
-        }
-
-        cell.configure(with: currentTracker, buttonAction: buttonAction, datePicker: datePicker)
+        cell.configure(with: currentTracker, datePicker: datePicker)
         return cell
     }
 
@@ -87,13 +81,13 @@ extension TrackersCollectionPresenter: UICollectionViewDataSource {
         ) as? SupplementaryView else {
             fatalError("Failed to dequeue SupplementaryView")
         }
-        let sectionName = dataProvider.sectionName(for: indexPath.section)
+        let sectionName = trackersDataProvider.sectionName(for: indexPath.section)
         view.titleLabel.text = sectionName
         return view
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return dataProvider.numberOfSections
+        return trackersDataProvider.numberOfSections
     }
 }
 

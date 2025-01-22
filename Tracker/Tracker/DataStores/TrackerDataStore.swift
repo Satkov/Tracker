@@ -54,6 +54,7 @@ extension TrackerDataStore: TrackerDataStoreProtocol {
         }
     }
     
+    
     func delete(_ tracker: NSManagedObject) throws {
         try performSync { context in
             Result {

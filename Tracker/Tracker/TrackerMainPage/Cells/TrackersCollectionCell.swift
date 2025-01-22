@@ -11,7 +11,6 @@ final class TrackersCollectionCell: UICollectionViewCell {
 
     // MARK: - Properties
     private var tracker: TrackerModel?
-    private var buttonAction: (() -> Void)?
     private var datePicker: UIDatePicker?
     private var recordsDataProvider: RecordsDataProvider?
     
@@ -25,18 +24,27 @@ final class TrackersCollectionCell: UICollectionViewCell {
     }
 
     // MARK: - Configuration
-    func configure(with tracker: TrackerModel, buttonAction: (() -> Void)?, datePicker: UIDatePicker) {
+    func configure(with tracker: TrackerModel, datePicker: UIDatePicker) {
         self.tracker = tracker
-        self.buttonAction = buttonAction
         self.datePicker = datePicker
         setupUI()
         
+        recordsDataProvider?.delegate = nil
         recordsDataProvider = RecordsDataProvider(
-                    trackerID: tracker.id,
-                    context: CoreDataManager.shared.context,
-                    delegate: self
-                )
-            updateRecordCount()
+            trackerID: tracker.id,
+            context: CoreDataManager.shared.context,
+            delegate: self
+        )
+        updateRecordCount()
+        updateButtonStyle()
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        recordsDataProvider?.delegate = nil
+        tracker = nil
+        datePicker = nil
+        recordsDataProvider = nil
     }
 
     // MARK: - Setup UI
@@ -115,8 +123,7 @@ final class TrackersCollectionCell: UICollectionViewCell {
         recordButton.translatesAutoresizingMaskIntoConstraints = false
         recordButton.layer.cornerRadius = 16
         recordButton.addTarget(self, action: #selector(recordButtonTapped), for: .touchUpInside)
-        setButtonStyle()
-
+        
         footerView.addSubview(recordButton)
 
         NSLayoutConstraint.activate([
@@ -144,14 +151,15 @@ final class TrackersCollectionCell: UICollectionViewCell {
     // MARK: - Button Action
     @objc
     private func recordButtonTapped() {
-        buttonAction?()
-        setButtonStyle()
+        guard let date = datePicker?.date, date <= Date() else { return }
+        recordsDataProvider?.toggleRecord(for: date)
     }
-
-    private func setButtonStyle() {
+    
+    private func updateButtonStyle() {
         guard let tracker = tracker, let datePicker = datePicker else { return }
-
-        if !recordManager.hasRecord(trackerID: tracker.id, date: datePicker.date) {
+        
+        let hasRecord = recordsDataProvider?.hasRecord(for: datePicker.date) ?? false
+        if !hasRecord {
             recordButton.backgroundColor = tracker.color.getUIColor()
             recordButton.setImage(UIImage(systemName: "plus"), for: .normal)
             recordButton.tintColor = .white
@@ -161,24 +169,20 @@ final class TrackersCollectionCell: UICollectionViewCell {
             recordButton.tintColor = .white
         }
     }
+
+    // MARK: - UI Updates
+    private func updateRecordCount() {
+        let countRecords = recordsDataProvider?.recordCount ?? 0
+        recordLabel.text = "\(countRecords) дней"
+    }
 }
 
-
 extension TrackersCollectionCell: RecordsDataProviderDelegate {
-    // MARK: - RecordsDataProviderDelegate
-        func recordsDidUpdate(for trackerID: UUID) {
-            // после добавление записи, метод вызывается у всех ячеек
-            guard trackerID == tracker?.id else { return }
-            DispatchQueue.main.async {
-                self.updateRecordCount()
-            }
+    func recordsDidUpdate(for trackerID: UUID) {
+        guard trackerID == tracker?.id else { return }
+        DispatchQueue.main.async {
+            self.updateRecordCount()
+            self.updateButtonStyle()
         }
-
-        // MARK: - UI Updates
-        private func updateRecordCount() {
-            if let recordsProvider = recordsDataProvider {
-                let countRecords = recordsProvider.recordCount
-                recordLabel.text = "\(countRecords) дней"
-            }
-        }
+    }
 }

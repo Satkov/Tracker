@@ -9,7 +9,6 @@ final class TrackerCategoryManager {
     func addCategory(_ category: TrackerCategoryModel) {
         let categoryCoreData = CategoryCoreData(context: context)
         categoryCoreData.name = category.categoryName
-        coreDataManager.saveContext()
     }
     
     

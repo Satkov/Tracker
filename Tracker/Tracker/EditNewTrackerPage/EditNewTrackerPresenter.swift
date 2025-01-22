@@ -105,6 +105,7 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
         }
         let trackerManager = TrackerDataStore()
         
+        
         try? trackerManager.add(tracker: tracker, categoryName: category.categoryName)
     }
 }

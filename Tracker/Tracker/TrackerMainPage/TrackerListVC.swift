@@ -184,12 +184,13 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
     
     // MARK: - UI Updates
     private func updateUI() {
-        let selectedDay = Schedule.dayOfWeek(for: datePicker.date)
-        let hasTrackers = TrackerCategoryManager().hasAnyTrackers(for: selectedDay)
+        let selectedDate = datePicker.date
+        trackersCollectionManager?.updateDate(selectedDate)
+
+        let hasTrackers = trackersCollectionManager?.hasTrackers ?? false
         trackersCollection.isHidden = !hasTrackers
         placeholderImage.isHidden = hasTrackers
         placeholderText.isHidden = hasTrackers
-        trackersCollection.reloadData()
     }
     
     private func setupGestureRecognizer() {
@@ -205,6 +206,7 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
     // MARK: - Actions
     @objc private func dateChanged(_ sender: UIDatePicker) {
         updateUI()
+        
     }
     
     @objc private func addTrackerButtonPressed() {
