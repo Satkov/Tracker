@@ -10,11 +10,11 @@ final class TrackersCollectionCell: UICollectionViewCell {
     private let recordButton = UIButton()
 
     // MARK: - Properties
-    private let recordManager = RecordManager()
     private var tracker: TrackerModel?
     private var buttonAction: (() -> Void)?
     private var datePicker: UIDatePicker?
-
+    private var recordsDataProvider: RecordsDataProvider?
+    
     // MARK: - Initializer
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -30,6 +30,13 @@ final class TrackersCollectionCell: UICollectionViewCell {
         self.buttonAction = buttonAction
         self.datePicker = datePicker
         setupUI()
+        
+        recordsDataProvider = RecordsDataProvider(
+                    trackerID: tracker.id,
+                    context: CoreDataManager.shared.context,
+                    delegate: self
+                )
+            updateRecordCount()
     }
 
     // MARK: - Setup UI
@@ -123,11 +130,7 @@ final class TrackersCollectionCell: UICollectionViewCell {
     private func setupRecordLabel() {
         recordLabel.translatesAutoresizingMaskIntoConstraints = false
         recordLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-
-        if let tracker = tracker {
-            let countRecords = recordManager.countRecords(for: tracker.id)
-            recordLabel.text = "\(countRecords) дней"
-        }
+        recordLabel.text = "0 дней"
 
         footerView.addSubview(recordLabel)
 
@@ -158,4 +161,24 @@ final class TrackersCollectionCell: UICollectionViewCell {
             recordButton.tintColor = .white
         }
     }
+}
+
+
+extension TrackersCollectionCell: RecordsDataProviderDelegate {
+    // MARK: - RecordsDataProviderDelegate
+        func recordsDidUpdate(for trackerID: UUID) {
+            // после добавление записи, метод вызывается у всех ячеек
+            guard trackerID == tracker?.id else { return }
+            DispatchQueue.main.async {
+                self.updateRecordCount()
+            }
+        }
+
+        // MARK: - UI Updates
+        private func updateRecordCount() {
+            if let recordsProvider = recordsDataProvider {
+                let countRecords = recordsProvider.recordCount
+                recordLabel.text = "\(countRecords) дней"
+            }
+        }
 }

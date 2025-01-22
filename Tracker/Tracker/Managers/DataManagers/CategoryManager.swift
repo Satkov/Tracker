@@ -64,20 +64,4 @@ final class TrackerCategoryManager {
         }
         
     }
-    
-    func hasAnyTrackers(for day: Schedule) -> Bool {
-        let categories = self.loadCategories()
-        return categories.contains { category in
-            category.trackers.contains { tracker in
-                tracker.schedule?.contains(day) ?? false
-            }
-        }
-        
-    }
-    
-    func loadCategoriesWithTrackers() -> [TrackerCategoryModel] {
-        let categories = self.loadCategories()
-        return categories.filter { !$0.trackers.isEmpty }
-        
-    }
 }

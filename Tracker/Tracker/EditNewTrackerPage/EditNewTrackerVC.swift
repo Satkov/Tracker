@@ -14,7 +14,6 @@ final class EditNewTrackerViewController: UIViewController {
     // MARK: - State Properties
     private(set) var isRegular: Bool
     private(set) var isWarningHidden = true
-    var onTrackerCreation: (() -> Void)?
 
     // MARK: - UI Elements
     private let scrollView = UIScrollView()
@@ -117,7 +116,6 @@ final class EditNewTrackerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        presenter.onTrackerCreation = onTrackerCreation
         setupGestureRecognizer()
     }
 

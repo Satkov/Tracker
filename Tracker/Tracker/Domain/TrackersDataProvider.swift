@@ -12,11 +12,8 @@ final class TrackersDataProvider: NSObject {
     
     private let context: NSManagedObjectContext
     private let dataStore: TrackerDataStore
-    private var insertedIndexes: IndexSet?
-    private var deletedIndexes: IndexSet?
-    private var updatedIndexes: IndexSet?
-    private var insertedSections: IndexSet?
-    private var deletedSections: IndexSet?
+    
+    private var choosenDate = Date()
 
     private lazy var fetchedResultsController: NSFetchedResultsController<TrackerCoreData> = {
         let fetchRequest = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
@@ -49,31 +46,99 @@ final class TrackersDataProvider: NSObject {
 
 // MARK: - TrackersDataProviderProtocol
 extension TrackersDataProvider: TrackersDataProviderProtocol {
+    func updateDate(_ newDate: Date) {
+        choosenDate = newDate
+        filterByDate()
+    }
+    
+    private func filterByDate() {
+        // получаю трекеры на выбранную дату
+        let scheduleDay = Schedule.dayOfWeek(for: choosenDate)
+        
+        let filteredTrackers = fetchedResultsController.fetchedObjects?.filter { tracker in
+            if let scheduleData = tracker.schedule,
+               let decodedSchedule = try? JSONDecoder().decode([Schedule].self, from: scheduleData) {
+                return decodedSchedule.contains(scheduleDay)
+            }
+            return false
+        } ?? []
+        
+        delegate?.didUpdate()
+    }
+    
     var numberOfSections: Int {
-        fetchedResultsController.sections?.count ?? 0
+        return filteredSections().count
     }
-    
-    func numberOfRowsInSection(_ section: Int) -> Int {
-        fetchedResultsController.sections?[section].numberOfObjects ?? 0
-    }
-    
-    func sectionName(for section: Int) -> String {
-        return fetchedResultsController.sections?[section].name ?? "Без категории"
-    }
-    
-    func trackerObject(at indexPath: IndexPath) -> TrackerModel? {
-        let trackerCoreData = fetchedResultsController.object(at: indexPath)
-        var schedule: Set<Schedule> = []
-        if let scheduleCoreData = trackerCoreData.schedule,
-           let decodedSchedule = try? JSONDecoder().decode(Set<Schedule>.self, from: scheduleCoreData) {
-            schedule = decodedSchedule
+
+    // получаю только секции в которых есть трекер на выбраную в дейтпикер дату
+    private func filteredSections() -> [NSFetchedResultsSectionInfo] {
+        guard let sections = fetchedResultsController.sections else { return [] }
+
+        let scheduleDay = Schedule.dayOfWeek(for: choosenDate)
+
+        return sections.filter { section in
+            guard let objects = section.objects as? [TrackerCoreData] else { return false }
+            return objects.contains { tracker in
+                if let scheduleData = tracker.schedule,
+                   let decodedSchedule = try? JSONDecoder().decode([Schedule].self, from: scheduleData) {
+                    return decodedSchedule.contains(scheduleDay)
+                }
+                return false
+            }
         }
+    }
+
+    func numberOfRowsInSection(_ section: Int) -> Int {
+        let scheduleDay = Schedule.dayOfWeek(for: choosenDate)
+        let sections = filteredSections()
+
+        guard section < sections.count else { return 0 }
+
+        return sections[section].objects?.filter { object in
+            if let tracker = object as? TrackerCoreData,
+               let scheduleData = tracker.schedule,
+               let decodedSchedule = try? JSONDecoder().decode([Schedule].self, from: scheduleData) {
+                return decodedSchedule.contains(scheduleDay)
+            }
+            return false
+        }.count ?? 0
+    }
+
+    func sectionName(for section: Int) -> String {
+        let sections = filteredSections()
+        return section < sections.count ? sections[section].name : ""
+    }
+
+    func trackerObject(at indexPath: IndexPath) -> TrackerModel? {
+        let scheduleDay = Schedule.dayOfWeek(for: choosenDate)
+        let sections = filteredSections()
+
+        guard indexPath.section < sections.count,
+              let objects = sections[indexPath.section].objects as? [TrackerCoreData] else { return nil }
+
+        let filteredTrackers = objects.filter { tracker in
+            if let scheduleData = tracker.schedule,
+               let decodedSchedule = try? JSONDecoder().decode([Schedule].self, from: scheduleData) {
+                return decodedSchedule.contains(scheduleDay)
+            }
+            return false
+        }
+
+        guard indexPath.row < filteredTrackers.count else { return nil }
+        let trackerCoreData = filteredTrackers[indexPath.row]
+
         return TrackerModel(
             id: trackerCoreData.id ?? UUID(),
             name: trackerCoreData.name ?? "",
             color: TrackerColors(rawValue: trackerCoreData.color ?? "") ?? .red,
             emoji: Emojis(rawValue: trackerCoreData.emoji ?? "") ?? .smilingFace,
-            schedule: schedule
+            schedule: Set(filteredTrackers.compactMap { tracker in
+                if let scheduleData = tracker.schedule,
+                   let decodedSchedule = try? JSONDecoder().decode([Schedule].self, from: scheduleData) {
+                    return decodedSchedule
+                }
+                return nil
+            }.joined())
         )
     }
 
@@ -89,69 +154,8 @@ extension TrackersDataProvider: TrackersDataProviderProtocol {
 
 // MARK: - NSFetchedResultsControllerDelegate
 extension TrackersDataProvider: NSFetchedResultsControllerDelegate {
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        insertedIndexes = IndexSet()
-        deletedIndexes = IndexSet()
-        updatedIndexes = IndexSet()
-        insertedSections = IndexSet()
-        deletedSections = IndexSet()
-    }
-    
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        delegate?.didUpdate(
-            StoreUpdate(
-                insertedIndexes: insertedIndexes ?? IndexSet(),
-                deletedIndexes: deletedIndexes ?? IndexSet(),
-                updatedIndexes: updatedIndexes ?? IndexSet(),
-                insertedSections: insertedSections ?? IndexSet(),
-                deletedSections: deletedSections ?? IndexSet()
-            )
-        )
-        insertedIndexes = nil
-        deletedIndexes = nil
-        updatedIndexes = nil
-        insertedSections = nil
-        deletedSections = nil
-    }
-    
-    func controller(
-        _ controller: NSFetchedResultsController<NSFetchRequestResult>,
-        didChange anObject: Any,
-        at indexPath: IndexPath?,
-        for type: NSFetchedResultsChangeType,
-        newIndexPath: IndexPath?
-    ) {
-        switch type {
-        case .delete:
-            if let indexPath = indexPath {
-                deletedIndexes?.insert(indexPath.item)
-            }
-        case .insert:
-            if let indexPath = newIndexPath {
-                insertedIndexes?.insert(indexPath.item)
-            }
-        case .update:
-            if let indexPath = indexPath {
-                updatedIndexes?.insert(indexPath.item)
-            }
-        default:
-            break
-        }
-    }
-
-    func controller(
-        _ controller: NSFetchedResultsController<NSFetchRequestResult>,
-        didChange sectionInfo: NSFetchedResultsSectionInfo,
-        atSectionIndex sectionIndex: Int,
-        for type: NSFetchedResultsChangeType
-    ) {
-        switch type {
-        case .delete:
-            deletedSections?.insert(sectionIndex)
-        case .insert:
-            insertedSections?.insert(sectionIndex)
-        default:
-            break
-        }
+        filterByDate()
+        delegate?.didUpdate()
     }
 }

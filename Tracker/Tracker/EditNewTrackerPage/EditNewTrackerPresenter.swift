@@ -2,7 +2,6 @@ import UIKit
 
 final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
     private weak var view: EditNewTrackerViewControllerProtocol?
-    var onTrackerCreation: (() -> Void)?
     private(set) var dataModel = DataForTrackerModel() {
         didSet {
             // TODO: обработка ошибки если вью не предоставлена
@@ -107,6 +106,5 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
         let trackerManager = TrackerDataStore()
         
         try? trackerManager.add(tracker: tracker, categoryName: category.categoryName)
-        onTrackerCreation?()
     }
 }

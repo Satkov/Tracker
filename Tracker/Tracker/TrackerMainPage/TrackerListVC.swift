@@ -204,16 +204,11 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
     
     // MARK: - Actions
     @objc private func dateChanged(_ sender: UIDatePicker) {
-        trackersCollectionManager?.updateCategories()
         updateUI()
     }
     
     @objc private func addTrackerButtonPressed() {
         let createTrackerVC = TrackerTypeMenuViewController()
-        createTrackerVC.onTrackerCreation = { [weak self] in
-            self?.trackersCollectionManager?.updateCategories()
-            self?.updateUI()
-        }
         createTrackerVC.modalPresentationStyle = .pageSheet
         present(createTrackerVC, animated: true)
     }

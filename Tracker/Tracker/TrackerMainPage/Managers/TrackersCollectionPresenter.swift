@@ -20,6 +20,7 @@ final class TrackersCollectionPresenter: NSObject {
         self.params = params
         self.datePicker = datePicker
         super.init()
+        datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
         configureCollectionView()
     }
 
@@ -44,9 +45,9 @@ final class TrackersCollectionPresenter: NSObject {
             collectionView.reloadItems(at: [indexPath])
         }
     }
-
-    // MARK: - Public Methods
-    func updateCategories() {
+    
+    @objc private func dateChanged(_ sender: UIDatePicker) {
+        dataProvider.updateDate(sender.date)
         collectionView.reloadData()
     }
 }
@@ -54,7 +55,7 @@ final class TrackersCollectionPresenter: NSObject {
 // MARK: - UICollectionViewDataSource
 extension TrackersCollectionPresenter: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataProvider.numberOfRowsInSection(section) // ✅ Теперь данные из DataProvider
+        return dataProvider.numberOfRowsInSection(section)
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -124,54 +125,10 @@ extension TrackersCollectionPresenter: UICollectionViewDelegateFlowLayout {
 
 // MARK: - TrackersDataProviderDelegate
 extension TrackersCollectionPresenter: DataProviderDelegate {
-    func didUpdate(_ update: StoreUpdate) {
-        collectionView.performBatchUpdates {
-            var insertedIndexPaths: [IndexPath] = []
-            var deletedIndexPaths: [IndexPath] = []
-
-            // ✅ Вставка и удаление секций
-            let insertedSections = IndexSet(update.insertedSections)
-            let deletedSections = IndexSet(update.deletedSections)
-
-            if !insertedSections.isEmpty {
-                collectionView.insertSections(insertedSections)
-            }
-            if !deletedSections.isEmpty {
-                collectionView.deleteSections(deletedSections)
-            }
-
-            // ✅ Вставка элементов с правильными секциями
-            for index in update.insertedIndexes {
-                let section = findSection(for: index)
-                let indexPath = IndexPath(item: index, section: section)
-                insertedIndexPaths.append(indexPath)
-            }
-
-            // ✅ Удаление элементов с правильными секциями
-            for index in update.deletedIndexes {
-                let section = findSection(for: index)
-                let indexPath = IndexPath(item: index, section: section)
-                deletedIndexPaths.append(indexPath)
-            }
-
-            if !insertedIndexPaths.isEmpty {
-                collectionView.insertItems(at: insertedIndexPaths)
-            }
-            if !deletedIndexPaths.isEmpty {
-                collectionView.deleteItems(at: deletedIndexPaths)
-            }
-        } completion: { _ in
-            self.collectionView.reloadData() // ✅ Гарантируем, что всё обновилось корректно
-        }
-    }
-
-    // 📌 Метод для определения секции элемента
-    private func findSection(for index: Int) -> Int {
-        for section in 0..<dataProvider.numberOfSections {
-            if index < dataProvider.numberOfRowsInSection(section) {
-                return section
-            }
-        }
-        return 0 // Фоллбек (не должен срабатывать)
+    func didUpdate() {
+        // 2 дня пытался сделать все через batchupdates,
+        // но каждый раз ломалось добавление новой категории
+        // уже никак не успеваю сделать лучше
+        collectionView.reloadData()
     }
 }
