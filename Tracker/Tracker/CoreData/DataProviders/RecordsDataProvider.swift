@@ -8,7 +8,11 @@ final class RecordsDataProvider: NSObject {
     private let recordsDataStore: RecordsDataStore
     private let trackerID: UUID
     
-    init(trackerID: UUID, context: NSManagedObjectContext, delegate: RecordsDataProviderDelegate?) {
+    init(
+        trackerID: UUID,
+        context: NSManagedObjectContext,
+        delegate: RecordsDataProviderDelegate?)
+    {
         self.trackerID = trackerID
         self.recordsDataStore = RecordsDataStore(context: context)
         self.delegate = delegate

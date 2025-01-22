@@ -168,7 +168,7 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
                 datePicker: datePicker
             )
         } catch {
-            print("LOG: Ошибка при создании TrackersCollectionPresenter: \(error)")
+            // TODO: обработка ошибки
         }
         
         trackersCollection.translatesAutoresizingMaskIntoConstraints = false

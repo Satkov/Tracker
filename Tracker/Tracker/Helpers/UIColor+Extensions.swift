@@ -17,7 +17,7 @@ extension UIColor {
 
     static func projectColor(_ color: ProjectColors) -> UIColor {
         guard let color = UIColor(named: color.rawValue) else {
-            print("LOG: Color \(color.rawValue) not found in assets. Using fallback (red).")
+            // TODO: обработка ошибки
             return .red
         }
         return color

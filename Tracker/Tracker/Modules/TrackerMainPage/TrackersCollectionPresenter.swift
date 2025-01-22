@@ -121,8 +121,8 @@ extension TrackersCollectionPresenter: UICollectionViewDelegateFlowLayout {
 extension TrackersCollectionPresenter: DataProviderDelegate {
     func didUpdate() {
         // 2 дня пытался сделать все через batchupdates,
-        // но каждый раз ломалось добавление новой категории
-        // уже никак не успеваю сделать лучше
+        // но каждый раз ломалось добавление трекера в новой категории
+        // не успею сделать красиво
         collectionView.reloadData()
     }
 }

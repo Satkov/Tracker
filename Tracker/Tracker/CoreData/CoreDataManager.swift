@@ -9,7 +9,7 @@ class CoreDataManager {
         persistentContainer = NSPersistentContainer(name: "TrackerCoreData")
         persistentContainer.loadPersistentStores { (storeDescription, error) in
             if let error = error {
-                fatalError("LOG: Ошибка загрузки Core Data: \(error)")
+                // TODO: обработка ошибки
             }
         }
     }
@@ -24,7 +24,7 @@ class CoreDataManager {
             do {
                 try context.save()
             } catch {
-                print("LOG: Ошибка сохранения: \(error)")
+                // TODO: обработка ошибки
             }
         }
     }

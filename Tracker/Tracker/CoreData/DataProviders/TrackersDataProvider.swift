@@ -5,7 +5,7 @@ import CoreData
 final class TrackersDataProvider: NSObject {
     /* и снова пытался супер красиво все сделать через NSFetchedResultsController
      но не смог сделать работающую фильтрацию по дате
-     поэтому здесь я локально все фильтрую и отдаю */
+     поэтому здесь я локально все фильтрую */
     weak var delegate: DataProviderDelegate?
     
     private let context: NSManagedObjectContext
@@ -69,7 +69,12 @@ final class TrackersDataProvider: NSObject {
 
         for (categoryName, trackers) in categoryMap {
             let sortedTrackers = trackers.sorted { $0.name < $1.name }
-            newCategories.append(TrackerCategoryModel(categoryName: categoryName, trackers: sortedTrackers))
+            newCategories.append(
+                TrackerCategoryModel(
+                    categoryName: categoryName,
+                    trackers: sortedTrackers
+                )
+            )
         }
 
         categories = newCategories.sorted { $0.categoryName < $1.categoryName }
@@ -105,7 +110,10 @@ final class TrackersDataProvider: NSObject {
                 guard let schedule = tracker.schedule else { return false }
                  return schedule.contains(Schedule.dayOfWeek(for: choosenDate))
             }
-            return filteredTrackers.isEmpty ? nil : TrackerCategoryModel(categoryName: category.categoryName, trackers: filteredTrackers)
+            return filteredTrackers.isEmpty ? nil : TrackerCategoryModel(
+                                                        categoryName: category.categoryName,
+                                                        trackers: filteredTrackers
+                                                    )
         }
     }
 
@@ -146,7 +154,8 @@ final class TrackersDataProvider: NSObject {
     private func convertToTrackerModel(_ trackerCoreData: TrackerCoreData) -> TrackerModel {
         // преобазует объект coredata в TrackerModel
         let schedule: Set<Schedule> = {
-            if let scheduleData = trackerCoreData.schedule, let decodedSchedule = try? JSONDecoder().decode(Set<Schedule>.self, from: scheduleData) {
+            if let scheduleData = trackerCoreData.schedule, 
+                let decodedSchedule = try? JSONDecoder().decode(Set<Schedule>.self, from: scheduleData) {
                 return decodedSchedule
             }
             return []
