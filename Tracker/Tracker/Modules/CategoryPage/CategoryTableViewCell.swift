@@ -96,7 +96,6 @@ final class CategoryTableViewCell: UITableViewCell {
         }
     }
 
-    /// Установка кастомного аксессуара вместо стандартного accessoryType
     func setAccessoryType(_ type: UITableViewCell.AccessoryType) {
         customAccessoryView.isHidden = (type != .checkmark)
     }

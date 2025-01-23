@@ -40,12 +40,10 @@ extension EmojiCollectionViewManager: UICollectionViewDelegate {
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        // Сбрасываем фон для всех видимых ячеек
         collectionView.visibleCells.forEach {
             $0.contentView.backgroundColor = .clear
         }
 
-        // Устанавливаем фон для выбранной ячейки
         if let cell = collectionView.cellForItem(at: indexPath) {
             cell.contentView.backgroundColor = UIColor.projectColor(.backgroundLightGray)
         }
@@ -57,7 +55,6 @@ extension EmojiCollectionViewManager: UICollectionViewDelegate {
         _ collectionView: UICollectionView,
         didDeselectItemAt indexPath: IndexPath
     ) {
-        // Сбрасываем фон для отмененной ячейки
         if let cell = collectionView.cellForItem(at: indexPath) {
             cell.contentView.backgroundColor = .clear
         }

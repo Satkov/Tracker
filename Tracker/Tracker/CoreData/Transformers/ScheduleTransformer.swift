@@ -5,7 +5,7 @@ final class ScheduleTransformer: ValueTransformer {
 
     override func transformedValue(_ value: Any?) -> Any? {
         guard let scheduleSet = value as? Set<Schedule> else { return nil }
-        let scheduleArray = Array(scheduleSet) // Преобразуем Set в Array
+        let scheduleArray = Array(scheduleSet)
         return try? JSONEncoder().encode(scheduleArray)
     }
 

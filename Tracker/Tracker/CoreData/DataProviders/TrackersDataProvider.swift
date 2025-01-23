@@ -3,9 +3,6 @@ import CoreData
 
 // MARK: - DataProvider
 final class TrackersDataProvider: NSObject {
-    /* и снова пытался супер красиво все сделать через NSFetchedResultsController
-     но не смог сделать работающую фильтрацию по дате
-     поэтому здесь я локально все фильтрую */
     weak var delegate: DataProviderDelegate?
     
     private let context: NSManagedObjectContext
@@ -154,8 +151,7 @@ final class TrackersDataProvider: NSObject {
     private func convertToTrackerModel(_ trackerCoreData: TrackerCoreData) -> TrackerModel {
         // преобазует объект coredata в TrackerModel
         let schedule: Set<Schedule> = {
-            if let scheduleData = trackerCoreData.schedule, 
-                let decodedSchedule = try? JSONDecoder().decode(Set<Schedule>.self, from: scheduleData) {
+            if let scheduleData = trackerCoreData.schedule, let decodedSchedule = try? JSONDecoder().decode(Set<Schedule>.self, from: scheduleData) {
                 return decodedSchedule
             }
             return []

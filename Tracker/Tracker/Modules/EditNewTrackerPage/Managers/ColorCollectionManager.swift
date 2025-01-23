@@ -43,12 +43,10 @@ extension ColorCollectionManager: UICollectionViewDelegate {
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        // Сбрасываем обводку для всех видимых ячеек
         collectionView.visibleCells.forEach { cell in
             cell.contentView.layer.borderColor = UIColor.clear.cgColor
         }
 
-        // Устанавливаем обводку для выбранной ячейки
         if let cell = collectionView.cellForItem(at: indexPath) {
             let color = TrackerColors.allCases[indexPath.row].getUIColor()
             cell.contentView.layer.borderColor = color.withAlphaComponent(0.3).cgColor
@@ -61,7 +59,6 @@ extension ColorCollectionManager: UICollectionViewDelegate {
         _ collectionView: UICollectionView,
         didDeselectItemAt indexPath: IndexPath
     ) {
-        // Сбрасываем обводку для отмененной ячейки
         if let cell = collectionView.cellForItem(at: indexPath) {
             cell.contentView.layer.borderColor = UIColor.clear.cgColor
         }

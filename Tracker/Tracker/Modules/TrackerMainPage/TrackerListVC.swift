@@ -70,7 +70,7 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
     )
     
     // MARK: - Properties
-    private var trackersCollectionManager: TrackersCollectionPresenter?
+    private var trackersPresenter: TrackersCollectionPresenter?
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -162,10 +162,11 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
     
     private func setupTrackersCollectionView() {
         do {
-            trackersCollectionManager = try TrackersCollectionPresenter(
+            trackersPresenter = try TrackersCollectionPresenter(
                 collectionView: trackersCollection,
                 params: params,
-                datePicker: datePicker
+                datePicker: datePicker,
+                delegate: self
             )
         } catch {
             // TODO: обработка ошибки
@@ -182,17 +183,6 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
         ])
     }
     
-    // MARK: - UI Updates
-    private func updateUI() {
-        let selectedDate = datePicker.date
-        trackersCollectionManager?.updateDate(selectedDate)
-
-        let hasTrackers = trackersCollectionManager?.hasTrackers ?? false
-        trackersCollection.isHidden = !hasTrackers
-        placeholderImage.isHidden = hasTrackers
-        placeholderText.isHidden = hasTrackers
-    }
-    
     private func setupGestureRecognizer() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         tapGesture.cancelsTouchesInView = false
@@ -205,6 +195,8 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
     
     // MARK: - Actions
     @objc private func dateChanged(_ sender: UIDatePicker) {
+        let selectedDate = datePicker.date
+        trackersPresenter?.updateDate(selectedDate)
         updateUI()
         
     }
@@ -219,5 +211,15 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
 extension TrackerListViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
+    }
+}
+
+
+extension TrackerListViewController: TrackersCollectionPresenterDelegate {
+    func updateUI() {
+        let hasTrackers = trackersPresenter?.hasTrackers ?? false
+        trackersCollection.isHidden = !hasTrackers
+        placeholderImage.isHidden = hasTrackers
+        placeholderText.isHidden = hasTrackers
     }
 }

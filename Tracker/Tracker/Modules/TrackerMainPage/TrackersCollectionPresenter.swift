@@ -5,6 +5,7 @@ final class TrackersCollectionPresenter: NSObject {
     private let collectionView: UICollectionView
     private let params: GeometricParamsModel
     private let datePicker: UIDatePicker
+    private weak var delegate: TrackersCollectionPresenterDelegate?
     private lazy var trackersDataProvider: TrackersDataProvider = {
         try! TrackersDataProvider(TrackerDataStore(), delegate: self)
     }()
@@ -14,10 +15,15 @@ final class TrackersCollectionPresenter: NSObject {
     }
 
     // MARK: - Initializer
-    init(collectionView: UICollectionView, params: GeometricParamsModel, datePicker: UIDatePicker) throws {
+    init(collectionView: UICollectionView, 
+         params: GeometricParamsModel,
+         datePicker: UIDatePicker,
+         delegate: TrackersCollectionPresenterDelegate?
+    ) throws {
         self.collectionView = collectionView
         self.params = params
         self.datePicker = datePicker
+        self.delegate = delegate
         super.init()
         datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
         configureCollectionView()
@@ -120,9 +126,13 @@ extension TrackersCollectionPresenter: UICollectionViewDelegateFlowLayout {
 // MARK: - TrackersDataProviderDelegate
 extension TrackersCollectionPresenter: DataProviderDelegate {
     func didUpdate() {
-        // 2 дня пытался сделать все через batchupdates,
-        // но каждый раз ломалось добавление трекера в новой категории
-        // не успею сделать красиво
         collectionView.reloadData()
+        
+        DispatchQueue.main.async {
+            guard let delegate = self.delegate else {
+                return
+            }
+            delegate.updateUI()
+        }
     }
 }
