@@ -8,7 +8,7 @@ final class TrackersDataProvider: NSObject {
     private let context: NSManagedObjectContext
     private let dataStore: TrackerDataStore
     
-    private var choosenDate = Date()
+    private var choosenDate = Calendar.current.startOfDay(for: Date())
     private var categories: [TrackerCategoryModel] = []
     private var trackers: [TrackerModel] = []
 
@@ -101,7 +101,7 @@ final class TrackersDataProvider: NSObject {
     }
 
     private func filteredSections() -> [TrackerCategoryModel] {
-        // возвращает секции в которые есть трекеры с нужной датой
+        // возвращает секции в которых есть трекеры с нужной датой
         return categories.compactMap { category in
             let filteredTrackers = category.trackers.filter { tracker in
                 guard let schedule = tracker.schedule else { return false }

@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		91039B502D3D3463009D333B /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91039B4F2D3D3463009D333B /* CoreDataManager.swift */; };
 		91039B532D3D34B0009D333B /* TrackerCoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 91039B512D3D34B0009D333B /* TrackerCoreData.xcdatamodeld */; };
-		91039B562D3D374F009D333B /* ScheduleTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91039B552D3D374F009D333B /* ScheduleTransformer.swift */; };
 		9120915F2D0A364D0048851D /* SupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9120915E2D0A364D0048851D /* SupplementaryView.swift */; };
 		912091632D0ADA080048851D /* EmojiCollectionViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912091622D0ADA080048851D /* EmojiCollectionViewManager.swift */; };
 		912091652D0ADCAF0048851D /* ColorCollectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912091642D0ADCAF0048851D /* ColorCollectionManager.swift */; };
@@ -64,7 +63,6 @@
 /* Begin PBXFileReference section */
 		91039B4F2D3D3463009D333B /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		91039B522D3D34B0009D333B /* TrackerCoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TrackerCoreData.xcdatamodel; sourceTree = "<group>"; };
-		91039B552D3D374F009D333B /* ScheduleTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTransformer.swift; sourceTree = "<group>"; };
 		9120915E2D0A364D0048851D /* SupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupplementaryView.swift; sourceTree = "<group>"; };
 		912091622D0ADA080048851D /* EmojiCollectionViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCollectionViewManager.swift; sourceTree = "<group>"; };
 		912091642D0ADCAF0048851D /* ColorCollectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCollectionManager.swift; sourceTree = "<group>"; };
@@ -129,14 +127,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		91039B542D3D3740009D333B /* Transformers */ = {
-			isa = PBXGroup;
-			children = (
-				91039B552D3D374F009D333B /* ScheduleTransformer.swift */,
-			);
-			path = Transformers;
-			sourceTree = "<group>";
-		};
 		912091682D0AED2E0048851D /* Managers */ = {
 			isa = PBXGroup;
 			children = (
@@ -220,7 +210,6 @@
 		9170EFE92D3FA3B50004A701 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				91039B542D3D3740009D333B /* Transformers */,
 				9170EFEC2D3FAE1F0004A701 /* DataStores */,
 				9170F0162D413B690004A701 /* DataProviders */,
 				91039B4F2D3D3463009D333B /* CoreDataManager.swift */,
@@ -530,7 +519,6 @@
 				91B028882CF257BE0047E664 /* TrackerTypeMenuVC.swift in Sources */,
 				91B0288D2CF380B50047E664 /* EmojiCollectionViewCell.swift in Sources */,
 				9120917D2D0DB33C0048851D /* SchedulePageVC.swift in Sources */,
-				91039B562D3D374F009D333B /* ScheduleTransformer.swift in Sources */,
 				912091652D0ADCAF0048851D /* ColorCollectionManager.swift in Sources */,
 				912091722D0CB5810048851D /* GeometricParamsModel.swift in Sources */,
 				91CC95C82D10B51D00ECE101 /* TrackersCollectionPresenter.swift in Sources */,
