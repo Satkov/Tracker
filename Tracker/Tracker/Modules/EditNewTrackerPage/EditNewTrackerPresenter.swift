@@ -84,13 +84,17 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
     func createTracker() -> TrackerModel? {
         guard let name = dataModel.name,
               let emoji = dataModel.emoji,
-              let color = dataModel.color
+              let color = dataModel.color,
+              let view = view
         else { return nil }
+        
+        let schedule = view.isRegular ? dataModel.schudule : Set(Schedule.allCases)
+        
         let tracker = TrackerModel(id: UUID(),
                                    name: name,
                                    color: color,
                                    emoji: emoji,
-                                   schedule: dataModel.schudule)
+                                   schedule: schedule)
         return tracker
     }
 
@@ -102,7 +106,6 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
             return
         }
         let trackerManager = TrackerDataStore()
-        
         
         try? trackerManager.add(tracker: tracker, categoryName: category.categoryName)
     }
