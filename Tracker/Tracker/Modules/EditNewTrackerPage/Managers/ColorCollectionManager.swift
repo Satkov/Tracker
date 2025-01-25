@@ -1,6 +1,6 @@
 import UIKit
 
-final class EmojiCollectionViewManager: NSObject {
+final class ColorCollectionManager: NSObject {
     // MARK: - Properties
     private let collectionView: UICollectionView
     private let params: GeometricParamsModel
@@ -25,7 +25,10 @@ final class EmojiCollectionViewManager: NSObject {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.allowsMultipleSelection = true
-        collectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: "EmojiCollectionViewCell")
+        collectionView.register(
+            ColorCollectionViewCell.self,
+            forCellWithReuseIdentifier: "ColorCollectionViewCell"
+        )
         collectionView.register(
             SupplementaryView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
@@ -35,44 +38,42 @@ final class EmojiCollectionViewManager: NSObject {
 }
 
 // MARK: - UICollectionViewDelegate
-extension EmojiCollectionViewManager: UICollectionViewDelegate {
+extension ColorCollectionManager: UICollectionViewDelegate {
     func collectionView(
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        // Сбрасываем фон для всех видимых ячеек
-        collectionView.visibleCells.forEach {
-            $0.contentView.backgroundColor = .clear
+        collectionView.visibleCells.forEach { cell in
+            cell.contentView.layer.borderColor = UIColor.clear.cgColor
         }
 
-        // Устанавливаем фон для выбранной ячейки
         if let cell = collectionView.cellForItem(at: indexPath) {
-            cell.contentView.backgroundColor = UIColor.projectColor(.backgroundLightGray)
+            let color = TrackerColors.allCases[indexPath.row].getUIColor()
+            cell.contentView.layer.borderColor = color.withAlphaComponent(0.3).cgColor
         }
 
-        presenter.updateEmoji(new: Emojis.allCases[indexPath.row])
+        presenter.updateColor(new: TrackerColors.allCases[indexPath.row])
     }
 
     func collectionView(
         _ collectionView: UICollectionView,
         didDeselectItemAt indexPath: IndexPath
     ) {
-        // Сбрасываем фон для отмененной ячейки
         if let cell = collectionView.cellForItem(at: indexPath) {
-            cell.contentView.backgroundColor = .clear
+            cell.contentView.layer.borderColor = UIColor.clear.cgColor
         }
 
-        presenter.updateEmoji(new: nil)
+        presenter.updateColor(new: nil)
     }
 }
 
 // MARK: - UICollectionViewDataSource
-extension EmojiCollectionViewManager: UICollectionViewDataSource {
+extension ColorCollectionManager: UICollectionViewDataSource {
     func collectionView(
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        return Emojis.allCases.count
+        return TrackerColors.allCases.count
     }
 
     func collectionView(
@@ -80,13 +81,12 @@ extension EmojiCollectionViewManager: UICollectionViewDataSource {
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: "EmojiCollectionViewCell",
-            for: indexPath
-        ) as? EmojiCollectionViewCell else {
-            fatalError("Failed to dequeue EmojiCollectionViewCell")
+            withReuseIdentifier: "ColorCollectionViewCell", for: indexPath
+        ) as? ColorCollectionViewCell else {
+            fatalError("Failed to dequeue ColorCollectionViewCell")
         }
 
-        cell.configure(with: Emojis.allCases[indexPath.item].rawValue)
+        cell.cellColor = TrackerColors.allCases[indexPath.item].getUIColor()
         return cell
     }
 
@@ -103,29 +103,19 @@ extension EmojiCollectionViewManager: UICollectionViewDataSource {
             fatalError("Failed to dequeue SupplementaryView")
         }
 
-        view.titleLabel.text = "Emoji"
+        view.titleLabel.text = "Цвет"
         return view
     }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
-extension EmojiCollectionViewManager: UICollectionViewDelegateFlowLayout {
+extension ColorCollectionManager: UICollectionViewDelegateFlowLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
-        let indexPath = IndexPath(row: 0, section: section)
-        let headerView = self.collectionView(collectionView, viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader, at: indexPath)
-
-        return headerView.systemLayoutSizeFitting(
-            CGSize(
-                width: collectionView.frame.width,
-                height: UIView.layoutFittingExpandedSize.height
-            ),
-            withHorizontalFittingPriority: .required,
-            verticalFittingPriority: .fittingSizeLevel
-        )
+        .init(width: collectionView.frame.width, height: 19)
     }
 
     func collectionView(
@@ -146,7 +136,7 @@ extension EmojiCollectionViewManager: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         minimumInteritemSpacingForSectionAt section: Int
     ) -> CGFloat {
-         params.cellSpacing
+        params.cellSpacing
     }
 
     func collectionView(
@@ -154,6 +144,6 @@ extension EmojiCollectionViewManager: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-         CGSize(width: params.cellWidth, height: params.cellHeight)
+        CGSize(width: params.cellWidth, height: params.cellHeight)
     }
 }

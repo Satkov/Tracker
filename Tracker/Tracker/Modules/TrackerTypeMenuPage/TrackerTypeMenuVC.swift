@@ -10,8 +10,6 @@ final class TrackerTypeMenuViewController: UIViewController {
         return label
     }()
 
-    var onTrackerCreation: (() -> Void)?
-
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -74,7 +72,6 @@ final class TrackerTypeMenuViewController: UIViewController {
             type: isRegular,
             presenter: EditNewTrackerPresenter()
         )
-        editVC.onTrackerCreation = onTrackerCreation
         editVC.modalPresentationStyle = .pageSheet
         present(editVC, animated: true)
     }

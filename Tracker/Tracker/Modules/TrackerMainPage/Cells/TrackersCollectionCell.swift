@@ -10,11 +10,10 @@ final class TrackersCollectionCell: UICollectionViewCell {
     private let recordButton = UIButton()
 
     // MARK: - Properties
-    private let recordManager = RecordManager.shared
     private var tracker: TrackerModel?
-    private var buttonAction: (() -> Void)?
     private var datePicker: UIDatePicker?
-
+    private var recordsDataProvider: RecordsDataProvider?
+    
     // MARK: - Initializer
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -25,11 +24,27 @@ final class TrackersCollectionCell: UICollectionViewCell {
     }
 
     // MARK: - Configuration
-    func configure(with tracker: TrackerModel, buttonAction: (() -> Void)?, datePicker: UIDatePicker) {
+    func configure(with tracker: TrackerModel, datePicker: UIDatePicker) {
         self.tracker = tracker
-        self.buttonAction = buttonAction
         self.datePicker = datePicker
         setupUI()
+        
+        recordsDataProvider?.delegate = nil
+        recordsDataProvider = RecordsDataProvider(
+            trackerID: tracker.id,
+            context: CoreDataManager.shared.context,
+            delegate: self
+        )
+        updateRecordCount()
+        updateButtonStyle()
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        recordsDataProvider?.delegate = nil
+        tracker = nil
+        datePicker = nil
+        recordsDataProvider = nil
     }
 
     // MARK: - Setup UI
@@ -108,8 +123,7 @@ final class TrackersCollectionCell: UICollectionViewCell {
         recordButton.translatesAutoresizingMaskIntoConstraints = false
         recordButton.layer.cornerRadius = 16
         recordButton.addTarget(self, action: #selector(recordButtonTapped), for: .touchUpInside)
-        setButtonStyle()
-
+        
         footerView.addSubview(recordButton)
 
         NSLayoutConstraint.activate([
@@ -123,11 +137,7 @@ final class TrackersCollectionCell: UICollectionViewCell {
     private func setupRecordLabel() {
         recordLabel.translatesAutoresizingMaskIntoConstraints = false
         recordLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-
-        if let tracker = tracker {
-            let countRecords = recordManager.countRecords(for: tracker.id)
-            recordLabel.text = "\(countRecords) дней"
-        }
+        recordLabel.text = "0 дней"
 
         footerView.addSubview(recordLabel)
 
@@ -141,14 +151,15 @@ final class TrackersCollectionCell: UICollectionViewCell {
     // MARK: - Button Action
     @objc
     private func recordButtonTapped() {
-        buttonAction?()
-        setButtonStyle()
+        guard let date = datePicker?.date, date <= Date() else { return }
+        recordsDataProvider?.toggleRecord(for: date)
     }
-
-    private func setButtonStyle() {
+    
+    private func updateButtonStyle() {
         guard let tracker = tracker, let datePicker = datePicker else { return }
-
-        if !recordManager.hasRecord(trackerID: tracker.id, date: datePicker.date) {
+        
+        let hasRecord = recordsDataProvider?.hasRecord(for: datePicker.date) ?? false
+        if !hasRecord {
             recordButton.backgroundColor = tracker.color.getUIColor()
             recordButton.setImage(UIImage(systemName: "plus"), for: .normal)
             recordButton.tintColor = .white
@@ -156,6 +167,22 @@ final class TrackersCollectionCell: UICollectionViewCell {
             recordButton.backgroundColor = tracker.color.getUIColor().withAlphaComponent(0.3)
             recordButton.setImage(UIImage(named: "Done"), for: .normal)
             recordButton.tintColor = .white
+        }
+    }
+
+    // MARK: - UI Updates
+    private func updateRecordCount() {
+        let countRecords = recordsDataProvider?.recordCount ?? 0
+        recordLabel.text = "\(countRecords) дней"
+    }
+}
+
+extension TrackersCollectionCell: RecordsDataProviderDelegate {
+    func recordsDidUpdate(for trackerID: UUID) {
+        guard trackerID == tracker?.id else { return }
+        DispatchQueue.main.async {
+            self.updateRecordCount()
+            self.updateButtonStyle()
         }
     }
 }

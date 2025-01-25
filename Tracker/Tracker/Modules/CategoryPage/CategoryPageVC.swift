@@ -1,6 +1,7 @@
 import UIKit
 
 final class CategoryPageViewController: UIViewController {
+    // TODO: Вынести лишнюю логику в презентер
     // MARK: - UI Elements
     private let placeholderImage: UIImageView = {
         let view = UIImageView()
@@ -43,9 +44,9 @@ final class CategoryPageViewController: UIViewController {
 
     // MARK: - Properties
     private var trackerCategoryList: [TrackerCategoryModel] = []
-    private var trackerCategoryManager = TrackerCategoryManager.shared
     private var presenter: EditNewTrackerPresenterProtocol
     private var lastSelectedCategory: TrackerCategoryModel?
+    private var categoryDataProvider: CategoryDataProvider!
 
     init(
         presenter: EditNewTrackerPresenterProtocol,
@@ -63,7 +64,8 @@ final class CategoryPageViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        trackerCategoryList = trackerCategoryManager.loadCategories()
+        categoryDataProvider = CategoryDataProvider(delegate: self)
+        trackerCategoryList = categoryDataProvider.getCategories().map { TrackerCategoryModel(categoryName: $0.name ?? "") }
         setupUI()
     }
 
@@ -144,7 +146,7 @@ final class CategoryPageViewController: UIViewController {
     // MARK: - Actions
     @objc
     private func addCategoryButtonPressed() {
-        let createVC = CreateCategoryViewController(delegate: self)
+        let createVC = CreateCategoryViewController()
         createVC.modalPresentationStyle = .pageSheet
         present(createVC, animated: true)
     }
@@ -206,10 +208,10 @@ extension CategoryPageViewController: UITableViewDataSource {
     }
 }
 
-extension CategoryPageViewController: CategoryPageViewControllerProtocol {
-    func newCategoryWereAdded() {
-        trackerCategoryList = trackerCategoryManager.loadCategories()
-
+extension CategoryPageViewController: CategoryDataProviderDelegate {
+    func categoriesDidUpdate() {
+        trackerCategoryList = categoryDataProvider.getCategories().map { TrackerCategoryModel(categoryName: $0.name ?? "") }
+        
         DispatchQueue.main.async {
             if self.trackerCategoryList.isEmpty {
                 self.contentViewForTable.removeFromSuperview()

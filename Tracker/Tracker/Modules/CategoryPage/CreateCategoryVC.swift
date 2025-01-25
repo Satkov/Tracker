@@ -21,17 +21,15 @@ final class CreateCategoryViewController: UIViewController {
 
     // MARK: - Managers
     private let trackerNameFieldManager: NameTextFieldManager?
-    private let categoryManager = TrackerCategoryManager.shared
+    private var categoryDataProvider: CategoryDataProvider!
 
-    private let delegate: CategoryPageViewControllerProtocol
-
-    init(delegate: CategoryPageViewControllerProtocol) {
+    init() {
+        categoryDataProvider = CategoryDataProvider(delegate: nil)
         trackerNameFieldManager = NameTextFieldManager(
             trackerNameField: trackerNameField,
             placeholderText: "Введите название категории",
             presenter: nil
         )
-        self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -112,9 +110,7 @@ final class CreateCategoryViewController: UIViewController {
     @objc
     private func addCategoryButtonPressed() {
         guard let newCategoryName = trackerNameField.text, !newCategoryName.isEmpty else { return }
-        let newTracker = TrackerCategoryModel(categoryName: newCategoryName)
-        categoryManager.addCategory(newTracker)
-        delegate.newCategoryWereAdded()
+        try? categoryDataProvider.addCategory(name: newCategoryName)
         dismiss(animated: true)
     }
 }

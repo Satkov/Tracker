@@ -2,7 +2,6 @@ import UIKit
 
 final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
     private weak var view: EditNewTrackerViewControllerProtocol?
-    var onTrackerCreation: (() -> Void)?
     private(set) var dataModel = DataForTrackerModel() {
         didSet {
             // TODO: обработка ошибки если вью не предоставлена
@@ -19,8 +18,6 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
         self.view = view
     }
 
-    // я не смог придумать как это по-человечести сделать красиво, чтобы константы оставить в модельке
-    // чтобы при этом не ломалась логика карточки редактирования трекера.
     func updateName(name: String?) {
 
         let newName = name == "" ? nil : name
@@ -87,12 +84,17 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
     func createTracker() -> TrackerModel? {
         guard let name = dataModel.name,
               let emoji = dataModel.emoji,
-              let color = dataModel.color
+              let color = dataModel.color,
+              let view = view
         else { return nil }
-        let tracker = TrackerModel(name: name,
+        
+        let schedule = view.isRegular ? dataModel.schudule : Set(Schedule.allCases)
+        
+        let tracker = TrackerModel(id: UUID(),
+                                   name: name,
                                    color: color,
                                    emoji: emoji,
-                                   schedule: dataModel.schudule)
+                                   schedule: schedule)
         return tracker
     }
 
@@ -103,8 +105,8 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
             // TODO: Обработка ошибки
             return
         }
-        let categoryManager = TrackerCategoryManager.shared
-        categoryManager.addTracker(to: category.categoryName, tracker: tracker)
-        onTrackerCreation?()
+        let trackerManager = TrackerDataStore()
+        
+        try? trackerManager.add(tracker: tracker, categoryName: category.categoryName)
     }
 }

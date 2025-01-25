@@ -10,5 +10,4 @@ protocol EditNewTrackerPresenterProtocol: AnyObject {
     func createTracker() -> TrackerModel?
     func saveTracker(tracker: TrackerModel?)
     var dataModel: DataForTrackerModel { get }
-    var onTrackerCreation: (() -> Void)? { get set }
 }
