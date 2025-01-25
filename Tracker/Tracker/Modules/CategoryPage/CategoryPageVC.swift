@@ -80,6 +80,12 @@ final class CategoryPageViewController: UIViewController {
         setupConstraints()
         setupPlaceholder()
         setupCategoriesTable()
+        
+        addCategoryButton.addTarget(
+            self,
+            action: #selector(addCategoryButtonPressed),
+            for: .touchUpInside
+        )
     }
 
     private func prepareViews() {

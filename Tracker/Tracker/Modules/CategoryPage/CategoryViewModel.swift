@@ -28,10 +28,6 @@ final class CategoryViewModel {
     }
     
     // MARK: - Category Management
-    func addCategory(name: String) throws {
-        try? model?.addCategory(name: name)
-    }
-    
     func categorySelected(
         indexPath: IndexPath,
         completion: (_ selectedCategory: TrackerCategoryModel) -> Void

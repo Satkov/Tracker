@@ -1,7 +1,6 @@
 import UIKit
 
 final class CreateCategoryViewController: UIViewController {
-
     // MARK: - UI Elements
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -10,7 +9,6 @@ final class CreateCategoryViewController: UIViewController {
         label.textAlignment = .center
         return label
     }()
-    
     private let addCategoryButton: UIButton = {
         let button = UIButton()
         button.setTitle("Готово", for: .normal)
@@ -19,51 +17,46 @@ final class CreateCategoryViewController: UIViewController {
         button.layer.cornerRadius = 16
         return button
     }()
-    
     private let trackerNameField = UITextField()
-    
+
     // MARK: - Managers
-    private lazy var trackerNameFieldManager: NameTextFieldManager = {
-        NameTextFieldManager(
+    private let trackerNameFieldManager: NameTextFieldManager?
+    private var categoryDataProvider: CategoryDataProvider!
+
+    init() {
+        categoryDataProvider = CategoryDataProvider(delegate: nil)
+        trackerNameFieldManager = NameTextFieldManager(
             trackerNameField: trackerNameField,
             placeholderText: "Введите название категории",
             presenter: nil
         )
-    }()
-    
-    private var categoryDataProvider: CategoryDataProvider!
-
-    // MARK: - Initializer
-    init() {
-        categoryDataProvider = CategoryDataProvider(delegate: nil)
         super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
 
-    // MARK: - Setup UI
+    // MARK: - UI Setup
     private func setupUI() {
         view.backgroundColor = UIColor(named: "TrackerBackgroundWhite")
-        
         prepareViews()
         setupTrackerNameField()
         setupAddCategoryButton()
         setupConstraints()
         setupGestureRecognizer()
-        
         trackerNameField.delegate = self
     }
 
     private func prepareViews() {
-        [titleLabel, trackerNameField, addCategoryButton].forEach {
+        [titleLabel,
+         trackerNameField,
+         addCategoryButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
@@ -96,7 +89,6 @@ final class CreateCategoryViewController: UIViewController {
         ])
     }
 
-    // MARK: - Gesture Recognizers
     private func setupGestureRecognizer() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         tapGesture.cancelsTouchesInView = false
@@ -109,13 +101,14 @@ final class CreateCategoryViewController: UIViewController {
 
     // MARK: - Button State Management
     private func setAddCategoryButtonState(isTextFieldEmpty: Bool) {
-        let backgroundColor: ProjectColors = isTextFieldEmpty ? .textColorForLightgray : .backgroundBlack
-        addCategoryButton.backgroundColor = UIColor.projectColor(backgroundColor)
+        let backgroundcolor: ProjectColors = isTextFieldEmpty ? .textColorForLightgray : .backgroundBlack
+        addCategoryButton.backgroundColor = UIColor.projectColor(backgroundcolor)
         addCategoryButton.isEnabled = !isTextFieldEmpty
     }
 
     // MARK: - Actions
-    @objc private func addCategoryButtonPressed() {
+    @objc
+    private func addCategoryButtonPressed() {
         guard let newCategoryName = trackerNameField.text, !newCategoryName.isEmpty else { return }
         try? categoryDataProvider.addCategory(name: newCategoryName)
         dismiss(animated: true)
@@ -124,7 +117,11 @@ final class CreateCategoryViewController: UIViewController {
 
 // MARK: - UITextFieldDelegate
 extension CreateCategoryViewController: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
         guard let currentText = textField.text as NSString? else {
             setAddCategoryButtonState(isTextFieldEmpty: true)
             return true
@@ -138,5 +135,11 @@ extension CreateCategoryViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+}
+
+extension CreateCategoryViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
     }
 }

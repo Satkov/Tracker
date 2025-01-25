@@ -6,6 +6,16 @@ final class OnboardingPageViewController: UIPageViewController {
         OnboardingSlideViewController(pageNumber: .second)
     ]
     
+    private let button = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Вот это технологии!", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        button.backgroundColor = UIColor(named: "TrackerBackgroundBlack")
+        button.layer.cornerRadius = 16
+        return button
+    }()
+    
     private lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.numberOfPages = pages.count
@@ -22,7 +32,9 @@ final class OnboardingPageViewController: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         if let first = pages.first {
-            setViewControllers([first], direction: .forward, animated: true)
+            setViewControllers([first],
+                               direction: .forward,
+                               animated: true)
         }
         delegate = self
         dataSource = self
@@ -30,7 +42,25 @@ final class OnboardingPageViewController: UIPageViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        setupButton()
         setupPageControl()
+    }
+    
+    func setupButton() {
+        guard let superview = view.superview else { return }
+        button.addTarget(
+            self,
+            action: #selector(buttonPressed),
+            for: .touchUpInside
+        )
+        superview.addSubview(button)
+        
+        NSLayoutConstraint.activate([
+            button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -84),
+            button.widthAnchor.constraint(equalToConstant: 335),
+            button.heightAnchor.constraint(equalToConstant: 60),
+            button.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
     }
     
     func setupPageControl() {
@@ -44,6 +74,24 @@ final class OnboardingPageViewController: UIPageViewController {
             pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             pageControl.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -168)
         ])
+    }
+    
+    @objc
+    func buttonPressed() {
+        UserDefaults.standard.set(true, forKey: "hasSeenOnboarding")
+        
+        guard let window = UIApplication.shared.windows.first else { return }
+        
+        let newRootVC = TabBarController()
+        
+        UIView.transition(
+            with: window,
+            duration: 0.3,
+            options: .transitionCrossDissolve,
+            animations: {
+                window.rootViewController = newRootVC
+            }
+        )
     }
 }
 
