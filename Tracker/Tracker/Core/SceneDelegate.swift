@@ -14,7 +14,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if hasSeenOnboarding {
             window?.rootViewController = TabBarController()
         } else {
-            window?.rootViewController = OnboardingViewController()
+            window?.rootViewController = OnboardingPageViewController()
         }
     }
 

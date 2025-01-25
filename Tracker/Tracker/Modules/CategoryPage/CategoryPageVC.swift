@@ -1,25 +1,8 @@
 import UIKit
 
 final class CategoryPageViewController: UIViewController {
-    // TODO: Вынести лишнюю логику в презентер
+
     // MARK: - UI Elements
-    private let placeholderImage: UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage(named: "StarPlaceholder")
-        return view
-    }()
-    private let placeholderText: UILabel = {
-        let label = UILabel()
-        label.text = "Привычки и события можно\nобъединить по смыслу"
-        label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        return label
-    }()
-    private let categoriesTable: UITableView = {
-        let tableView = UITableView()
-        return tableView
-    }()
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Категория"
@@ -27,6 +10,7 @@ final class CategoryPageViewController: UIViewController {
         label.textAlignment = .center
         return label
     }()
+
     private let addCategoryButton: UIButton = {
         let button = UIButton()
         button.setTitle("Добавить категорию", for: .normal)
@@ -36,27 +20,49 @@ final class CategoryPageViewController: UIViewController {
         button.layer.cornerRadius = 16
         return button
     }()
-    private let contentViewForTable: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = 16
-        return view
+
+    private let placeholderImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "StarPlaceholder")
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
     }()
 
+    private let placeholderText: UILabel = {
+        let label = UILabel()
+        label.text = "Привычки и события можно\nобъединить по смыслу"
+        label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    private let viewWithCategoryTableView: ViewWithCategoryTableView
+
     // MARK: - Properties
-    private var trackerCategoryList: [TrackerCategoryModel] = []
     private var presenter: EditNewTrackerPresenterProtocol
     private var lastSelectedCategory: TrackerCategoryModel?
     private var categoryDataProvider: CategoryDataProvider!
 
+    // MARK: - Initializer
     init(
         presenter: EditNewTrackerPresenterProtocol,
         lastSelectedCategory: TrackerCategoryModel?
     ) {
         self.presenter = presenter
         self.lastSelectedCategory = lastSelectedCategory
+        self.viewWithCategoryTableView = ViewWithCategoryTableView(
+            frame: .zero,
+            presenter: presenter
+        )
+        
         super.init(nibName: nil, bundle: nil)
-    }
 
+        viewWithCategoryTableView.delegate = self
+        viewWithCategoryTableView.addLastSelectedCategory(lastSelectedCategory)
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -64,72 +70,23 @@ final class CategoryPageViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        categoryDataProvider = CategoryDataProvider(delegate: self)
-        trackerCategoryList = categoryDataProvider.getCategories().map { TrackerCategoryModel(categoryName: $0.name ?? "") }
         setupUI()
     }
 
     // MARK: - Setup UI
-
     private func setupUI() {
-        view.backgroundColor = UIColor(named: "TrackerBackgroundWhite")
+        view.backgroundColor = UIColor.projectColor(.backgroundWhite)
         prepareViews()
-        setupAddCategoryButton()
         setupConstraints()
-        trackerCategoryList.isEmpty ? setupPlaceholder() : setupCategoriesTable()
+        setupPlaceholder()
+        setupCategoriesTable()
     }
 
     private func prepareViews() {
-        [titleLabel,
-         addCategoryButton].forEach {
+        [titleLabel, addCategoryButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
-    }
-
-    private func setupAddCategoryButton() {
-        addCategoryButton.addTarget(self, action: #selector(addCategoryButtonPressed), for: .touchUpInside)
-    }
-
-    private func setupCategoriesTable() {
-        contentViewForTable.translatesAutoresizingMaskIntoConstraints = false
-        categoriesTable.translatesAutoresizingMaskIntoConstraints = false
-        categoriesTable.delegate = self
-        categoriesTable.dataSource = self
-        categoriesTable.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        categoriesTable.register(CategoryTableViewCell.self, forCellReuseIdentifier: "CategoryTableViewCell")
-        contentViewForTable.addSubview(categoriesTable)
-        view.addSubview(contentViewForTable)
-
-        NSLayoutConstraint.activate([
-            contentViewForTable.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
-            contentViewForTable.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            contentViewForTable.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            contentViewForTable.bottomAnchor.constraint(equalTo: addCategoryButton.topAnchor, constant: -20),
-
-            categoriesTable.topAnchor.constraint(equalTo: contentViewForTable.topAnchor),
-            categoriesTable.leadingAnchor.constraint(equalTo: contentViewForTable.leadingAnchor),
-            categoriesTable.trailingAnchor.constraint(equalTo: contentViewForTable.trailingAnchor),
-            categoriesTable.bottomAnchor.constraint(equalTo: contentViewForTable.bottomAnchor)
-        ])
-    }
-
-    private func setupPlaceholder() {
-        placeholderImage.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(placeholderImage)
-
-        placeholderText.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(placeholderText)
-
-        NSLayoutConstraint.activate([
-            placeholderImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            placeholderImage.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            placeholderImage.widthAnchor.constraint(equalToConstant: 80),
-            placeholderImage.heightAnchor.constraint(equalToConstant: 80),
-
-            placeholderText.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            placeholderText.topAnchor.constraint(equalTo: placeholderImage.bottomAnchor, constant: 8)
-        ])
     }
 
     private func setupConstraints() {
@@ -143,87 +100,65 @@ final class CategoryPageViewController: UIViewController {
             addCategoryButton.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
+
+    // MARK: - Placeholder
+    private func setupPlaceholder() {
+        view.addSubview(placeholderImage)
+        view.addSubview(placeholderText)
+
+        NSLayoutConstraint.activate([
+            placeholderImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            placeholderImage.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            placeholderImage.widthAnchor.constraint(equalToConstant: 80),
+            placeholderImage.heightAnchor.constraint(equalToConstant: 80),
+
+            placeholderText.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            placeholderText.topAnchor.constraint(equalTo: placeholderImage.bottomAnchor, constant: 8)
+        ])
+    }
+
+    private func hidePlaceholder() {
+        placeholderImage.removeFromSuperview()
+        placeholderText.removeFromSuperview()
+    }
+
+    // MARK: - Categories Table
+    private func setupCategoriesTable() {
+        viewWithCategoryTableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(viewWithCategoryTableView)
+
+        NSLayoutConstraint.activate([
+            viewWithCategoryTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
+            viewWithCategoryTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            viewWithCategoryTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            viewWithCategoryTableView.bottomAnchor.constraint(equalTo: addCategoryButton.topAnchor, constant: -20)
+        ])
+    }
+
     // MARK: - Actions
-    @objc
-    private func addCategoryButtonPressed() {
+    @objc private func addCategoryButtonPressed() {
         let createVC = CreateCategoryViewController()
         createVC.modalPresentationStyle = .pageSheet
         present(createVC, animated: true)
     }
 }
 
-// MARK: - UITableViewDelegate
-extension CategoryPageViewController: UITableViewDelegate {
-    func tableView(
-        _ tableView: UITableView,
-        heightForRowAt indexPath: IndexPath
-    ) -> CGFloat {
-        75
-    }
-
-    func tableView(
-        _ tableView: UITableView,
-        didSelectRowAt indexPath: IndexPath
-    ) {
-        let selectedCategory = trackerCategoryList[indexPath.row]
-        presenter.updateCategory(new: selectedCategory)
+// MARK: - CategoryTableViewDelegateProtocol
+extension CategoryPageViewController: CategoryTableViewDelegateProtocol {
+    func categoryDidSelected() {
         dismiss(animated: true)
     }
-}
-
-// MARK: - UITableViewDataSource
-extension CategoryPageViewController: UITableViewDataSource {
-    func tableView(
-        _ tableView: UITableView,
-        numberOfRowsInSection section: Int
-    ) -> Int {
-        trackerCategoryList.count
-    }
-
-    func tableView(
-        _ tableView: UITableView,
-        cellForRowAt indexPath: IndexPath
-    ) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: "CategoryTableViewCell",
-            for: indexPath
-        ) as? CategoryTableViewCell else {
-            return UITableViewCell()
-        }
-
-        let category = trackerCategoryList[indexPath.row]
-        let isSelected = lastSelectedCategory?.categoryName == category.categoryName
-        let isLast = indexPath.row == trackerCategoryList.count - 1
-        let isFirst = indexPath.row == 0
-
-        cell.configureCell(with: category.categoryName, isSelected: isSelected, isLast: isLast, isFirst: isFirst)
-
-        if isLast {
-            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: cell.bounds.width)
-        } else {
-            cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        }
-
-        return cell
-    }
-}
-
-extension CategoryPageViewController: CategoryDataProviderDelegate {
-    func categoriesDidUpdate() {
-        trackerCategoryList = categoryDataProvider.getCategories().map { TrackerCategoryModel(categoryName: $0.name ?? "") }
-        
+    
+    func numberOfLoadedCategoriesStateChanged(isEmpty: Bool) {
         DispatchQueue.main.async {
-            if self.trackerCategoryList.isEmpty {
-                self.contentViewForTable.removeFromSuperview()
+            if isEmpty {
+                self.viewWithCategoryTableView.removeFromSuperview()
                 self.setupPlaceholder()
             } else {
-                self.placeholderImage.removeFromSuperview()
-                self.placeholderText.removeFromSuperview()
-
-                if self.contentViewForTable.superview == nil {
+                self.hidePlaceholder()
+                if self.viewWithCategoryTableView.superview == nil {
                     self.setupCategoriesTable()
                 }
-                self.categoriesTable.reloadData()
             }
         }
     }

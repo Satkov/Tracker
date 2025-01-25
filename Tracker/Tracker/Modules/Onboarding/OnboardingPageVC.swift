@@ -1,9 +1,9 @@
 import UIKit
 
-final class OnboardingViewController: UIPageViewController {
+final class OnboardingPageViewController: UIPageViewController {
     private let pages = [
-        PageViewController(pageNumber: .first),
-        PageViewController(pageNumber: .second)
+        OnboardingSlideViewController(pageNumber: .first),
+        OnboardingSlideViewController(pageNumber: .second)
     ]
     
     private lazy var pageControl: UIPageControl = {
@@ -35,8 +35,9 @@ final class OnboardingViewController: UIPageViewController {
     
     func setupPageControl() {
         guard let superview = view.superview else { return }
-        pageControl.pageIndicatorTintColor = UIColor(hex: "#1A1B22").withAlphaComponent(0.3)
-        pageControl.currentPageIndicatorTintColor = UIColor(hex: "#1A1B22")
+        let pageControlColor = UIColor(hex: "#1A1B22")
+        pageControl.pageIndicatorTintColor = pageControlColor.withAlphaComponent(0.3)
+        pageControl.currentPageIndicatorTintColor = pageControlColor
         superview.addSubview(pageControl)
         
         NSLayoutConstraint.activate([
@@ -46,22 +47,22 @@ final class OnboardingViewController: UIPageViewController {
     }
 }
 
-extension OnboardingViewController: UIPageViewControllerDelegate {
+extension OnboardingPageViewController: UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         
         if let currentViewController = pageViewController.viewControllers?.first,
-           let currentIndex = pages.firstIndex(of: currentViewController as! PageViewController) {
+           let currentIndex = pages.firstIndex(of: currentViewController as! OnboardingSlideViewController) {
             pageControl.currentPage = currentIndex
         }
     }
 }
 
-extension OnboardingViewController: UIPageViewControllerDataSource {
+extension OnboardingPageViewController: UIPageViewControllerDataSource {
     func pageViewController(
         _ pageViewController: UIPageViewController,
         viewControllerBefore viewController: UIViewController
     ) -> UIViewController? {
-        guard let viewControllerIndex = pages.firstIndex(of: viewController as! PageViewController) else {
+        guard let viewControllerIndex = pages.firstIndex(of: viewController as! OnboardingSlideViewController) else {
             return nil
         }
         let previousIndex = viewControllerIndex - 1
@@ -77,7 +78,7 @@ extension OnboardingViewController: UIPageViewControllerDataSource {
         _ pageViewController: UIPageViewController,
         viewControllerAfter viewController: UIViewController
     ) -> UIViewController? {
-        guard let viewControllerIndex = pages.firstIndex(of: viewController as! PageViewController) else {
+        guard let viewControllerIndex = pages.firstIndex(of: viewController as! OnboardingSlideViewController) else {
             return nil
         }
         let nextIndex = viewControllerIndex + 1

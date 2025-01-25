@@ -1,5 +1,6 @@
 import UIKit
 
-protocol CategoryPageViewControllerProtocol {
-    func newCategoryWereAdded()
+protocol ViewWithTableViewProtocol: UIView {
+    var delegate: CategoryTableViewDelegateProtocol? { get set }
+    func initialize(presenter: EditNewTrackerPresenterProtocol)
 }

@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-final class PageViewController: UIViewController {
+final class OnboardingSlideViewController: UIViewController {
     private let pageNumber: PageNumber
     
     private let button = {
@@ -91,20 +91,5 @@ final class PageViewController: UIViewController {
                 window.rootViewController = newRootVC
             }
         )
-    }
-}
-
-enum PageNumber {
-    case first
-    case second
-    
-    func backgroundImage() -> UIImage {
-        return UIImage(named: self == .first ? "OnboardingFirst" : "OnboardingSecond") ?? UIImage()
-    }
-    
-    func text() -> String {
-        return self == .first
-            ? "Отслеживайте только то,\n что хотите"
-            : "Даже если это\n не литры воды и йога"
     }
 }
