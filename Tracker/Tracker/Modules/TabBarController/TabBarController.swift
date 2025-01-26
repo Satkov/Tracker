@@ -26,7 +26,7 @@ final class TabBarController: UITabBarController {
             selectedImage: nil)
 
         trackerNavViewController.tabBarItem = UITabBarItem(
-            title: "Трекеры",
+            title: Localization.trackersTitle,
             image: UIImage(named: "TrackerCircleIcon"),
             selectedImage: nil
         )

@@ -1,0 +1,63 @@
+// Онбординг
+onboarding.button = "Вот это технологии!";
+onboardingPage.label.firstPage = "Отслеживайте только то,\nчто хотите";
+onboardingPage.label.secondPage = "Даже если это\nне литры воды и йога";
+
+// Заголовки и навигация
+editNewTracker.title.habit = "Новая привычка";
+editNewTracker.title.irregular = "Новое нерегулярное событие";
+trackerCreation = "Создание трекера";
+tabbar.title.statistic = "Статистика";
+trackers = "Трекеры";
+statistic = "Статистика";
+search = "Поиск";
+category = "Категория";
+schedule = "Расписание";
+habit = "Привычка";
+irregularEvent = "Нерегулярное событие";
+
+// Оповещения и плейсхолдеры
+trackerList.placeholder = "Что будем отслеживать?";
+categoryPage.placeholder = "Привычки и события можно\nобъединить по смыслу";
+statisticPage.placeholder = "Анализировать пока нечего";
+createTrackerNameField.placeholder = "Введите название трекера";
+typeCategoryName = "Введите название категории";
+nameFieldMaxLength.warning.label = "Ограничение 38 символов";
+
+// Статистика
+statisticPage.bestStreak = "Лучший период";
+statisticPage.perfectDays = "Идеальные дни";
+statisticPage.allTrackersFinished = "Трекеров завершено";
+statisticPage.averageValue = "Среднее значение";
+
+// Кнопки действий
+cancel = "Отменить";
+create = "Создать";
+addCategory = "Добавить категорию";
+newCategory = "Новая категория";
+ready = "Готово";
+
+// Настройки трекера
+color = "Цвет";
+emoji = "Emoji";
+
+// Полные названия дней недели
+monday = "Понедельник";
+tuesday = "Вторник";
+wednesday = "Среда";
+thursday = "Четверг";
+friday = "Пятница";
+saturday = "Суббота";
+sunday = "Воскресенье";
+
+// Короткие названия дней недели
+monday.short = "Пн";
+tuesday.short = "Вт";
+wednesday.short = "Ср";
+thursday.short = "Чт";
+friday.short = "Пт";
+saturday.short = "Сб";
+sunday.short = "Вс";
+
+// Текст для ежедневного повторения
+everyDay = "Каждый день";
