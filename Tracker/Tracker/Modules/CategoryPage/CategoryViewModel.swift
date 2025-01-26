@@ -16,17 +16,6 @@ final class CategoryViewModel {
         loadCategories()
     }
     
-    // MARK: - Data Loading
-    private func loadCategories() {
-        guard let model = model else { return }
-        
-        categories = model.getCategories().map {
-            TrackerCategoryModel(categoryName: $0.name ?? "")
-        }
-        
-        onNumberOfCategoriesState?(categories.isEmpty)
-    }
-    
     // MARK: - Category Management
     func categorySelected(
         indexPath: IndexPath,
@@ -52,6 +41,17 @@ final class CategoryViewModel {
             isLast: indexPath.row == categories.count - 1,
             isFirst: indexPath.row == 0
         )
+    }
+    
+    // MARK: - Data Loading
+    private func loadCategories() {
+        guard let model = model else { return }
+        
+        categories = model.getCategories().map {
+            TrackerCategoryModel(categoryName: $0.name ?? "")
+        }
+        
+        onNumberOfCategoriesState?(categories.isEmpty)
     }
 }
 

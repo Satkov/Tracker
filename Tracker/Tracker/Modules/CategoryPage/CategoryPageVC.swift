@@ -37,6 +37,11 @@ final class CategoryPageViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    private lazy var viewModel: CategoryViewModel = {
+        let viewModel = CategoryViewModel()
+        return viewModel
+    }()
 
     private let viewWithCategoryTableView: ViewWithCategoryTableView
 
@@ -59,8 +64,10 @@ final class CategoryPageViewController: UIViewController {
         
         super.init(nibName: nil, bundle: nil)
 
-        viewWithCategoryTableView.delegate = self
-        viewWithCategoryTableView.addLastSelectedCategory(lastSelectedCategory)
+        viewWithCategoryTableView.configurate(
+            lastSelectedCategory: lastSelectedCategory,
+            delegate: self,
+            viewModel: viewModel)
     }
     
     required init?(coder: NSCoder) {

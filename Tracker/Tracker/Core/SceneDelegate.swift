@@ -14,11 +14,30 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if hasSeenOnboarding {
             window?.rootViewController = TabBarController()
         } else {
-            window?.rootViewController = OnboardingPageViewController(
+            let onboardingVC = OnboardingPageViewController(
                 transitionStyle: .scroll,
                 navigationOrientation: .horizontal,
                 options: nil
             )
+            
+            let onboardingPages = [
+                OnboardingSlideViewController(
+                    pageNumber: PageData(
+                        backgroundImageName: "OnboardingFirst",
+                        labelText: "Отслеживайте только то,\n что хотите"
+                    )
+                ),
+                OnboardingSlideViewController(
+                    pageNumber: PageData(
+                        backgroundImageName: "OnboardingSecond",
+                        labelText: "Даже если это\n не литры воды и йога"
+                    )
+                ) 
+            ]
+            
+            onboardingVC.setPages(onboardingPages)
+            window?.rootViewController = onboardingVC
+            
         }
     }
     

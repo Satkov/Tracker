@@ -10,20 +10,14 @@ final class ViewWithCategoryTableView: UIView {
     }()
 
     // MARK: - Properties
-    private lazy var viewModel: CategoryViewModel = {
-        let viewModel = CategoryViewModel()
-        viewModel.onNumberOfCategoriesState = { [weak self] isEmpty in
-            self?.delegate?.numberOfLoadedCategoriesStateChanged(isEmpty: isEmpty)
-            self?.tableView.reloadData()
-        }
-        return viewModel
-    }()
-
+    private var viewModel: CategoryViewModel?
     private var presenter: EditNewTrackerPresenterProtocol?
-    weak var delegate: CategoryTableViewDelegateProtocol?
+    private weak var delegate: CategoryTableViewDelegateProtocol?
 
     // MARK: - Initializer
-    init(frame: CGRect, presenter: EditNewTrackerPresenterProtocol?) {
+    init(frame: CGRect,
+         presenter: EditNewTrackerPresenterProtocol?
+    ) {
         self.presenter = presenter
         super.init(frame: frame)
         setupTableView()
@@ -34,7 +28,17 @@ final class ViewWithCategoryTableView: UIView {
     }
 
     // MARK: - Public Methods
-    func addLastSelectedCategory(_ lastSelectedCategory: TrackerCategoryModel?) {
+    func configurate(
+        lastSelectedCategory: TrackerCategoryModel?,
+        delegate: CategoryTableViewDelegateProtocol?,
+        viewModel: CategoryViewModel
+    ) {
+        self.viewModel = viewModel
+        self.delegate = delegate
+        viewModel.onNumberOfCategoriesState = { [weak self] isEmpty in
+            self?.delegate?.numberOfLoadedCategoriesStateChanged(isEmpty: isEmpty)
+            self?.tableView.reloadData()
+        }
         viewModel.lastSelectedCategory = lastSelectedCategory
     }
 
@@ -43,7 +47,8 @@ final class ViewWithCategoryTableView: UIView {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(CategoryTableViewCell.self, forCellReuseIdentifier: "CategoryTableViewCell")
+        tableView.register(CategoryTableViewCell.self,
+                           forCellReuseIdentifier: "CategoryTableViewCell")
         
         addSubview(tableView)
 
@@ -58,13 +63,21 @@ final class ViewWithCategoryTableView: UIView {
 
 // MARK: - UITableViewDelegate
 extension ViewWithCategoryTableView: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(
+        _ tableView: UITableView,
+        heightForRowAt indexPath: IndexPath
+    ) -> CGFloat {
         return 75
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(
+        _ tableView: UITableView,
+        didSelectRowAt indexPath: IndexPath
+    ) {
+        guard let viewModel = viewModel else { return }
         viewModel.categorySelected(indexPath: indexPath) { selectedCategory in
             presenter?.updateCategory(new: selectedCategory)
+            tableView.reloadData()
             delegate?.categoryDidSelected()
         }
     }
@@ -72,17 +85,28 @@ extension ViewWithCategoryTableView: UITableViewDelegate {
 
 // MARK: - UITableViewDataSource
 extension ViewWithCategoryTableView: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(
+        _ tableView: UITableView,
+        numberOfRowsInSection section: Int
+    ) -> Int {
+        guard let viewModel = viewModel else { return 0 }
         return viewModel.numberOfCategories()
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTableViewCell", for: indexPath) as? CategoryTableViewCell else {
-            return UITableViewCell()
-        }
+    func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath
+    ) -> UITableViewCell {
+        guard
+            let viewModel = viewModel,
+            let cell = tableView.dequeueReusableCell(
+            withIdentifier: "CategoryTableViewCell",
+            for: indexPath
+        ) as? CategoryTableViewCell
+        else { return UITableViewCell() }
 
         let dataForCell = viewModel.getDataForCell(indexPath: indexPath)
-
+        
         cell.configureCell(
             with: dataForCell.categoryName,
             isSelected: dataForCell.isSelected,
