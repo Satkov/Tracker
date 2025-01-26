@@ -4,14 +4,14 @@ final class SchedulePageViewController: UIViewController {
     // MARK: - UI Elements
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Расписание"
+        label.text = Localization.scheduleTitle
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.textAlignment = .center
         return label
     }()
     private let addScheduleButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Готово", for: .normal)
+        button.setTitle(Localization.readyButton, for: .normal)
         button.setTitleColor(UIColor.projectColor(.backgroundWhite), for: .normal)
         button.backgroundColor = UIColor.projectColor(.backgroundBlack)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)

@@ -21,7 +21,7 @@ final class TabBarController: UITabBarController {
 
         let statisticViewController = StatisticPageViewController()
         statisticViewController.tabBarItem = UITabBarItem(
-            title: "Статистика",
+            title: Localization.statisticTitle,
             image: UIImage(named: "RabbitIcon"),
             selectedImage: nil)
 

@@ -4,14 +4,14 @@ final class CreateCategoryViewController: UIViewController {
     // MARK: - UI Elements
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Новая категория"
+        label.text = Localization.newCategoryTitle
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.textAlignment = .center
         return label
     }()
     private let addCategoryButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Готово", for: .normal)
+        button.setTitle(Localization.readyButton, for: .normal)
         button.setTitleColor(UIColor.projectColor(.backgroundWhite), for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.layer.cornerRadius = 16
@@ -27,7 +27,7 @@ final class CreateCategoryViewController: UIViewController {
         categoryDataProvider = CategoryDataProvider(delegate: nil)
         trackerNameFieldManager = NameTextFieldManager(
             trackerNameField: trackerNameField,
-            placeholderText: "Введите название категории",
+            placeholderText: Localization.createTrackerNamePlaceholder,
             presenter: nil
         )
         super.init(nibName: nil, bundle: nil)

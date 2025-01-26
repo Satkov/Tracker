@@ -15,7 +15,7 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
     // MARK: - UI Elements
     private let headerLabel: UILabel = {
         let label = UILabel()
-        label.text = "Трекеры"
+        label.text = Localization.trackersTitle
         label.font = UIFont.systemFont(ofSize: 34, weight: .bold)
         return label
     }()
@@ -23,7 +23,7 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
     private let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .minimal
-        searchBar.placeholder = "Поиск"
+        searchBar.placeholder = Localization.searchPlaceholder
         
         if let textField = searchBar.value(forKey: "searchField") as? UITextField {
             textField.layer.cornerRadius = 10
@@ -42,7 +42,7 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
     
     private let placeholderText: UILabel = {
         let label = UILabel()
-        label.text = "Что будем отслеживать?"
+        label.text = Localization.trackerListPlaceholder
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         return label
     }()

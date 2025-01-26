@@ -23,8 +23,12 @@ final class StatisticTableViewCell: UITableViewCell {
 
 
 enum StatisticType: String {
-    case bestStreak = "Лучший период"
-    case perfectDays = "Идеальные дни"
-    case allTrackersFinished = "Трекеров завершено"
-    case averageValue = "Среднее значение"
+    case bestStreak = "statisticPage.bestStreak"
+    case perfectDays = "statisticPage.perfectDays"
+    case allTrackersFinished = "statisticPage.allTrackersFinished"
+    case averageValue = "statisticPage.averageValue"
+
+    var localized: String {
+        return NSLocalizedString(self.rawValue, comment: "")
+    }
 }

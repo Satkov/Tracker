@@ -5,7 +5,7 @@ final class CategoryPageViewController: UIViewController {
     // MARK: - UI Elements
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Категория"
+        label.text = Localization.categoryTitle
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.textAlignment = .center
         return label
@@ -13,7 +13,7 @@ final class CategoryPageViewController: UIViewController {
 
     private let addCategoryButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Добавить категорию", for: .normal)
+        button.setTitle(Localization.addCategoryButton, for: .normal)
         button.setTitleColor(UIColor.projectColor(.backgroundWhite), for: .normal)
         button.backgroundColor = UIColor.projectColor(.backgroundBlack)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -30,7 +30,7 @@ final class CategoryPageViewController: UIViewController {
 
     private let placeholderText: UILabel = {
         let label = UILabel()
-        label.text = "Привычки и события можно\nобъединить по смыслу"
+        label.text = Localization.categoryPagePlaceholder
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         label.numberOfLines = 0
         label.textAlignment = .center

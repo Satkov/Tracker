@@ -137,6 +137,7 @@ final class TrackersCollectionCell: UICollectionViewCell {
     private func setupRecordLabel() {
         recordLabel.translatesAutoresizingMaskIntoConstraints = false
         recordLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        // TODO: localize
         recordLabel.text = "0 дней"
 
         footerView.addSubview(recordLabel)
@@ -173,6 +174,7 @@ final class TrackersCollectionCell: UICollectionViewCell {
     // MARK: - UI Updates
     private func updateRecordCount() {
         let countRecords = recordsDataProvider?.recordCount ?? 0
+        // TODO: Localize
         recordLabel.text = "\(countRecords) дней"
     }
 }

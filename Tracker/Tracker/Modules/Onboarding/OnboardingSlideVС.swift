@@ -6,7 +6,7 @@ final class OnboardingSlideViewController: UIViewController {
     private let button = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Вот это технологии!", for: .normal)
+        button.setTitle(Localization.onboardingButton, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.backgroundColor = UIColor(named: "TrackerBackgroundBlack")
         button.layer.cornerRadius = 16

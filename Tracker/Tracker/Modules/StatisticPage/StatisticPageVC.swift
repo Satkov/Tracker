@@ -5,7 +5,7 @@ final class StatisticPageViewController: UIViewController {
     private let headerlabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 34, weight: .bold)
-        label.text = "Статистика"
+        label.text = Localization.statisticTitle
         return label
     }()
     
@@ -18,7 +18,7 @@ final class StatisticPageViewController: UIViewController {
     private let placeholderText = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        label.text = "Анализировать пока нечего"
+        label.text = Localization.statisticPagePlaceholder
         label.textAlignment = .center
         return label
     }()

@@ -32,7 +32,7 @@ final class EditNewTrackerViewController: UIViewController {
 
     private let warningLabel: UILabel = {
         let label = UILabel()
-        label.text = "Ограничение 38 символов"
+        label.text = Localization.nameFieldMaxLengthWarning
         label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         label.textColor = UIColor.projectColor(.borderRed)
         return label
@@ -47,7 +47,7 @@ final class EditNewTrackerViewController: UIViewController {
 
     private let cancelButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Отменить", for: .normal)
+        button.setTitle(Localization.cancelButton, for: .normal)
         button.setTitleColor(UIColor.projectColor(.borderRed), for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.layer.borderWidth = 1
@@ -58,7 +58,7 @@ final class EditNewTrackerViewController: UIViewController {
 
     private let createButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Создать", for: .normal)
+        button.setTitle(Localization.createButton, for: .normal)
         button.setTitleColor(UIColor.projectColor(.backgroundWhite), for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.backgroundColor = UIColor.projectColor(.textColorForLightgray)
@@ -70,7 +70,7 @@ final class EditNewTrackerViewController: UIViewController {
     private var textFieldContainerHeightConstraint: NSLayoutConstraint!
 
     // MARK: - Data and Managers
-    private let buttonsIdentifiers = ["Категория", "Расписание"]
+    private let buttonsIdentifiers = [Localization.categoryTitle, Localization.scheduleTitle]
     private var presenter: EditNewTrackerPresenterProtocol
     private var emojiCollectionManager: EmojiCollectionViewManager
     private var colorCollectionManager: ColorCollectionManager
@@ -92,7 +92,7 @@ final class EditNewTrackerViewController: UIViewController {
 
         self.trackerNameFieldManager = NameTextFieldManager(
             trackerNameField: trackerNameField,
-            placeholderText: "Введите название трекера",
+            placeholderText: Localization.typeCategoryNamePlaceholder,
             presenter: presenter
         )
 
@@ -153,7 +153,7 @@ final class EditNewTrackerViewController: UIViewController {
 
     private func setupTitleLabel() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = isRegular ? "Новая привычка" : "Новое нерегулярное событие"
+        titleLabel.text = isRegular ? Localization.editNewTrackerTitleHabit: Localization.editNewTrackerTitleIrregular
         scrollView.addSubview(titleLabel)
 
         NSLayoutConstraint.activate([
@@ -312,7 +312,7 @@ extension EditNewTrackerViewController: UITableViewDelegate {
         let selectedOption = buttonsIdentifiers[indexPath.row]
 
         switch selectedOption {
-        case "Категория":
+        case Localization.categoryTitle:
             let createVC = CategoryPageViewController(
                 presenter: presenter,
                 lastSelectedCategory: presenter.dataModel.category
@@ -320,7 +320,7 @@ extension EditNewTrackerViewController: UITableViewDelegate {
             createVC.modalPresentationStyle = .pageSheet
             present(createVC, animated: true)
 
-        case "Расписание":
+        case Localization.scheduleTitle:
             let createVC = SchedulePageViewController(
                 presenter: presenter,
                 selectedDays: presenter.dataModel.schudule)
@@ -355,11 +355,11 @@ extension EditNewTrackerViewController: UITableViewDataSource {
         let identifier = buttonsIdentifiers[indexPath.row]
 
         switch identifier {
-        case "Категория":
+        case Localization.categoryTitle:
             let selectedCategory = presenter.dataModel.category
             cell.configureTitleButton(title: identifier, category: selectedCategory)
 
-        case "Расписание":
+        case Localization.scheduleTitle:
             let schedule = presenter.dataModel.schudule
             cell.configureScheduleButton(title: identifier, schedule: schedule)
 

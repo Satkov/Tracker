@@ -24,13 +24,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 OnboardingSlideViewController(
                     pageNumber: PageData(
                         backgroundImageName: "OnboardingFirst",
-                        labelText: "Отслеживайте только то,\n что хотите"
+                        labelText: Localization.onboardingFirstPageLabel
                     )
                 ),
                 OnboardingSlideViewController(
                     pageNumber: PageData(
                         backgroundImageName: "OnboardingSecond",
-                        labelText: "Даже если это\n не литры воды и йога"
+                        labelText: Localization.onboardingSecondPageLabel
                     )
                 ) 
             ]

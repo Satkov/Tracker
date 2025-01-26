@@ -103,7 +103,7 @@ extension ColorCollectionManager: UICollectionViewDataSource {
             fatalError("Failed to dequeue SupplementaryView")
         }
 
-        view.titleLabel.text = "Цвет"
+        view.titleLabel.text = Localization.colorTitle
         return view
     }
 }
