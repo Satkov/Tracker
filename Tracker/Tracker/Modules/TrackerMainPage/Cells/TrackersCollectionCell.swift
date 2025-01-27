@@ -24,7 +24,10 @@ final class TrackersCollectionCell: UICollectionViewCell {
     }
 
     // MARK: - Configuration
-    func configure(with tracker: TrackerModel, datePicker: UIDatePicker) {
+    func configure(
+        with tracker: TrackerModel,
+        datePicker: UIDatePicker
+    ) {
         self.tracker = tracker
         self.datePicker = datePicker
         setupUI()
@@ -138,7 +141,11 @@ final class TrackersCollectionCell: UICollectionViewCell {
         recordLabel.translatesAutoresizingMaskIntoConstraints = false
         recordLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         // TODO: localize
-        recordLabel.text = "0 дней"
+        let localizedString = String.localizedStringWithFormat(
+            NSLocalizedString("daysCount", comment: ""),
+            0
+        )
+        recordLabel.text = localizedString
 
         footerView.addSubview(recordLabel)
 
@@ -175,7 +182,11 @@ final class TrackersCollectionCell: UICollectionViewCell {
     private func updateRecordCount() {
         let countRecords = recordsDataProvider?.recordCount ?? 0
         // TODO: Localize
-        recordLabel.text = "\(countRecords) дней"
+        let localizedString = String.localizedStringWithFormat(
+            NSLocalizedString("daysCount", comment: ""),
+            countRecords
+        )
+        recordLabel.text = localizedString
     }
 }
 

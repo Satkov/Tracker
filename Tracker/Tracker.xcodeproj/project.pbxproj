@@ -37,6 +37,7 @@
 		91521B832D45009E00402837 /* DataForCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91521B822D45009E00402837 /* DataForCell.swift */; };
 		91521B892D46A61800402837 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 91521B872D46A61800402837 /* Localizable.strings */; };
 		91521B8C2D46A91900402837 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91521B8B2D46A91900402837 /* Localization.swift */; };
+		91521B942D47D3BF00402837 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 91521B922D47D3BF00402837 /* Localizable.stringsdict */; };
 		9161CE572D1066A70081A3B4 /* EditNewTrackerViewControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9161CE562D1066A70081A3B4 /* EditNewTrackerViewControllerProtocol.swift */; };
 		9170EFEB2D3FA3C30004A701 /* TrackersDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9170EFEA2D3FA3C30004A701 /* TrackersDataProvider.swift */; };
 		9170EFEE2D3FAE350004A701 /* TrackerDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9170EFED2D3FAE350004A701 /* TrackerDataStore.swift */; };
@@ -106,6 +107,9 @@
 		91521B8F2D46B5B100402837 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		91521B902D46B5BD00402837 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		91521B912D46B5BE00402837 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		91521B972D47D5A600402837 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ru; path = ru.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		91521B982D47D81100402837 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		91521B992D47D81D00402837 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ja; path = ja.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		9161CE562D1066A70081A3B4 /* EditNewTrackerViewControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditNewTrackerViewControllerProtocol.swift; sourceTree = "<group>"; };
 		9170EFEA2D3FA3C30004A701 /* TrackersDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersDataProvider.swift; sourceTree = "<group>"; };
 		9170EFED2D3FAE350004A701 /* TrackerDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerDataStore.swift; sourceTree = "<group>"; };
@@ -118,13 +122,13 @@
 		9170F0132D41395B0004A701 /* CategoryDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDataStore.swift; sourceTree = "<group>"; };
 		9170F0172D413B800004A701 /* CategoryDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDataProvider.swift; sourceTree = "<group>"; };
 		9170F01E2D424A900004A701 /* TrackersCollectionPresenterDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersCollectionPresenterDelegate.swift; sourceTree = "<group>"; };
+		919F6E3C2D47E08100DB7770 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		91B028362CF06F680047E664 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91B028392CF06F680047E664 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91B0283B2CF06F680047E664 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		91B0283D2CF06F680047E664 /* TrackerListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerListVC.swift; sourceTree = "<group>"; };
 		91B028422CF06F690047E664 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		91B028452CF06F690047E664 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		91B028472CF06F690047E664 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		91B028512CF078D50047E664 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		91B028542CF07AE60047E664 /* UIButton+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extensions.swift"; sourceTree = "<group>"; };
 		91B028772CF0C7A70047E664 /* TrackerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerModel.swift; sourceTree = "<group>"; };
@@ -256,6 +260,7 @@
 		91521B862D46A60200402837 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				91521B922D47D3BF00402837 /* Localizable.stringsdict */,
 				91521B872D46A61800402837 /* Localizable.strings */,
 				91521B8B2D46A91900402837 /* Localization.swift */,
 			);
@@ -364,7 +369,7 @@
 				91B0284F2CF074E40047E664 /* Storyboards */,
 				91B0284D2CF0719D0047E664 /* Core */,
 				91B028422CF06F690047E664 /* Assets.xcassets */,
-				91B028472CF06F690047E664 /* Info.plist */,
+				919F6E3C2D47E08100DB7770 /* Info.plist */,
 			);
 			path = Tracker;
 			sourceTree = "<group>";
@@ -529,6 +534,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				91B028432CF06F690047E664 /* Assets.xcassets in Resources */,
+				91521B942D47D3BF00402837 /* Localizable.stringsdict in Resources */,
 				91521B892D46A61800402837 /* Localizable.strings in Resources */,
 				91B028462CF06F690047E664 /* Base in Resources */,
 			);
@@ -615,6 +621,16 @@
 			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
+		91521B922D47D3BF00402837 /* Localizable.stringsdict */ = {
+			isa = PBXVariantGroup;
+			children = (
+				91521B972D47D5A600402837 /* ru */,
+				91521B982D47D81100402837 /* en */,
+				91521B992D47D81D00402837 /* ja */,
+			);
+			name = Localizable.stringsdict;
+			sourceTree = "<group>";
+		};
 		91B028442CF06F690047E664 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -681,6 +697,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Tracker/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -739,6 +757,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Tracker/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;

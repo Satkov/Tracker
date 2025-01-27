@@ -60,7 +60,7 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
         picker.datePickerMode = .date
         picker.backgroundColor = UIColor(hex: "#F0F0F0")
         picker.layer.cornerRadius = 8
-        picker.locale = Locale(identifier: "ru_RU")
+        picker.locale = Locale.current
         return picker
     }()
     
