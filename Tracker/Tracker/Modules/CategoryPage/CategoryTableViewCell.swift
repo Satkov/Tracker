@@ -3,6 +3,14 @@ import UIKit
 final class CategoryTableViewCell: UITableViewCell {
 
     // MARK: - UI Elements
+    private let customBackgroundView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.projectColor(.backgroundLightGray)
+        view.layer.masksToBounds = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     private let customAccessoryView: UIView = {
         let view = UIView()
         view.backgroundColor = .clear
@@ -21,22 +29,10 @@ final class CategoryTableViewCell: UITableViewCell {
         return view
     }()
 
-    private let customBackgroundView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.projectColor(.backgroundLightGray)
-        view.layer.masksToBounds = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-
     // MARK: - Initializers
-    override init(
-        style: UITableViewCell.CellStyle,
-        reuseIdentifier: String?
-    ) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
-        setupConstraints()
     }
 
     required init?(coder: NSCoder) {
@@ -47,6 +43,7 @@ final class CategoryTableViewCell: UITableViewCell {
     private func setupUI() {
         contentView.insertSubview(customBackgroundView, at: 0)
         contentView.addSubview(customAccessoryView)
+        setupConstraints()
     }
 
     // MARK: - Setup Constraints
@@ -67,12 +64,7 @@ final class CategoryTableViewCell: UITableViewCell {
     }
 
     // MARK: - Public Methods
-    func configureCell(
-        with text: String,
-        isSelected: Bool,
-        isLast: Bool,
-        isFirst: Bool
-    ) {
+    func configureCell(with text: String, isSelected: Bool, isLast: Bool, isFirst: Bool) {
         textLabel?.text = text
         textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
 
@@ -81,22 +73,23 @@ final class CategoryTableViewCell: UITableViewCell {
         setupCornerRadius(isFirst: isFirst, isLast: isLast)
     }
 
-    private func setupCornerRadius(isFirst: Bool, isLast: Bool) {
-        customBackgroundView.layer.cornerRadius = 16
-        customBackgroundView.layer.masksToBounds = true
-
-        if isFirst && isLast {
-            customBackgroundView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        } else if isFirst {
-            customBackgroundView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        } else if isLast {
-            customBackgroundView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        } else {
-            customBackgroundView.layer.cornerRadius = 0
-        }
-    }
-
     func setAccessoryType(_ type: UITableViewCell.AccessoryType) {
         customAccessoryView.isHidden = (type != .checkmark)
+    }
+
+    // MARK: - Private Methods
+    private func setupCornerRadius(isFirst: Bool, isLast: Bool) {
+        customBackgroundView.layer.cornerRadius = 16
+
+        switch (isFirst, isLast) {
+        case (true, true):
+            customBackgroundView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        case (true, false):
+            customBackgroundView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        case (false, true):
+            customBackgroundView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        default:
+            customBackgroundView.layer.cornerRadius = 0
+        }
     }
 }
