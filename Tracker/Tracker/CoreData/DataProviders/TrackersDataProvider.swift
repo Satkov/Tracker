@@ -47,7 +47,6 @@ final class TrackersDataProvider: NSObject {
         }
     }
 
-
     private func updateMemoryCache() {
         /* Обновляю локальный кэш категорий и трекеров, взяв их из coredata
          сортирую трекеры и категории, чтобы они не перемешивались при обновлении
@@ -60,13 +59,18 @@ final class TrackersDataProvider: NSObject {
 
         for tracker in objects {
             guard let categoryName = tracker.category?.name else { continue }
-            
+
             let trackerModel = convertToTrackerModel(tracker)
             categoryMap[categoryName, default: []].append(trackerModel)
         }
 
         for (categoryName, trackers) in categoryMap {
-            let sortedTrackers = trackers.sorted { $0.name < $1.name }
+            let sortedTrackers = trackers.sorted {
+                if $0.isPinned == $1.isPinned {
+                    return $0.name < $1.name
+                }
+                return $0.isPinned && !$1.isPinned
+            }
             newCategories.append(
                 TrackerCategoryModel(
                     categoryName: categoryName,
@@ -76,10 +80,17 @@ final class TrackersDataProvider: NSObject {
         }
 
         categories = newCategories.sorted { $0.categoryName < $1.categoryName }
-        trackers = objects.compactMap { convertToTrackerModel($0) }.sorted { $0.name < $1.name }
+        trackers = objects.compactMap { convertToTrackerModel($0) }
+            .sorted {
+                if $0.isPinned == $1.isPinned {
+                    return $0.name < $1.name
+                }
+                return $0.isPinned && !$1.isPinned
+            }
 
         delegate?.didUpdate()
     }
+    
     // MARK: - Фильтрация данных
     func updateDate(_ newDate: Date) {
         /* метод дергается, когда в дейтпикере меняется дата */
@@ -90,6 +101,25 @@ final class TrackersDataProvider: NSObject {
     func updateSearchBarText(_ text: String) {
         textInSearchBar = text
         delegate?.didUpdate()
+    }
+    
+    func togglePinTracker(at indexPath: IndexPath) throws {
+        let trackerModel = filteredSections()[indexPath.section].trackers[indexPath.row]
+
+        let request: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@", trackerModel.id as CVarArg)
+
+        do {
+            if let trackerCoreData = try context.fetch(request).first {
+                trackerCoreData.isPinned.toggle()
+                try context.save()
+                updateMemoryCache()
+            } else {
+                // TODO: обработка ошибки
+            }
+        } catch {
+            // TODO: обработка ошибки
+        }
     }
     
     private func filteredTrackers() -> [TrackerModel] {
@@ -113,7 +143,6 @@ final class TrackersDataProvider: NSObject {
     }
 
     private func filteredSections() -> [TrackerCategoryModel] {
-        // возвращает секции в которых есть трекеры с нужной датой и именем из searchBar
         return categories.compactMap { category in
             let filteredTrackers = category.trackers.filter { tracker in
                 guard let schedule = tracker.schedule else { return false }
@@ -121,12 +150,21 @@ final class TrackersDataProvider: NSObject {
                     return schedule.contains(Schedule.dayOfWeek(for: choosenDate)) &&
                            tracker.name.contains(textInSearchBar)
                 }
-                 return schedule.contains(Schedule.dayOfWeek(for: choosenDate))
+                return schedule.contains(Schedule.dayOfWeek(for: choosenDate))
             }
-            return filteredTrackers.isEmpty ? nil : TrackerCategoryModel(
-                                                        categoryName: category.categoryName,
-                                                        trackers: filteredTrackers
-                                                    )
+            
+            // закрепленные трекеры сверху
+            let sortedTrackers = filteredTrackers.sorted {
+                if $0.isPinned == $1.isPinned {
+                    return $0.name < $1.name
+                }
+                return $0.isPinned && !$1.isPinned
+            }
+
+            return sortedTrackers.isEmpty ? nil : TrackerCategoryModel(
+                categoryName: category.categoryName,
+                trackers: sortedTrackers
+            )
         }
     }
 
@@ -165,9 +203,9 @@ final class TrackersDataProvider: NSObject {
     }
 
     private func convertToTrackerModel(_ trackerCoreData: TrackerCoreData) -> TrackerModel {
-        // преобазует объект coredata в TrackerModel
         let schedule: Set<Schedule> = {
-            if let scheduleData = trackerCoreData.schedule, let decodedSchedule = try? JSONDecoder().decode(Set<Schedule>.self, from: scheduleData) {
+            if let scheduleData = trackerCoreData.schedule,
+               let decodedSchedule = try? JSONDecoder().decode(Set<Schedule>.self, from: scheduleData) {
                 return decodedSchedule
             }
             return []

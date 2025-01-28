@@ -13,6 +13,9 @@ final class TrackersCollectionCell: UICollectionViewCell {
     private var tracker: TrackerModel?
     private var datePicker: UIDatePicker?
     private var recordsDataProvider: RecordsDataProvider?
+    var onPinToggle: (() -> Void)?
+    var onDelete: (() -> Void)?
+    var onEdit: (() -> Void)?
     
     // MARK: - Initializer
     override init(frame: CGRect) {
@@ -58,6 +61,7 @@ final class TrackersCollectionCell: UICollectionViewCell {
         setupTrackerNameLabel()
         setupRecordButton()
         setupRecordLabel()
+        setupContextMenu()
     }
 
     private func setupCardView() {
@@ -155,6 +159,11 @@ final class TrackersCollectionCell: UICollectionViewCell {
             recordLabel.trailingAnchor.constraint(equalTo: recordButton.leadingAnchor, constant: -8)
         ])
     }
+    
+    private func setupContextMenu() {
+            let interaction = UIContextMenuInteraction(delegate: self)
+            cardView.addInteraction(interaction)
+        }
 
     // MARK: - Button Action
     @objc
@@ -196,6 +205,30 @@ extension TrackersCollectionCell: RecordsDataProviderDelegate {
         DispatchQueue.main.async {
             self.updateRecordCount()
             self.updateButtonStyle()
+        }
+    }
+}
+
+extension TrackersCollectionCell: UIContextMenuInteractionDelegate {
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            let pinAction = UIAction(title: self.tracker?.isPinned == true ? "Открепить" : "Закрепить",
+                                     handler: { _ in
+                self.onPinToggle?()
+            })
+            
+            let editAction = UIAction(title: "Редактировать",
+                                      handler: { _ in
+                self.onEdit?()
+            })
+            
+            let deleteAction = UIAction(title: "Удалить",
+                                        attributes: .destructive,
+                                        handler: { _ in
+                self.onDelete?()
+            })
+            
+            return UIMenu(title: "", children: [pinAction, editAction, deleteAction])
         }
     }
 }
