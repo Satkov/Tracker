@@ -132,6 +132,7 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
     private func setupSearchBar() {
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(searchBar)
+        searchBar.delegate = self
         
         NSLayoutConstraint.activate([
             searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -189,19 +190,22 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
         view.addGestureRecognizer(tapGesture)
     }
     
-    @objc private func hideKeyboard() {
+    // MARK: - Actions
+    @objc
+    private func hideKeyboard() {
         view.endEditing(true)
     }
     
-    // MARK: - Actions
-    @objc private func dateChanged(_ sender: UIDatePicker) {
+    @objc
+    private func dateChanged(_ sender: UIDatePicker) {
         let selectedDate = datePicker.date
         trackersPresenter?.updateDate(selectedDate)
         updateUI()
         
     }
     
-    @objc private func addTrackerButtonPressed() {
+    @objc
+    private func addTrackerButtonPressed() {
         let createTrackerVC = TrackerTypeMenuViewController()
         createTrackerVC.modalPresentationStyle = .pageSheet
         present(createTrackerVC, animated: true)
@@ -211,6 +215,10 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
 extension TrackerListViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        trackersPresenter?.searchBarTextUpdated(text: searchText)
     }
 }
 

@@ -45,14 +45,18 @@ final class TrackersCollectionPresenter: NSObject {
     // MARK: - Actions
     func updateDate(_ newDate: Date) {
         trackersDataProvider.updateDate(newDate)
-        collectionView.reloadData()
+    }
+    
+    func searchBarTextUpdated(text: String) {
+        trackersDataProvider.updateSearchBarText(text)
     }
     
     var hasTrackers: Bool {
         return trackersDataProvider.numberOfSections > 0
     }
     
-    @objc private func dateChanged(_ sender: UIDatePicker) {
+    @objc
+    private func dateChanged(_ sender: UIDatePicker) {
         updateDate(sender.date)
     }
 }

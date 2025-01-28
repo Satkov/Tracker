@@ -11,6 +11,7 @@ final class TrackersDataProvider: NSObject {
     private var choosenDate = Calendar.current.startOfDay(for: Date())
     private var categories: [TrackerCategoryModel] = []
     private var trackers: [TrackerModel] = []
+    private var textInSearchBar = ""
 
     // использую, чтобы следить за обновлениями coredata
     private lazy var fetchedResultsController: NSFetchedResultsController<TrackerCoreData> = {
@@ -86,11 +87,22 @@ final class TrackersDataProvider: NSObject {
         delegate?.didUpdate()
     }
     
+    func updateSearchBarText(_ text: String) {
+        textInSearchBar = text
+        delegate?.didUpdate()
+    }
+    
     private func filteredTrackers() -> [TrackerModel] {
         // возвращает массив трекеров, которые соответствуют выбраной дате
         let scheduleDay = Schedule.dayOfWeek(for: choosenDate)
         return trackers.filter { tracker in
             guard let schedule = tracker.schedule else { return false }
+            
+            if !textInSearchBar.isEmpty {
+                return schedule.contains(scheduleDay) &&
+                       tracker.name.contains(textInSearchBar)
+            }
+            
             return schedule.contains(scheduleDay)
         }
     }
@@ -101,10 +113,14 @@ final class TrackersDataProvider: NSObject {
     }
 
     private func filteredSections() -> [TrackerCategoryModel] {
-        // возвращает секции в которых есть трекеры с нужной датой
+        // возвращает секции в которых есть трекеры с нужной датой и именем из searchBar
         return categories.compactMap { category in
             let filteredTrackers = category.trackers.filter { tracker in
                 guard let schedule = tracker.schedule else { return false }
+                if !textInSearchBar.isEmpty {
+                    return schedule.contains(Schedule.dayOfWeek(for: choosenDate)) &&
+                           tracker.name.contains(textInSearchBar)
+                }
                  return schedule.contains(Schedule.dayOfWeek(for: choosenDate))
             }
             return filteredTrackers.isEmpty ? nil : TrackerCategoryModel(
