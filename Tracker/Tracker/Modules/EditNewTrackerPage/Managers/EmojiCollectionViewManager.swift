@@ -45,7 +45,7 @@ extension EmojiCollectionViewManager: UICollectionViewDelegate {
         }
 
         if let cell = collectionView.cellForItem(at: indexPath) {
-            cell.contentView.backgroundColor = UIColor.projectColor(.backgroundLightGray)
+            cell.contentView.backgroundColor = UIColor.projectColor(.lightGray)
         }
 
         presenter.updateEmoji(new: Emojis.allCases[indexPath.row])

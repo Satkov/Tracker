@@ -50,7 +50,7 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
     private let addTrackerButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "PlusIcon"), for: .normal)
-        button.tintColor = UIColor.projectColor(.backgroundBlack)
+        button.tintColor = UIColor.projectColor(.black)
         return button
     }()
     

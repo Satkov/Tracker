@@ -12,8 +12,8 @@ final class SchedulePageViewController: UIViewController {
     private let addScheduleButton: UIButton = {
         let button = UIButton()
         button.setTitle(Localization.readyButton, for: .normal)
-        button.setTitleColor(UIColor.projectColor(.backgroundWhite), for: .normal)
-        button.backgroundColor = UIColor.projectColor(.backgroundBlack)
+        button.setTitleColor(UIColor.projectColor(.white), for: .normal)
+        button.backgroundColor = UIColor.projectColor(.black)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.layer.cornerRadius = 16
         return button

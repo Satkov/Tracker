@@ -12,7 +12,7 @@ final class CreateCategoryViewController: UIViewController {
     private let addCategoryButton: UIButton = {
         let button = UIButton()
         button.setTitle(Localization.readyButton, for: .normal)
-        button.setTitleColor(UIColor.projectColor(.backgroundWhite), for: .normal)
+        button.setTitleColor(UIColor.projectColor(.white), for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.layer.cornerRadius = 16
         return button
@@ -101,7 +101,7 @@ final class CreateCategoryViewController: UIViewController {
 
     // MARK: - Button State Management
     private func setAddCategoryButtonState(isTextFieldEmpty: Bool) {
-        let backgroundcolor: ProjectColors = isTextFieldEmpty ? .textColorForLightgray : .backgroundBlack
+        let backgroundcolor: ProjectColors = isTextFieldEmpty ? .gray : .black
         addCategoryButton.backgroundColor = UIColor.projectColor(backgroundcolor)
         addCategoryButton.isEnabled = !isTextFieldEmpty
     }

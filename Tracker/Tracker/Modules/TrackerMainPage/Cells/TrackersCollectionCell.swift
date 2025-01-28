@@ -93,7 +93,7 @@ final class TrackersCollectionCell: UICollectionViewCell {
         emojiLabel.translatesAutoresizingMaskIntoConstraints = false
         emojiLabel.layer.cornerRadius = 12
         emojiLabel.layer.masksToBounds = true
-        emojiLabel.backgroundColor = UIColor.projectColor(.backgroundWhite).withAlphaComponent(0.3)
+        emojiLabel.backgroundColor = UIColor.projectColor(.white).withAlphaComponent(0.3)
         emojiLabel.text = tracker?.emoji.rawValue
 
         cardView.addSubview(emojiLabel)
@@ -110,7 +110,7 @@ final class TrackersCollectionCell: UICollectionViewCell {
         trackerNameLabel.translatesAutoresizingMaskIntoConstraints = false
         trackerNameLabel.textAlignment = .left
         trackerNameLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        trackerNameLabel.textColor = UIColor.projectColor(.backgroundWhite)
+        trackerNameLabel.textColor = UIColor.projectColor(.white)
         trackerNameLabel.text = tracker?.name
 
         cardView.addSubview(trackerNameLabel)

@@ -37,7 +37,7 @@ final class OnboardingPageViewController: UIPageViewController {
     
     private func setupPageControl() {
         guard let superview = view.superview else { return }
-        let pageControlColor = UIColor.projectColor(.backgroundBlack)
+        let pageControlColor = UIColor.projectColor(.black)
         pageControl.pageIndicatorTintColor = pageControlColor.withAlphaComponent(0.3)
         pageControl.currentPageIndicatorTintColor = pageControlColor
         superview.addSubview(pageControl)

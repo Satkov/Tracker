@@ -59,9 +59,9 @@ final class EditNewTrackerViewController: UIViewController {
     private let createButton: UIButton = {
         let button = UIButton()
         button.setTitle(Localization.createButton, for: .normal)
-        button.setTitleColor(UIColor.projectColor(.backgroundWhite), for: .normal)
+        button.setTitleColor(UIColor.projectColor(.white), for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.backgroundColor = UIColor.projectColor(.textColorForLightgray)
+        button.backgroundColor = UIColor.projectColor(.gray)
         button.layer.cornerRadius = 16
         return button
     }()
@@ -392,12 +392,12 @@ extension EditNewTrackerViewController: TrackerNameTextFieldManagerDelegateProto
 
 extension EditNewTrackerViewController: EditNewTrackerViewControllerProtocol {
     func setCreateButtonEnable() {
-        createButton.backgroundColor = UIColor.projectColor(.backgroundBlack)
+        createButton.backgroundColor = UIColor.projectColor(.black)
         createButton.isEnabled = true
     }
 
     func setCreateButtonDissable() {
-        createButton.backgroundColor = UIColor.projectColor(.textColorForLightgray)
+        createButton.backgroundColor = UIColor.projectColor(.gray)
         createButton.isEnabled = false
     }
 

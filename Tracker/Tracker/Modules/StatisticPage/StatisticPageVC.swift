@@ -25,7 +25,7 @@ final class StatisticPageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.projectColor(.backgroundWhite)
+        view.backgroundColor = UIColor.projectColor(.white)
         prepareViews()
         setupLayouts()
     }
