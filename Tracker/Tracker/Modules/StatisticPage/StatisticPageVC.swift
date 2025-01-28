@@ -23,17 +23,32 @@ final class StatisticPageViewController: UIViewController {
         return label
     }()
     
+    private let viewWithTableView = {
+        let viewWithTableView = StatisticTableView()
+        viewWithTableView.backgroundColor = .black.withAlphaComponent(0.1)
+        viewWithTableView.configurate()
+        return viewWithTableView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.projectColor(.white)
         prepareViews()
         setupLayouts()
+        placeholderText.isHidden = true
+        placeholderImage.isHidden = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewWithTableView.tableView.reloadData()
     }
     
     private func prepareViews() {
         [headerView,
          placeholderText,
-         placeholderImage].forEach {
+         placeholderImage,
+         viewWithTableView].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
@@ -68,6 +83,13 @@ final class StatisticPageViewController: UIViewController {
             placeholderText.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -32),
             placeholderText.topAnchor.constraint(equalTo: placeholderImage.bottomAnchor, constant: 8),
             placeholderText.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16)
+        ])
+        
+        NSLayoutConstraint.activate([
+            viewWithTableView.topAnchor.constraint(equalTo: headerlabel.bottomAnchor, constant: 77),
+            viewWithTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            viewWithTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            viewWithTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0)
         ])
     }
 }

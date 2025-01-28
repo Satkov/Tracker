@@ -10,6 +10,11 @@
 		791EA637B98ECD617C60F4F8 /* Pods_Tracker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF2CCA7683C5655812FEC3D9 /* Pods_Tracker.framework */; };
 		91039B502D3D3463009D333B /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91039B4F2D3D3463009D333B /* CoreDataManager.swift */; };
 		91039B532D3D34B0009D333B /* TrackerCoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 91039B512D3D34B0009D333B /* TrackerCoreData.xcdatamodeld */; };
+		911563842D4930B800BE046E /* StatisticTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911563832D4930B800BE046E /* StatisticTableView.swift */; };
+		911563862D49310100BE046E /* StatisticPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911563852D49310100BE046E /* StatisticPresenter.swift */; };
+		911563882D49421B00BE046E /* StatisticDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911563872D49421B00BE046E /* StatisticDataProvider.swift */; };
+		9115638C2D49443F00BE046E /* StatisticDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9115638B2D49443F00BE046E /* StatisticDataStore.swift */; };
+		9115638E2D49493E00BE046E /* StatisticType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9115638D2D49493E00BE046E /* StatisticType.swift */; };
 		911D13FD2D48FC4F00A3CAEF /* InlineSnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 911D13FC2D48FC4F00A3CAEF /* InlineSnapshotTesting */; };
 		911D13FF2D48FC4F00A3CAEF /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 911D13FE2D48FC4F00A3CAEF /* SnapshotTesting */; };
 		911D14012D48FC4F00A3CAEF /* SnapshotTestingCustomDump in Frameworks */ = {isa = PBXBuildFile; productRef = 911D14002D48FC4F00A3CAEF /* SnapshotTestingCustomDump */; };
@@ -90,6 +95,11 @@
 		6571826E8C069A09FDC69ABA /* Pods-Tracker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tracker.debug.xcconfig"; path = "Target Support Files/Pods-Tracker/Pods-Tracker.debug.xcconfig"; sourceTree = "<group>"; };
 		91039B4F2D3D3463009D333B /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		91039B522D3D34B0009D333B /* TrackerCoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TrackerCoreData.xcdatamodel; sourceTree = "<group>"; };
+		911563832D4930B800BE046E /* StatisticTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticTableView.swift; sourceTree = "<group>"; };
+		911563852D49310100BE046E /* StatisticPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticPresenter.swift; sourceTree = "<group>"; };
+		911563872D49421B00BE046E /* StatisticDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticDataProvider.swift; sourceTree = "<group>"; };
+		9115638B2D49443F00BE046E /* StatisticDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticDataStore.swift; sourceTree = "<group>"; };
+		9115638D2D49493E00BE046E /* StatisticType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticType.swift; sourceTree = "<group>"; };
 		911D13F32D48FAF400A3CAEF /* ScreenshotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScreenshotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9120915E2D0A364D0048851D /* SupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupplementaryView.swift; sourceTree = "<group>"; };
 		912091622D0ADA080048851D /* EmojiCollectionViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCollectionViewManager.swift; sourceTree = "<group>"; };
@@ -335,6 +345,7 @@
 				9170EFED2D3FAE350004A701 /* TrackerDataStore.swift */,
 				9170F0112D4119010004A701 /* RecordsDataStore.swift */,
 				9170F0132D41395B0004A701 /* CategoryDataStore.swift */,
+				9115638B2D49443F00BE046E /* StatisticDataStore.swift */,
 			);
 			path = DataStores;
 			sourceTree = "<group>";
@@ -364,6 +375,7 @@
 				9170F00D2D410FC40004A701 /* RecordsDataProvider.swift */,
 				9170EFEA2D3FA3C30004A701 /* TrackersDataProvider.swift */,
 				9170F0172D413B800004A701 /* CategoryDataProvider.swift */,
+				911563872D49421B00BE046E /* StatisticDataProvider.swift */,
 			);
 			path = DataProviders;
 			sourceTree = "<group>";
@@ -493,6 +505,9 @@
 			children = (
 				91B028822CF207BF0047E664 /* StatisticPageVC.swift */,
 				91521B792D44403300402837 /* StatisticTableViewCell.swift */,
+				911563832D4930B800BE046E /* StatisticTableView.swift */,
+				911563852D49310100BE046E /* StatisticPresenter.swift */,
+				9115638D2D49493E00BE046E /* StatisticType.swift */,
 			);
 			path = StatisticPage;
 			sourceTree = "<group>";
@@ -705,6 +720,7 @@
 				9170EFF02D3FAF2F0004A701 /* TrackerDataStoreProtocol.swift in Sources */,
 				9170EFEE2D3FAE350004A701 /* TrackerDataStore.swift in Sources */,
 				91B0283E2CF06F680047E664 /* TrackerListVC.swift in Sources */,
+				911563882D49421B00BE046E /* StatisticDataProvider.swift in Sources */,
 				91521B282D44111E00402837 /* OnboardingPageVC.swift in Sources */,
 				9170EFF52D3FBA040004A701 /* DataProviderDelegate.swift in Sources */,
 				913E87552D36DEBB0014D489 /* CategoryPageViewControllerProtocol.swift in Sources */,
@@ -728,9 +744,11 @@
 				91B0288B2CF334960047E664 /* EditNewTrackerVC.swift in Sources */,
 				9120918C2D0F03200048851D /* CategoryTableViewCell.swift in Sources */,
 				9170F01F2D424A900004A701 /* TrackersCollectionPresenterDelegate.swift in Sources */,
+				911563842D4930B800BE046E /* StatisticTableView.swift in Sources */,
 				912091942D0F15230048851D /* DataForTrackerModel.swift in Sources */,
 				9170EFEB2D3FA3C30004A701 /* TrackersDataProvider.swift in Sources */,
 				91B028552CF07AE60047E664 /* UIButton+Extensions.swift in Sources */,
+				9115638C2D49443F00BE046E /* StatisticDataStore.swift in Sources */,
 				912091672D0ADDF80048851D /* ColorCollectionViewCell.swift in Sources */,
 				9170EFF72D3FBA170004A701 /* TrackersDataProviderProtocol.swift in Sources */,
 				91521B8C2D46A91900402837 /* Localization.swift in Sources */,
@@ -738,6 +756,7 @@
 				91B0288D2CF380B50047E664 /* EmojiCollectionViewCell.swift in Sources */,
 				9120917D2D0DB33C0048851D /* SchedulePageVC.swift in Sources */,
 				912091652D0ADCAF0048851D /* ColorCollectionManager.swift in Sources */,
+				9115638E2D49493E00BE046E /* StatisticType.swift in Sources */,
 				912091722D0CB5810048851D /* GeometricParamsModel.swift in Sources */,
 				91521B4F2D4419E300402837 /* OnboardingSlideVС.swift in Sources */,
 				91CC95C82D10B51D00ECE101 /* TrackersCollectionPresenter.swift in Sources */,
@@ -751,6 +770,7 @@
 				91B0287C2CF0C7BD0047E664 /* TrackerRecordModel.swift in Sources */,
 				91521B7C2D44EABB00402837 /* CategoryViewModel.swift in Sources */,
 				913E87592D399B740014D489 /* ScheduleModel.swift in Sources */,
+				911563862D49310100BE046E /* StatisticPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

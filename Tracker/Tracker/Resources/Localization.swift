@@ -40,23 +40,4 @@ enum Localization {
     static let newCategoryTitle = NSLocalizedString("newCategory", comment: "")
     static let readyButton = NSLocalizedString("ready", comment: "")
     static let typeCategoryNamePlaceholder = NSLocalizedString("typeCategoryName", comment: "")
-
-    // Weekdays
-    static let mondayFull = NSLocalizedString("monday", comment: "")
-    static let tuesdayFull = NSLocalizedString("tuesday", comment: "")
-    static let wednesdayFull = NSLocalizedString("wednesday", comment: "")
-    static let thursdayFull = NSLocalizedString("thursday", comment: "")
-    static let fridayFull = NSLocalizedString("friday", comment: "")
-    static let saturdayFull = NSLocalizedString("saturday", comment: "")
-    static let sundayFull = NSLocalizedString("sunday", comment: "")
-
-    static let mondayShort = NSLocalizedString("monday.short", comment: "")
-    static let tuesdayShort = NSLocalizedString("tuesday.short", comment: "")
-    static let wednesdayShort = NSLocalizedString("wednesday.short", comment: "")
-    static let thursdayShort = NSLocalizedString("thursday.short", comment: "")
-    static let fridayShort = NSLocalizedString("friday.short", comment: "")
-    static let saturdayShort = NSLocalizedString("saturday.short", comment: "")
-    static let sundayShort = NSLocalizedString("sunday.short", comment: "")
-
-    static let everyDayLabel = NSLocalizedString("everyDay", comment: "")
 }
