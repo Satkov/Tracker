@@ -96,7 +96,6 @@ extension TrackersCollectionPresenter: UICollectionViewDataSource {
             try? self?.trackersDataProvider.deleteTracker(at: indexPath)
         }
         cell.onPinToggle = { [weak self] in
-            print("=======")
             self?.trackersDataProvider.togglePinTracker(for: currentTracker)
         }
         

@@ -34,6 +34,11 @@ final class TrackersDataProvider: NSObject {
         self.dataStore = dataStore
         super.init()
         fetchedResultsController.delegate = self
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
+            print("Ошибка загрузки записей: \(error)")
+        }
     }
 
     private func loadCategoriesWithTrackers(for date: Date) {
@@ -105,7 +110,7 @@ final class TrackersDataProvider: NSObject {
 // MARK: - NSFetchedResultsControllerDelegate
 extension TrackersDataProvider: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        print("asdasdasd")
         filterTrackers(filters: lastFilter)
-        delegate?.didUpdate()
     }
 }
