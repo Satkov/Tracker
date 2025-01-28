@@ -94,7 +94,8 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
                                    name: name,
                                    color: color,
                                    emoji: emoji,
-                                   schedule: schedule)
+                                   schedule: schedule,
+                                   isPinned: false)
         return tracker
     }
 

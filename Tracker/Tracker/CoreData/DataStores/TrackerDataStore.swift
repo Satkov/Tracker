@@ -19,14 +19,77 @@ final class TrackerDataStore {
         context.performAndWait { result = action(context) }
         return try result.get()
     }
+    
+    func fetchCategoriesWithTrackers(for date: Date) throws -> [TrackerCategoryModel] {
+        return try performSync { context in
+            Result {
+                let request: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+                let allTrackers = try context.fetch(request)
+                
+                let scheduleDay = Schedule.dayOfWeek(for: date)
+                var categoryMap: [(categoryID: NSManagedObjectID, name: String, trackers: [TrackerModel])] = []
+
+                var categoryDict: [NSManagedObjectID: (name: String, trackers: [TrackerModel])] = [:]
+
+                for trackerCoreData in allTrackers {
+                    guard let category = trackerCoreData.category,
+                          let categoryName = category.name,
+                          let scheduleData = trackerCoreData.schedule,
+                          let schedule = try? JSONDecoder().decode(Set<Schedule>.self, from: scheduleData),
+                          schedule.contains(scheduleDay) else { continue }
+
+                    let trackerModel = TrackerModel(
+                        id: trackerCoreData.id ?? UUID(),
+                        name: trackerCoreData.name ?? "",
+                        color: TrackerColors(rawValue: trackerCoreData.color ?? "") ?? .red,
+                        emoji: Emojis(rawValue: trackerCoreData.emoji ?? "") ?? .smilingFace,
+                        schedule: schedule,
+                        isPinned: trackerCoreData.isPinned
+                    )
+
+                    categoryDict[category.objectID, default: (name: categoryName, trackers: [])].trackers.append(trackerModel)
+                }
+
+                categoryMap = categoryDict.map { (key, value) in
+                    (categoryID: key, name: value.name, trackers: value.trackers)
+                }
+
+                return categoryMap
+                    .sorted { $0.categoryID.uriRepresentation().absoluteString < $1.categoryID.uriRepresentation().absoluteString }
+                    .map { category in
+                        TrackerCategoryModel(
+                            categoryName: category.name,
+                            trackers: category.trackers.sorted { $0.id.uuidString < $1.id.uuidString }
+                        )
+                    }
+            }
+        }
+    }
+    
+    func togglePin(for tracker: TrackerModel) throws {
+        try performSync { context in
+            Result {
+                let request: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+                request.predicate = NSPredicate(format: "id == %@", tracker.id as CVarArg)
+
+                guard let trackerCoreData = try context.fetch(request).first else {
+                    print("Ошибка: трекер с ID \(tracker.id) не найден в Core Data")
+                    return
+                }
+
+                print("До изменения: isPinned = \(trackerCoreData.isPinned)")
+                trackerCoreData.isPinned.toggle() // ✅ Меняем флаг
+                print("После изменения: isPinned = \(trackerCoreData.isPinned)")
+
+                try context.save() // ✅ Сохраняем изменения
+            }
+        }
+
+    }
 }
 
 // MARK: - NotepadDataStore
 extension TrackerDataStore: TrackerDataStoreProtocol {
-    var managedObjectContext: NSManagedObjectContext? {
-        context
-    }
-    
     func add(tracker: TrackerModel, categoryName: String) throws {
         try performSync { context in
             Result {

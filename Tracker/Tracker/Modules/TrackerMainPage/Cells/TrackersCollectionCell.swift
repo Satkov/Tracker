@@ -190,7 +190,6 @@ final class TrackersCollectionCell: UICollectionViewCell {
     // MARK: - UI Updates
     private func updateRecordCount() {
         let countRecords = recordsDataProvider?.recordCount ?? 0
-        // TODO: Localize
         let localizedString = String.localizedStringWithFormat(
             NSLocalizedString("daysCount", comment: ""),
             countRecords

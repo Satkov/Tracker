@@ -5,6 +5,7 @@ final class RecordsDataStore {
     
     private let context: NSManagedObjectContext
     
+    
     init(context: NSManagedObjectContext = CoreDataManager.shared.context) {
         self.context = context
     }

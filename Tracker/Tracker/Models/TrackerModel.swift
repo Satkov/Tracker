@@ -7,5 +7,5 @@ struct TrackerModel {
     let color: TrackerColors
     let emoji: Emojis
     let schedule: Set<Schedule>?
-    let isPinned: Bool = false
+    let isPinned: Bool
 }

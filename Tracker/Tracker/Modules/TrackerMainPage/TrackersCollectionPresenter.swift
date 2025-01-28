@@ -13,6 +13,9 @@ final class TrackersCollectionPresenter: NSObject {
     private var currentDate: Date {
         datePicker.date
     }
+    private var filter = FilterSettings(date: Date(),
+                                             trackerName: "",
+                                             recorded: .all)
 
     // MARK: - Initializer
     init(collectionView: UICollectionView, 
@@ -25,6 +28,7 @@ final class TrackersCollectionPresenter: NSObject {
         self.datePicker = datePicker
         self.delegate = delegate
         super.init()
+        self.trackersDataProvider.filterTrackers(filters: filter)
         datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
         configureCollectionView()
     }
@@ -44,11 +48,13 @@ final class TrackersCollectionPresenter: NSObject {
 
     // MARK: - Actions
     func updateDate(_ newDate: Date) {
-        trackersDataProvider.updateDate(newDate)
+        filter.date = newDate
+        trackersDataProvider.filterTrackers(filters: filter)
     }
     
     func searchBarTextUpdated(text: String) {
-        trackersDataProvider.updateSearchBarText(text)
+        filter.trackerName = text
+        trackersDataProvider.filterTrackers(filters: filter)
     }
     
     var hasTrackers: Bool {
@@ -63,11 +69,17 @@ final class TrackersCollectionPresenter: NSObject {
 
 // MARK: - UICollectionViewDataSource
 extension TrackersCollectionPresenter: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
         return trackersDataProvider.numberOfRowsInSection(section)
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: "TrackersCollectionCell",
             for: indexPath
@@ -80,6 +92,14 @@ extension TrackersCollectionPresenter: UICollectionViewDataSource {
         }
 
         cell.configure(with: currentTracker, datePicker: datePicker)
+        cell.onDelete = { [weak self] in
+            try? self?.trackersDataProvider.deleteTracker(at: indexPath)
+        }
+        cell.onPinToggle = { [weak self] in
+            print("=======")
+            self?.trackersDataProvider.togglePinTracker(for: currentTracker)
+        }
+        
         return cell
     }
 
@@ -115,15 +135,27 @@ extension TrackersCollectionPresenter: UICollectionViewDelegateFlowLayout {
         .init(width: collectionView.frame.width, height: 19)
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
         return UIEdgeInsets(top: 0, left: params.leftInset, bottom: 0, right: params.rightInset)
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        minimumInteritemSpacingForSectionAt section: Int
+    ) -> CGFloat {
         return params.cellSpacing
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
         return CGSize(width: params.cellWidth, height: params.cellHeight)
     }
 }
