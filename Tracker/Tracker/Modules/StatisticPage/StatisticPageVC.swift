@@ -30,18 +30,27 @@ final class StatisticPageViewController: UIViewController {
         return viewWithTableView
     }()
     
+    private let dataProvider = StatisticDataProvider()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.projectColor(.white)
         prepareViews()
         setupLayouts()
-        placeholderText.isHidden = true
-        placeholderImage.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewWithTableView.tableView.reloadData()
+        if dataProvider.isDataExist() {
+            placeholderText.isHidden = true
+            placeholderImage.isHidden = true
+            viewWithTableView.isHidden = false
+        } else {
+            placeholderText.isHidden = false
+            placeholderImage.isHidden = false
+            viewWithTableView.isHidden = true
+        }
     }
     
     private func prepareViews() {

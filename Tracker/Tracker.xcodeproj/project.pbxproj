@@ -11,7 +11,6 @@
 		91039B502D3D3463009D333B /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91039B4F2D3D3463009D333B /* CoreDataManager.swift */; };
 		91039B532D3D34B0009D333B /* TrackerCoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 91039B512D3D34B0009D333B /* TrackerCoreData.xcdatamodeld */; };
 		911563842D4930B800BE046E /* StatisticTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911563832D4930B800BE046E /* StatisticTableView.swift */; };
-		911563862D49310100BE046E /* StatisticPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911563852D49310100BE046E /* StatisticPresenter.swift */; };
 		911563882D49421B00BE046E /* StatisticDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911563872D49421B00BE046E /* StatisticDataProvider.swift */; };
 		9115638C2D49443F00BE046E /* StatisticDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9115638B2D49443F00BE046E /* StatisticDataStore.swift */; };
 		9115638E2D49493E00BE046E /* StatisticType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9115638D2D49493E00BE046E /* StatisticType.swift */; };
@@ -96,7 +95,6 @@
 		91039B4F2D3D3463009D333B /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		91039B522D3D34B0009D333B /* TrackerCoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TrackerCoreData.xcdatamodel; sourceTree = "<group>"; };
 		911563832D4930B800BE046E /* StatisticTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticTableView.swift; sourceTree = "<group>"; };
-		911563852D49310100BE046E /* StatisticPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticPresenter.swift; sourceTree = "<group>"; };
 		911563872D49421B00BE046E /* StatisticDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticDataProvider.swift; sourceTree = "<group>"; };
 		9115638B2D49443F00BE046E /* StatisticDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticDataStore.swift; sourceTree = "<group>"; };
 		9115638D2D49493E00BE046E /* StatisticType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticType.swift; sourceTree = "<group>"; };
@@ -506,7 +504,6 @@
 				91B028822CF207BF0047E664 /* StatisticPageVC.swift */,
 				91521B792D44403300402837 /* StatisticTableViewCell.swift */,
 				911563832D4930B800BE046E /* StatisticTableView.swift */,
-				911563852D49310100BE046E /* StatisticPresenter.swift */,
 				9115638D2D49493E00BE046E /* StatisticType.swift */,
 			);
 			path = StatisticPage;
@@ -770,7 +767,6 @@
 				91B0287C2CF0C7BD0047E664 /* TrackerRecordModel.swift in Sources */,
 				91521B7C2D44EABB00402837 /* CategoryViewModel.swift in Sources */,
 				913E87592D399B740014D489 /* ScheduleModel.swift in Sources */,
-				911563862D49310100BE046E /* StatisticPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

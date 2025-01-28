@@ -8,21 +8,19 @@ final class StatisticDataStore {
         self.context = context
     }
 
-    /// Возвращает общее количество записей в Core Data
-    func getTotalRecordsCount() -> String {
+    func getTotalRecordsCount() -> String? {
         let request: NSFetchRequest<RecordCoreData> = RecordCoreData.fetchRequest()
         request.resultType = .countResultType
         do {
             let result = try context.count(for: request)
-            return String(result)
+            return result > 0 ? String(result) : nil
         } catch {
-            print("Ошибка при получении общего количества записей: \(error.localizedDescription)")
-            return "0"
+            // TODO: обработка ошибки
+            return nil
         }
     }
 
-    /// Возвращает максимальное количество записей для одного трекера
-    func getMaxRecordsPerTracker() -> String {
+    func getMaxRecordsPerTracker() -> String? {
         let request: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "RecordCoreData")
         request.resultType = .dictionaryResultType
         
@@ -37,15 +35,15 @@ final class StatisticDataStore {
         do {
             if let results = try context.fetch(request) as? [[String: Any]],
                let maxRecords = results.compactMap({ $0["recordCount"] as? Int }).max() {
-                return String(maxRecords)
+                return maxRecords > 0 ? String(maxRecords) : nil
             }
         } catch {
-            print("Ошибка при получении максимального количества записей на трекер: \(error.localizedDescription)")
+            // TODO: обработка ошибки
         }
-        return "0"
+        return nil
     }
     
-    func getAverageRecordsPerDay() -> String {
+    func getAverageRecordsPerDay() -> String? {
         let request: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "RecordCoreData")
         request.resultType = .dictionaryResultType
 
@@ -63,10 +61,10 @@ final class StatisticDataStore {
             let totalRecords = results?.compactMap({ $0["recordCount"] as? Int }).reduce(0, +) ?? 0
 
             let value = totalDays > 0 ? Double(totalRecords) / Double(totalDays) : 0.0
-            return String(format: "%.2f", value)
+            return value > 0 ? String(format: "%.f", value) : nil
         } catch {
-            print("Ошибка при расчете среднего количества выполненных привычек за день: \(error.localizedDescription)")
-            return "0"
+            // TODO: обработка ошибки
+            return nil
         }
     }
 }

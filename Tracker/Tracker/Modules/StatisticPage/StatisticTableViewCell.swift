@@ -4,7 +4,7 @@ final class StatisticTableViewCell: UITableViewCell {
     // MARK: - UI Elements
     private let counter: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 34, weight: .bold)
         label.textColor = .black
         label.textAlignment = .center
         return label
@@ -12,7 +12,7 @@ final class StatisticTableViewCell: UITableViewCell {
     
     private let statisticNameLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         label.textColor = .darkGray
         label.textAlignment = .center
         return label
