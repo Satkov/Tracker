@@ -123,8 +123,6 @@ extension TrackersCollectionPresenter: UICollectionViewDataSource {
                 editedTrackerData: dataForEdit,
                 recordsCount: recordsCount
             )
-            print(currentTracker.id, "ID" )
-            print(currentTracker.isPinned, "pin")
             self?.delegate?.presentEditTrackerPage(vc: vc)
         }
         

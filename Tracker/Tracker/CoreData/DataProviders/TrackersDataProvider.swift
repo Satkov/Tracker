@@ -118,7 +118,6 @@ final class TrackersDataProvider: NSObject {
 // MARK: - NSFetchedResultsControllerDelegate
 extension TrackersDataProvider: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        print("asdasdasd")
         filterTrackers(filters: lastFilter)
     }
 }
