@@ -167,7 +167,6 @@ extension TrackerDataStore: TrackerDataStoreProtocol {
                 }
                 
                 categoryCoreData.mutableSetValue(forKey: "trackers").add(trackerCoreData)
-                
                 CoreDataManager.shared.saveContext()
             }
         }

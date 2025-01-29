@@ -289,11 +289,6 @@ extension TrackerListViewController: TrackersCollectionPresenterDelegate {
             FilterButtonManager.shared.view = self
         }
     }
-    
-    func presentEditTrackerPage(vc: EditTrackerViewController) {
-        vc.modalPresentationStyle = .pageSheet
-        present(vc, animated: true)
-    }
 }
 
 extension TrackerListViewController: FilterPageDelegateProtocol {

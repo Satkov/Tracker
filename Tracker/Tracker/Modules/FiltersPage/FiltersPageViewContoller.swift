@@ -34,6 +34,8 @@ final class FiltersPageViewContoller: UIViewController {
         setupTableView()
         buttonTable.delegate = self
         buttonTable.dataSource = self
+        buttonTable.rowHeight = 75
+        buttonTable.estimatedRowHeight = 75
     }
     
     private func setupTitleLabel() {

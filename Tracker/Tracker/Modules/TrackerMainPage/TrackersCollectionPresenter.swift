@@ -194,7 +194,8 @@ extension TrackersCollectionPresenter: UICollectionViewDataSource {
                 editedTrackerData: dataForEdit,
                 recordsCount: recordsCount
             )
-            self?.delegate?.presentEditTrackerPage(vc: vc)
+            vc.modalPresentationStyle = .pageSheet
+            self?.delegate?.present(vc, animated: true)
         }
         
         return cell
@@ -279,7 +280,6 @@ extension TrackersCollectionPresenter: UICollectionViewDelegateFlowLayout {
 extension TrackersCollectionPresenter: DataProviderDelegate {
     func didUpdate() {
         collectionView.reloadData()
-        
         DispatchQueue.main.async {
             guard let delegate = self.delegate else {
                 return

@@ -147,11 +147,12 @@ final class EditNewTrackerPresenter: EditTrackerPresenterProtocol {
             return
         }
         let trackerManager = TrackerDataStore()
-        
-        if isNewTracker {
-            try? trackerManager.add(tracker: tracker, categoryName: category.categoryName)
-        } else {
-            try? trackerManager.updateTracker(tracker, in: category)
+        DispatchQueue.main.async{
+            if self.isNewTracker {
+                try? trackerManager.add(tracker: tracker, categoryName: category.categoryName)
+            } else {
+                try? trackerManager.updateTracker(tracker, in: category)
+            }
         }
     }
 }

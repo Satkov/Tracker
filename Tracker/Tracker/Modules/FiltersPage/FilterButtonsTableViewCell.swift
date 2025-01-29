@@ -29,6 +29,9 @@ final class FilterButtonsTableViewCell: UITableViewCell {
         return view
     }()
 
+    // MARK: - Properties
+    private var isChecked: Bool = false
+
     // MARK: - Initializer
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -56,9 +59,10 @@ final class FilterButtonsTableViewCell: UITableViewCell {
             labelsContainer.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             labelsContainer.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             labelsContainer.trailingAnchor.constraint(lessThanOrEqualTo: customAccessoryView.leadingAnchor, constant: -8),
+            labelsContainer.heightAnchor.constraint(equalToConstant: 40),
 
-            // Title label
-            titleLabel.topAnchor.constraint(equalTo: labelsContainer.topAnchor),
+            // Title label (Центрируем)
+            titleLabel.centerYAnchor.constraint(equalTo: labelsContainer.centerYAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: labelsContainer.leadingAnchor),
             titleLabel.trailingAnchor.constraint(equalTo: labelsContainer.trailingAnchor),
 
@@ -73,7 +77,7 @@ final class FilterButtonsTableViewCell: UITableViewCell {
     // MARK: - Configuration
     func configureButton(title: String, isSelected: Bool) {
         titleLabel.text = title
-        
-        customAccessoryView.isHidden = !isSelected
+        isChecked = isSelected
+        customAccessoryView.isHidden = !isChecked
     }
 }
