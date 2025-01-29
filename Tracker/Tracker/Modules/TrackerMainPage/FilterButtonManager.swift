@@ -1,7 +1,7 @@
 import UIKit
 
-class OverlayView {
-    static let shared = OverlayView()
+class FilterButtonManager {
+    static let shared = FilterButtonManager()
     private var filterButton: UIButton?
     var view: FilterPageDelegateProtocol?
     
@@ -21,9 +21,9 @@ class OverlayView {
                               width: 114, height: 50)
         
         button.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
-        
-        window.addSubview(button)
-        window.bringSubviewToFront(button)
+        guard let view else { return }
+        view.view.addSubview(button)
+        view.view.bringSubviewToFront(button)
         self.filterButton = button
     }
     

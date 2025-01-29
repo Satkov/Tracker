@@ -248,6 +248,12 @@ extension TrackerListViewController: TrackersCollectionPresenterDelegate {
         trackersCollection.isHidden = !hasTrackers
         placeholderImage.isHidden = hasTrackers
         placeholderText.isHidden = hasTrackers
+        if !hasTrackers {
+            OverlayView.shared.removeFilterButton()
+        } else {
+            OverlayView.shared.showFilterButton()
+            OverlayView.shared.view = self
+        }
     }
     
     func presentEditTrackerPage(vc: EditTrackerViewController) {
