@@ -82,6 +82,25 @@ final class TrackersCollectionPresenter: NSObject {
         trackersDataProvider.filterTrackers(filters: filter)
     }
     
+    private func showDeleteConfirmation(at indexPath: IndexPath) {
+        let alertController = UIAlertController(
+            title: nil,
+            message: "Уверены, что хотите удалить трекер?",
+            preferredStyle: .actionSheet
+        )
+
+        let deleteAction = UIAlertAction(title: "Удалить", style: .destructive) { [weak self] _ in
+            try? self?.trackersDataProvider.deleteTracker(at: indexPath)
+        }
+
+        let cancelAction = UIAlertAction(title: "Отменить", style: .cancel, handler: nil)
+
+        alertController.addAction(deleteAction)
+        alertController.addAction(cancelAction)
+        
+        delegate?.present(alertController, animated: true)
+    }
+    
     @objc
     private func dateChanged(_ sender: UIDatePicker) {
         updateDate(sender.date)
@@ -129,7 +148,7 @@ extension TrackersCollectionPresenter: UICollectionViewDataSource {
 
         cell.configure(with: currentTracker, datePicker: datePicker)
         cell.onDelete = { [weak self] in
-            try? self?.trackersDataProvider.deleteTracker(at: indexPath)
+            self?.showDeleteConfirmation(at: indexPath)
         }
         cell.onPinToggle = { [weak self] in
             self?.trackersDataProvider.togglePinTracker(for: currentTracker)

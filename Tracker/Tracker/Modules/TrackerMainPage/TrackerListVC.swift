@@ -95,6 +95,11 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
         OverlayView.shared.view = self
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        OverlayView.shared.removeFilterButton()
+    }
+    
     // MARK: - UI Setup
     private func setupUI() {
         view.backgroundColor = UIColor(named: "TrackerBackgroundWhite")

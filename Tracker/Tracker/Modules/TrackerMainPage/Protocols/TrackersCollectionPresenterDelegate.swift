@@ -1,6 +1,6 @@
-import Foundation
+import UIKit
 
-protocol TrackersCollectionPresenterDelegate: AnyObject {
+protocol TrackersCollectionPresenterDelegate: UIViewController {
     func updateUI()
     func presentEditTrackerPage(vc: EditTrackerViewController)
 }
