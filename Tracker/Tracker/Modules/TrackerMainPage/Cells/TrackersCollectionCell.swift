@@ -69,11 +69,6 @@ final class TrackersCollectionCell: UICollectionViewCell {
         trackerNameLabel.text = tracker?.name
         emojiLabel.backgroundColor = UIColor.projectColor(.alwaysWhite).withAlphaComponent(0.3)
         emojiLabel.text = tracker?.emoji.rawValue
-        let localizedString = String.localizedStringWithFormat(
-            NSLocalizedString("daysCount", comment: ""),
-            0
-        )
-        recordLabel.text = localizedString
     }
     
     private func setupCardView() {
@@ -194,6 +189,7 @@ final class TrackersCollectionCell: UICollectionViewCell {
     // MARK: - UI Updates
     private func updateRecordCount() {
         let countRecords = recordsDataProvider?.recordCount ?? 0
+        print(countRecords)
         let localizedString = String.localizedStringWithFormat(
             NSLocalizedString("daysCount", comment: ""),
             countRecords
