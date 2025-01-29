@@ -95,6 +95,27 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        AnalyticsService.shared.logEvent(
+            event: "open main screen",
+            screen: "main_screen",
+            item: "main screen"
+        )
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        AnalyticsService.shared.logEvent(
+            event: "close_main_screen",
+            screen: "main_screen",
+            item: "main_screen"
+        )
+
+    }
+    
     
     // MARK: - UI Setup
     private func setupUI() {
@@ -230,6 +251,12 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
     
     @objc
     private func addTrackerButtonPressed() {
+        AnalyticsService.shared.logEvent(
+            event: "button_pressed",
+            screen: "main_screen",
+            item: "add_tracker_button"
+        )
+        
         let createTrackerVC = TrackerTypeMenuViewController()
         createTrackerVC.modalPresentationStyle = .pageSheet
         present(createTrackerVC, animated: true)
