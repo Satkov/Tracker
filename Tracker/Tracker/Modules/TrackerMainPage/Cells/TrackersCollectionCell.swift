@@ -114,7 +114,7 @@ final class TrackersCollectionCell: UICollectionViewCell {
         trackerNameLabel.translatesAutoresizingMaskIntoConstraints = false
         trackerNameLabel.textAlignment = .left
         trackerNameLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        trackerNameLabel.textColor = UIColor.projectColor(.white)
+        trackerNameLabel.textColor = UIColor.projectColor(.alwaysWhite)
         trackerNameLabel.text = tracker?.name
 
         cardView.addSubview(trackerNameLabel)
@@ -179,11 +179,11 @@ final class TrackersCollectionCell: UICollectionViewCell {
         if !hasRecord {
             recordButton.backgroundColor = tracker.color.getUIColor()
             recordButton.setImage(UIImage(systemName: "plus"), for: .normal)
-            recordButton.tintColor = .white
+            recordButton.tintColor = UIColor.projectColor(.white)
         } else {
             recordButton.backgroundColor = tracker.color.getUIColor().withAlphaComponent(0.3)
             recordButton.setImage(UIImage(named: "Done"), for: .normal)
-            recordButton.tintColor = .white
+            recordButton.tintColor = UIColor.projectColor(.white)
         }
     }
 

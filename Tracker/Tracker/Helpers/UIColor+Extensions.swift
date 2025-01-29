@@ -33,4 +33,5 @@ enum ProjectColors: String {
     case darkGray = "TrackerGray"
     case borderRed = "ButtonBorderRed"
     case alwaysblack = "alwaysBlack"
+    case alwaysWhite = "alwaysWhite"
 }

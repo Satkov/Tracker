@@ -127,6 +127,13 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(datePicker)
         datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
+        datePicker.backgroundColor = .white
+        datePicker.layer.cornerRadius = 8
+        datePicker.clipsToBounds = true
+        if #available(iOS 14.0, *) {
+            datePicker.overrideUserInterfaceStyle = .light
+        }
+        datePicker.subviews.forEach { print($0) }
         
         NSLayoutConstraint.activate([
             datePicker.centerYAnchor.constraint(equalTo: addTrackerButton.centerYAnchor),
@@ -177,6 +184,7 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
     }
     
     private func setupTrackersCollectionView() {
+        trackersCollection.backgroundColor = .clear
         do {
             trackersPresenter = try TrackersCollectionPresenter(
                 collectionView: trackersCollection,

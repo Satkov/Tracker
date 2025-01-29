@@ -222,7 +222,7 @@ extension TrackersCollectionPresenter: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         insetForSectionAt section: Int
     ) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: params.leftInset, bottom: 0, right: params.rightInset)
+        return UIEdgeInsets(top: 12, left: params.leftInset, bottom: 0, right: params.rightInset)
     }
 
     func collectionView(
