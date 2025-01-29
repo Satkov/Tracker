@@ -115,9 +115,9 @@ extension TrackersCollectionPresenter: UIScrollViewDelegate {
         let frameHeight = scrollView.frame.height
 
         if offsetY + frameHeight >= contentHeight && contentHeight != 0{
-            OverlayView.shared.removeFilterButton()
+            FilterButtonManager.shared.removeFilterButton()
         } else {
-            OverlayView.shared.showFilterButton()
+            FilterButtonManager.shared.showFilterButton()
         }
     }
 }

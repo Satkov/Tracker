@@ -91,14 +91,10 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        OverlayView.shared.showFilterButton()
-        OverlayView.shared.view = self
+        FilterButtonManager.shared.showFilterButton()
+        FilterButtonManager.shared.view = self
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        OverlayView.shared.removeFilterButton()
-    }
     
     // MARK: - UI Setup
     private func setupUI() {
@@ -249,10 +245,10 @@ extension TrackerListViewController: TrackersCollectionPresenterDelegate {
         placeholderImage.isHidden = hasTrackers
         placeholderText.isHidden = hasTrackers
         if !hasTrackers {
-            OverlayView.shared.removeFilterButton()
+            FilterButtonManager.shared.removeFilterButton()
         } else {
-            OverlayView.shared.showFilterButton()
-            OverlayView.shared.view = self
+            FilterButtonManager.shared.showFilterButton()
+            FilterButtonManager.shared.view = self
         }
     }
     

@@ -20,7 +20,7 @@
 		911563982D4A637900BE046E /* FilterSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911563972D4A637900BE046E /* FilterSettings.swift */; };
 		9115639A2D4A639700BE046E /* RecordStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911563992D4A639700BE046E /* RecordStatus.swift */; };
 		9115639C2D4A63CD00BE046E /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9115639B2D4A63CD00BE046E /* Array+Extensions.swift */; };
-		9115639E2D4A7C1900BE046E /* OverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9115639D2D4A7C1900BE046E /* OverlayView.swift */; };
+		9115639E2D4A7C1900BE046E /* FilterButtonManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9115639D2D4A7C1900BE046E /* FilterButtonManager.swift */; };
 		911563A02D4A9C1900BE046E /* FilterPageDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9115639F2D4A9C1900BE046E /* FilterPageDelegateProtocol.swift */; };
 		911563A32D4A9C6400BE046E /* FilterChoice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911563A22D4A9C6400BE046E /* FilterChoice.swift */; };
 		911D13FD2D48FC4F00A3CAEF /* InlineSnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 911D13FC2D48FC4F00A3CAEF /* InlineSnapshotTesting */; };
@@ -113,7 +113,7 @@
 		911563972D4A637900BE046E /* FilterSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSettings.swift; sourceTree = "<group>"; };
 		911563992D4A639700BE046E /* RecordStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordStatus.swift; sourceTree = "<group>"; };
 		9115639B2D4A63CD00BE046E /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
-		9115639D2D4A7C1900BE046E /* OverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayView.swift; sourceTree = "<group>"; };
+		9115639D2D4A7C1900BE046E /* FilterButtonManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButtonManager.swift; sourceTree = "<group>"; };
 		9115639F2D4A9C1900BE046E /* FilterPageDelegateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterPageDelegateProtocol.swift; sourceTree = "<group>"; };
 		911563A22D4A9C6400BE046E /* FilterChoice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterChoice.swift; sourceTree = "<group>"; };
 		911D13F32D48FAF400A3CAEF /* ScreenshotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScreenshotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -503,7 +503,7 @@
 				91CC95C12D10B4C000ECE101 /* Cells */,
 				91CC95C72D10B51D00ECE101 /* TrackersCollectionPresenter.swift */,
 				91B0283D2CF06F680047E664 /* TrackerListVC.swift */,
-				9115639D2D4A7C1900BE046E /* OverlayView.swift */,
+				9115639D2D4A7C1900BE046E /* FilterButtonManager.swift */,
 			);
 			path = TrackerMainPage;
 			sourceTree = "<group>";
@@ -798,7 +798,7 @@
 				9170F01F2D424A900004A701 /* TrackersCollectionPresenterDelegate.swift in Sources */,
 				911563842D4930B800BE046E /* StatisticTableView.swift in Sources */,
 				912091942D0F15230048851D /* DataForTrackerModel.swift in Sources */,
-				9115639E2D4A7C1900BE046E /* OverlayView.swift in Sources */,
+				9115639E2D4A7C1900BE046E /* FilterButtonManager.swift in Sources */,
 				9170EFEB2D3FA3C30004A701 /* TrackersDataProvider.swift in Sources */,
 				91B028552CF07AE60047E664 /* UIButton+Extensions.swift in Sources */,
 				9115638C2D49443F00BE046E /* StatisticDataStore.swift in Sources */,

@@ -2,29 +2,34 @@ import UIKit
 
 class FilterButtonManager {
     static let shared = FilterButtonManager()
-    private var filterButton: UIButton?
-    var view: FilterPageDelegateProtocol?
-    
-    func showFilterButton() {
-        guard let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) else { return }
-        
-        if filterButton != nil { return }
-        
+    private var filterButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Фильтр", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         button.backgroundColor = .systemBlue
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 16
-        button.frame = CGRect(x: (window.frame.width - 114) / 2,
-                              y: window.frame.height - 150,
-                              width: 114, height: 50)
+        return button
+    }()
+    var view: FilterPageDelegateProtocol?
+    
+    private init() {
+        setupbutton()
+    }
+    
+    func setupbutton() {
+        guard let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) else { return }
         
-        button.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
+        filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
+        filterButton.frame = CGRect(x: (window.frame.width - 114) / 2,
+                                    y: window.frame.height - 150,
+                                    width: 114, height: 50)
+    }
+    
+    func showFilterButton() {
         guard let view else { return }
-        view.view.addSubview(button)
-        view.view.bringSubviewToFront(button)
-        self.filterButton = button
+        view.view.addSubview(filterButton)
+        view.view.bringSubviewToFront(filterButton)
     }
     
     @objc private func filterButtonTapped() {
@@ -37,12 +42,6 @@ class FilterButtonManager {
     
     
     func removeFilterButton() {
-        guard let button = filterButton else { return }
-        button.removeFromSuperview()
-        filterButton = nil
-    }
-    
-    func isButtonVisible() -> Bool {
-        return filterButton != nil
+        filterButton.removeFromSuperview()
     }
 }
