@@ -113,7 +113,7 @@ extension TrackersCollectionPresenter: UIScrollViewDelegate {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
         let frameHeight = scrollView.frame.height
-
+        
         if offsetY + frameHeight >= contentHeight && contentHeight != 0{
             FilterButtonManager.shared.removeFilterButton()
         } else {
@@ -222,6 +222,9 @@ extension TrackersCollectionPresenter: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         insetForSectionAt section: Int
     ) -> UIEdgeInsets {
+        if trackersDataProvider.numberOfSections - 1 == section {
+            return UIEdgeInsets(top: 12, left: params.leftInset, bottom: 50, right: params.rightInset)
+        }
         return UIEdgeInsets(top: 12, left: params.leftInset, bottom: 0, right: params.rightInset)
     }
 

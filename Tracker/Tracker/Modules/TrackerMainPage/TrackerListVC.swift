@@ -213,6 +213,7 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
         view.addGestureRecognizer(tapGesture)
     }
     
+    
     // MARK: - Actions
     @objc
     private func hideKeyboard() {
