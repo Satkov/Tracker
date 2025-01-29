@@ -91,6 +91,8 @@ extension TrackersCollectionPresenter: UICollectionViewDataSource {
             return cell
         }
         
+        let recordsDataStore = RecordsDataStore()
+        let recordsCount = recordsDataStore.countRecords(for: currentTracker.id)
         
         let currentCategoryName = trackersDataProvider.getCategoryNameForTrackerBy(id: currentTracker.id)
         guard let currentCategoryName = currentCategoryName else { return cell }
@@ -118,7 +120,8 @@ extension TrackersCollectionPresenter: UICollectionViewDataSource {
             let vc = EditTrackerViewController(
                 type: currentTracker.isRegular,
                 presenter: EditNewTrackerPresenter(),
-                editedTrackerData: dataForEdit
+                editedTrackerData: dataForEdit,
+                recordsCount: recordsCount
             )
             print(currentTracker.id, "ID" )
             print(currentTracker.isPinned, "pin")

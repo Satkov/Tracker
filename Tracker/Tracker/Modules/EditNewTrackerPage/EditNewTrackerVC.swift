@@ -10,7 +10,7 @@ final class EditTrackerViewController: UIViewController {
         cellWidth: 52,
         cellHeight: 52
     )
-
+    
     // MARK: - State Properties
     private(set) var isRegular: Bool
     private(set) var isWarningHidden = true
@@ -25,6 +25,13 @@ final class EditTrackerViewController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        label.textAlignment = .center
+        return label
+    }()
+    
+    private let recordsLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 32, weight: .bold)
         label.textAlignment = .center
         return label
     }()
@@ -76,13 +83,15 @@ final class EditTrackerViewController: UIViewController {
     private var colorCollectionManager: ColorCollectionManager
     private var trackerNameFieldManager: NameTextFieldManager
     private let editedTrackerData: DataForTrackerModel?
+    private let recordsCount: Int?
 
     // MARK: - Initializer
 
     init(
         type: Bool,
         presenter: EditTrackerPresenterProtocol,
-        editedTrackerData: DataForTrackerModel?
+        editedTrackerData: DataForTrackerModel?,
+        recordsCount: Int?
     ) {
         self.isRegular = type
         self.presenter = presenter
@@ -105,6 +114,7 @@ final class EditTrackerViewController: UIViewController {
             presenter: presenter
         )
         isNewTracker = editedTrackerData == nil
+        self.recordsCount = recordsCount
         super.init(nibName: nil, bundle: nil)
         presenter.configure(view: self, editedTrackerData: editedTrackerData)
         trackerNameFieldManager.addDelegate(delegate: self)
@@ -152,6 +162,7 @@ final class EditTrackerViewController: UIViewController {
 
     private func addContent() {
         setupTitleLabel()
+        setupRecordsLabel()
         setupTrackerNameField()
         setupButtonsTableView()
         setupEmojiCollection()
@@ -174,15 +185,23 @@ final class EditTrackerViewController: UIViewController {
             titleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16)
         ])
     }
-
-    private func setupWarningLabel() {
-        warningLabel.translatesAutoresizingMaskIntoConstraints = false
-        trackerNameFieldContainer.addSubview(warningLabel)
-
+    
+    private func setupRecordsLabel() {
+        guard !isNewTracker,
+              let counter = recordsCount
+        else { return }
+        recordsLabel.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(recordsLabel)
+        let localizedString = String.localizedStringWithFormat(
+            NSLocalizedString("daysCount", comment: ""),
+            counter
+        )
+        recordsLabel.text = localizedString
+        
         NSLayoutConstraint.activate([
-            warningLabel.centerXAnchor.constraint(equalTo: trackerNameField.centerXAnchor),
-            warningLabel.heightAnchor.constraint(equalToConstant: 22),
-            warningLabel.topAnchor.constraint(equalTo: trackerNameField.bottomAnchor, constant: 8)
+            recordsLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
+            recordsLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
+            recordsLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16)
         ])
     }
 
@@ -194,16 +213,31 @@ final class EditTrackerViewController: UIViewController {
 
         textFieldContainerHeightConstraint = trackerNameFieldContainer.heightAnchor.constraint(equalToConstant: 75)
         textFieldContainerHeightConstraint.isActive = true
+        
+        let topConstraint = isNewTracker ?
+        trackerNameFieldContainer.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38) :
+        trackerNameFieldContainer.topAnchor.constraint(equalTo: recordsLabel.bottomAnchor, constant: 40)
 
         NSLayoutConstraint.activate([
             trackerNameFieldContainer.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-            trackerNameFieldContainer.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
+            topConstraint,
             trackerNameFieldContainer.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
             trackerNameFieldContainer.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
             trackerNameField.heightAnchor.constraint(equalToConstant: 75),
             trackerNameField.centerXAnchor.constraint(equalTo: trackerNameFieldContainer.centerXAnchor),
             trackerNameField.leadingAnchor.constraint(equalTo: trackerNameFieldContainer.leadingAnchor),
             trackerNameField.trailingAnchor.constraint(equalTo: trackerNameFieldContainer.trailingAnchor)
+        ])
+    }
+    
+    private func setupWarningLabel() {
+        warningLabel.translatesAutoresizingMaskIntoConstraints = false
+        trackerNameFieldContainer.addSubview(warningLabel)
+
+        NSLayoutConstraint.activate([
+            warningLabel.centerXAnchor.constraint(equalTo: trackerNameField.centerXAnchor),
+            warningLabel.heightAnchor.constraint(equalToConstant: 22),
+            warningLabel.topAnchor.constraint(equalTo: trackerNameField.bottomAnchor, constant: 8)
         ])
     }
 
