@@ -20,6 +20,7 @@ final class TrackersCollectionCell: UICollectionViewCell {
     // MARK: - Initializer
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupUI()
     }
 
     required init?(coder: NSCoder) {
@@ -33,8 +34,6 @@ final class TrackersCollectionCell: UICollectionViewCell {
     ) {
         self.tracker = tracker
         self.datePicker = datePicker
-        setupUI()
-        
         recordsDataProvider?.delegate = nil
         recordsDataProvider = RecordsDataProvider(
             trackerID: tracker.id,
@@ -43,6 +42,7 @@ final class TrackersCollectionCell: UICollectionViewCell {
         )
         updateRecordCount()
         updateButtonStyle()
+        setupData()
     }
 
     override func prepareForReuse() {
@@ -63,7 +63,19 @@ final class TrackersCollectionCell: UICollectionViewCell {
         setupRecordLabel()
         setupContextMenu()
     }
-
+    
+    private func setupData() {
+        cardView.backgroundColor = tracker?.color.getUIColor()
+        trackerNameLabel.text = tracker?.name
+        emojiLabel.backgroundColor = UIColor.projectColor(.alwaysWhite).withAlphaComponent(0.3)
+        emojiLabel.text = tracker?.emoji.rawValue
+        let localizedString = String.localizedStringWithFormat(
+            NSLocalizedString("daysCount", comment: ""),
+            0
+        )
+        recordLabel.text = localizedString
+    }
+    
     private func setupCardView() {
         cardView.translatesAutoresizingMaskIntoConstraints = false
         cardView.layer.cornerRadius = 16
@@ -97,8 +109,6 @@ final class TrackersCollectionCell: UICollectionViewCell {
         emojiLabel.translatesAutoresizingMaskIntoConstraints = false
         emojiLabel.layer.cornerRadius = 12
         emojiLabel.layer.masksToBounds = true
-        emojiLabel.backgroundColor = UIColor.projectColor(.white).withAlphaComponent(0.3)
-        emojiLabel.text = tracker?.emoji.rawValue
 
         cardView.addSubview(emojiLabel)
 
@@ -115,7 +125,6 @@ final class TrackersCollectionCell: UICollectionViewCell {
         trackerNameLabel.textAlignment = .left
         trackerNameLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         trackerNameLabel.textColor = UIColor.projectColor(.alwaysWhite)
-        trackerNameLabel.text = tracker?.name
 
         cardView.addSubview(trackerNameLabel)
 
@@ -145,11 +154,6 @@ final class TrackersCollectionCell: UICollectionViewCell {
         recordLabel.translatesAutoresizingMaskIntoConstraints = false
         recordLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         // TODO: localize
-        let localizedString = String.localizedStringWithFormat(
-            NSLocalizedString("daysCount", comment: ""),
-            0
-        )
-        recordLabel.text = localizedString
 
         footerView.addSubview(recordLabel)
 
