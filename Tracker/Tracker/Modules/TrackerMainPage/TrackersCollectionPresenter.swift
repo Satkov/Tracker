@@ -4,14 +4,13 @@ final class TrackersCollectionPresenter: NSObject {
     // MARK: - Properties
     private let collectionView: UICollectionView
     private let params: GeometricParamsModel
-    private let datePicker: UIDatePicker
     private weak var delegate: TrackersCollectionPresenterDelegate?
     private lazy var trackersDataProvider: TrackersDataProvider = {
         try! TrackersDataProvider(TrackerDataStore(), delegate: self)
     }()
-
-    private var currentDate: Date {
-        datePicker.date
+    private let datePicker: UIDatePicker
+    var currentDate: Date {
+        Calendar.current.startOfDay(for: datePicker.date)
     }
     private var filter = FilterSettings(date: Date(),
                                         trackerName: "",
@@ -59,8 +58,13 @@ final class TrackersCollectionPresenter: NSObject {
         trackersDataProvider.filterTrackers(filters: filter)
     }
     
-    var hasTrackers: Bool {
+    var isFilteredTrackersHaveTrackers: Bool {
         return trackersDataProvider.numberOfSections > 0
+    }
+    
+    // метод нужен чтобы фильтр не пропадал, если после фильтрации не осталось трекеров
+    func isAnyTrackersForChoosenDateExist(_ date: Date) -> Bool {
+        return trackersDataProvider.isAnyTrackersForChoosenDateExist(date)
     }
     
     func applyFilters(_ newFilter: FilterChoice) {
@@ -254,7 +258,7 @@ extension TrackersCollectionPresenter: DataProviderDelegate {
             guard let delegate = self.delegate else {
                 return
             }
-            delegate.updateUI()
+            delegate.updateUI(date: self.currentDate)
         }
     }
 }

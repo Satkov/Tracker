@@ -86,13 +86,13 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
         searchBar.delegate = self
         setupUI()
         setupTrackersCollectionView()
-        updateUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        FilterButtonManager.shared.showFilterButton()
-        FilterButtonManager.shared.view = self
+        if let date = trackersPresenter?.currentDate {
+            updateUI(date: date)
+        }
     }
     
     
@@ -224,7 +224,7 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
     private func dateChanged(_ sender: UIDatePicker) {
         let selectedDate = datePicker.date
         trackersPresenter?.updateDate(selectedDate)
-        updateUI()
+        updateUI(date: datePicker.date)
         
     }
     
@@ -248,12 +248,14 @@ extension TrackerListViewController: UISearchBarDelegate {
 
 
 extension TrackerListViewController: TrackersCollectionPresenterDelegate {
-    func updateUI() {
-        let hasTrackers = trackersPresenter?.hasTrackers ?? false
+    func updateUI(date: Date) {
+        let hasTrackers = trackersPresenter?.isFilteredTrackersHaveTrackers ?? false
         trackersCollection.isHidden = !hasTrackers
         placeholderImage.isHidden = hasTrackers
         placeholderText.isHidden = hasTrackers
-        if !hasTrackers {
+        
+        guard let isAnyTrackersForDateExists = trackersPresenter?.isAnyTrackersForChoosenDateExist(date) else { return }
+        if !isAnyTrackersForDateExists {
             FilterButtonManager.shared.removeFilterButton()
         } else {
             FilterButtonManager.shared.showFilterButton()

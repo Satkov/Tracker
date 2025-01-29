@@ -70,6 +70,12 @@ final class TrackersDataProvider: NSObject {
     func numberOfRowsInSection(_ section: Int) -> Int {
         return categories[section].trackers.count
     }
+    
+    func isAnyTrackersForChoosenDateExist(_ date: Date) -> Bool {
+        let counter = try? dataStore.fetchCategoriesWithTrackers(for: date).count
+        guard let counter else { return false }
+        return counter > 0
+    }
 
     func sectionName(for section: Int) -> String {
         return categories[section].categoryName

@@ -1,6 +1,6 @@
 import UIKit
 
 protocol TrackersCollectionPresenterDelegate: UIViewController {
-    func updateUI()
+    func updateUI(date: Date)
     func presentEditTrackerPage(vc: EditTrackerViewController)
 }
