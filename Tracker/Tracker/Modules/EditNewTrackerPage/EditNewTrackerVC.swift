@@ -14,6 +14,7 @@ final class EditNewTrackerViewController: UIViewController {
     // MARK: - State Properties
     private(set) var isRegular: Bool
     private(set) var isWarningHidden = true
+    private let isNewTracker: Bool
 
     // MARK: - UI Elements
     private let scrollView = UIScrollView()
@@ -58,7 +59,6 @@ final class EditNewTrackerViewController: UIViewController {
 
     private let createButton: UIButton = {
         let button = UIButton()
-        button.setTitle(Localization.createButton, for: .normal)
         button.setTitleColor(UIColor.projectColor(.white), for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.backgroundColor = UIColor.projectColor(.gray)
@@ -75,15 +75,18 @@ final class EditNewTrackerViewController: UIViewController {
     private var emojiCollectionManager: EmojiCollectionViewManager
     private var colorCollectionManager: ColorCollectionManager
     private var trackerNameFieldManager: NameTextFieldManager
+    private let editedTrackerData: DataForTrackerModel?
 
     // MARK: - Initializer
 
     init(
         type: Bool,
-        presenter: EditNewTrackerPresenterProtocol
+        presenter: EditNewTrackerPresenterProtocol,
+        editedTrackerData: DataForTrackerModel?
     ) {
         self.isRegular = type
         self.presenter = presenter
+        self.editedTrackerData = editedTrackerData
         self.emojiCollectionManager = EmojiCollectionViewManager(
             collectionView: emojiCollection,
             params: params,
@@ -101,9 +104,9 @@ final class EditNewTrackerViewController: UIViewController {
             params: params,
             presenter: presenter
         )
+        isNewTracker = editedTrackerData == nil
         super.init(nibName: nil, bundle: nil)
-
-        presenter.configure(view: self)
+        presenter.configure(view: self, editedTrackerData: editedTrackerData)
         trackerNameFieldManager.addDelegate(delegate: self)
     }
 
@@ -117,10 +120,18 @@ final class EditNewTrackerViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupGestureRecognizer()
+        fillFormWithData()
     }
 
     // MARK: - UI Setup
-
+    
+    private func fillFormWithData() {
+        if let tracker = editedTrackerData {
+            trackerNameField.text = tracker.name
+            emojiCollectionManager.setSelectedEmoji(tracker.emoji)
+            colorCollectionManager.setSelectedColor(tracker.color)
+        }
+    }
     private func setupUI() {
         view.backgroundColor = UIColor(named: "TrackerBackgroundWhite")
         setupScrollView()
@@ -153,7 +164,9 @@ final class EditNewTrackerViewController: UIViewController {
 
     private func setupTitleLabel() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = isRegular ? Localization.editNewTrackerTitleHabit: Localization.editNewTrackerTitleIrregular
+        let newTrackerTitle = isRegular ? Localization.editNewTrackerTitleHabit: Localization.editNewTrackerTitleIrregular
+        let title = isNewTracker ? newTrackerTitle : "Редактирование привычки"
+        titleLabel.text = title
         scrollView.addSubview(titleLabel)
 
         NSLayoutConstraint.activate([
@@ -251,6 +264,8 @@ final class EditNewTrackerViewController: UIViewController {
     }
 
     private func setupCreateButton() {
+        let title = self.isNewTracker ? Localization.createButton : "Сохранить"
+        createButton.setTitle(title, for: .normal)
         createButton.translatesAutoresizingMaskIntoConstraints = false
         createButton.addTarget(self, action: #selector(createButtonPressed), for: .touchUpInside)
 
@@ -285,7 +300,11 @@ final class EditNewTrackerViewController: UIViewController {
     private func createButtonPressed() {
         let tracker = presenter.createTracker()
         presenter.saveTracker(tracker: tracker)
-        self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+        if isNewTracker {
+            self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+        } else {
+            self.presentingViewController?.dismiss(animated: true, completion: nil)
+        }
     }
 }
 
@@ -391,6 +410,7 @@ extension EditNewTrackerViewController: TrackerNameTextFieldManagerDelegateProto
 }
 
 extension EditNewTrackerViewController: EditNewTrackerViewControllerProtocol {
+    
     func setCreateButtonEnable() {
         createButton.backgroundColor = UIColor.projectColor(.black)
         createButton.isEnabled = true

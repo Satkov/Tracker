@@ -78,10 +78,18 @@ final class TrackersDataProvider: NSObject {
     func trackerObject(at indexPath: IndexPath) -> TrackerModel? {
         return categories[indexPath.section].trackers[indexPath.row]
     }
+    
+    func getCategoryNameForTrackerBy(id: UUID) ->  String? {
+        return try? dataStore.fetchCategoryName(for: id)
+    }
 
     // MARK: - Управление трекерами
     func addTracker(to categoryName: String, trackerModel: TrackerModel) throws {
         try dataStore.add(tracker: trackerModel, categoryName: categoryName)
+    }
+    
+    func updateTracker(_ tracker: TrackerModel, in category: TrackerCategoryModel) {
+        try? dataStore.updateTracker(tracker, in: category)
     }
     
     func deleteTracker(at indexPath: IndexPath) throws {

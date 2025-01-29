@@ -13,6 +13,7 @@
         <attribute name="emoji" attributeType="String"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="isPinned" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isRegular" optional="YES" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="schedule" optional="YES" attributeType="Transformable" valueTransformerName="" customClassName="Data"/>
         <relationship name="category" maxCount="1" deletionRule="Nullify" destinationEntity="CategoryCoreData" inverseName="trackers" inverseEntity="CategoryCoreData"/>

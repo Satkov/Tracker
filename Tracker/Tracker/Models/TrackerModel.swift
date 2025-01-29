@@ -8,4 +8,7 @@ struct TrackerModel {
     let emoji: Emojis
     let schedule: Set<Schedule>?
     let isPinned: Bool
+    let isRegular: Bool
 }
+
+

@@ -70,7 +70,8 @@ final class TrackerTypeMenuViewController: UIViewController {
     private func switchToEditTrackerForm(isRegular: Bool) {
         let editVC = EditNewTrackerViewController(
             type: isRegular,
-            presenter: EditNewTrackerPresenter()
+            presenter: EditNewTrackerPresenter(),
+            editedTrackerData: nil
         )
         editVC.modalPresentationStyle = .pageSheet
         present(editVC, animated: true)

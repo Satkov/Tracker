@@ -5,6 +5,8 @@ final class EmojiCollectionViewManager: NSObject {
     private let collectionView: UICollectionView
     private let params: GeometricParamsModel
     private let presenter: EditNewTrackerPresenterProtocol
+    private var selectedIndexPath: IndexPath?
+    private var selectedEmoji: Emojis?
 
     // MARK: - Initializer
     init(
@@ -17,6 +19,21 @@ final class EmojiCollectionViewManager: NSObject {
         self.presenter = presenter
         super.init()
         configureCollectionView()
+    }
+    
+    func setSelectedEmoji(_ emoji: Emojis?) {
+        selectedEmoji = emoji
+        if let emoji = emoji, let index = Emojis.allCases.firstIndex(of: emoji) {
+            selectedIndexPath = IndexPath(item: index, section: 0)
+        } else {
+            selectedIndexPath = nil
+        }
+        
+        collectionView.reloadData()
+        
+        if let selectedIndexPath = selectedIndexPath {
+            collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: [])
+        }
     }
 
     // MARK: - Configuration
@@ -48,7 +65,10 @@ extension EmojiCollectionViewManager: UICollectionViewDelegate {
             cell.contentView.backgroundColor = UIColor.projectColor(.lightGray)
         }
 
-        presenter.updateEmoji(new: Emojis.allCases[indexPath.row])
+        selectedIndexPath = indexPath
+        selectedEmoji = Emojis.allCases[indexPath.row]
+        
+        presenter.updateEmoji(new: selectedEmoji)
     }
 
     func collectionView(
@@ -83,7 +103,15 @@ extension EmojiCollectionViewManager: UICollectionViewDataSource {
             fatalError("Failed to dequeue EmojiCollectionViewCell")
         }
 
-        cell.configure(with: Emojis.allCases[indexPath.item].rawValue)
+        let emoji = Emojis.allCases[indexPath.item]
+        cell.configure(with: emoji.rawValue)
+
+        if emoji == selectedEmoji {
+            cell.contentView.backgroundColor = UIColor.projectColor(.lightGray)
+        } else {
+            cell.contentView.backgroundColor = .clear
+        }
+
         return cell
     }
 

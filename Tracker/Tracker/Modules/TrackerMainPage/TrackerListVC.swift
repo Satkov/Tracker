@@ -230,4 +230,9 @@ extension TrackerListViewController: TrackersCollectionPresenterDelegate {
         placeholderImage.isHidden = hasTrackers
         placeholderText.isHidden = hasTrackers
     }
+    
+    func presentEditTrackerPage(vc: EditNewTrackerViewController) {
+        vc.modalPresentationStyle = .pageSheet
+        present(vc, animated: true)
+    }
 }

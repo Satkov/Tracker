@@ -90,6 +90,11 @@ extension TrackersCollectionPresenter: UICollectionViewDataSource {
         guard let currentTracker = trackersDataProvider.trackerObject(at: indexPath) else {
             return cell
         }
+        
+        
+        let currentCategoryName = trackersDataProvider.getCategoryNameForTrackerBy(id: currentTracker.id)
+        guard let currentCategoryName = currentCategoryName else { return cell }
+        let currentCategory = TrackerCategoryModel(categoryName: currentCategoryName)
 
         cell.configure(with: currentTracker, datePicker: datePicker)
         cell.onDelete = { [weak self] in
@@ -97,6 +102,27 @@ extension TrackersCollectionPresenter: UICollectionViewDataSource {
         }
         cell.onPinToggle = { [weak self] in
             self?.trackersDataProvider.togglePinTracker(for: currentTracker)
+        }
+        cell.onEdit = { [weak self] in
+            let dataForEdit = DataForTrackerModel(
+                id: currentTracker.id,
+                name: currentTracker.name,
+                category: currentCategory,
+                color: currentTracker.color,
+                emoji: currentTracker.emoji,
+                schudule: currentTracker.schedule,
+                isPinned: currentTracker.isPinned,
+                isRegular: currentTracker.isRegular
+            )
+            
+            let vc = EditNewTrackerViewController(
+                type: currentTracker.isRegular,
+                presenter: EditNewTrackerPresenter(),
+                editedTrackerData: dataForEdit
+            )
+            print(currentTracker.id, "ID" )
+            print(currentTracker.isPinned, "pin")
+            self?.delegate?.presentEditTrackerPage(vc: vc)
         }
         
         return cell
