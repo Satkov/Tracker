@@ -16,7 +16,8 @@ final class TrackersCollectionPresenter: NSObject {
     private var filter = FilterSettings(date: Date(),
                                              trackerName: "",
                                              recorded: .all)
-
+    private var filterButtonIsHidden: Bool?
+    
     // MARK: - Initializer
     init(collectionView: UICollectionView, 
          params: GeometricParamsModel,
@@ -31,6 +32,7 @@ final class TrackersCollectionPresenter: NSObject {
         self.trackersDataProvider.filterTrackers(filters: filter)
         datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
         configureCollectionView()
+        filterButtonIsHidden = false
     }
 
     // MARK: - Configuration
@@ -67,6 +69,21 @@ final class TrackersCollectionPresenter: NSObject {
     }
 }
 
+extension TrackersCollectionPresenter: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard filterButtonIsHidden != nil else { return }
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let frameHeight = scrollView.frame.height
+
+        if offsetY + frameHeight >= contentHeight && contentHeight != 0{
+            OverlayView.shared.removeFilterButton()
+        } else {
+            OverlayView.shared.showFilterButton()
+        }
+    }
+}
+
 // MARK: - UICollectionViewDataSource
 extension TrackersCollectionPresenter: UICollectionViewDataSource {
     func collectionView(
@@ -90,13 +107,6 @@ extension TrackersCollectionPresenter: UICollectionViewDataSource {
         guard let currentTracker = trackersDataProvider.trackerObject(at: indexPath) else {
             return cell
         }
-        
-        let recordsDataStore = RecordsDataStore()
-        let recordsCount = recordsDataStore.countRecords(for: currentTracker.id)
-        
-        let currentCategoryName = trackersDataProvider.getCategoryNameForTrackerBy(id: currentTracker.id)
-        guard let currentCategoryName = currentCategoryName else { return cell }
-        let currentCategory = TrackerCategoryModel(categoryName: currentCategoryName)
 
         cell.configure(with: currentTracker, datePicker: datePicker)
         cell.onDelete = { [weak self] in
@@ -105,6 +115,14 @@ extension TrackersCollectionPresenter: UICollectionViewDataSource {
         cell.onPinToggle = { [weak self] in
             self?.trackersDataProvider.togglePinTracker(for: currentTracker)
         }
+        
+        let recordsDataStore = RecordsDataStore()
+        let recordsCount = recordsDataStore.countRecords(for: currentTracker.id)
+        
+        let currentCategoryName = trackersDataProvider.getCategoryNameForTrackerBy(id: currentTracker.id)
+        guard let currentCategoryName = currentCategoryName else { return cell }
+        let currentCategory = TrackerCategoryModel(categoryName: currentCategoryName)
+        
         cell.onEdit = { [weak self] in
             let dataForEdit = DataForTrackerModel(
                 id: currentTracker.id,

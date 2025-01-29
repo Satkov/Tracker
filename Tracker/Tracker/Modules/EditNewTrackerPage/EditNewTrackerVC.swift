@@ -356,6 +356,7 @@ extension EditTrackerViewController: UITableViewDelegate {
     ) -> CGFloat {
         return 75
     }
+    
 
     func tableView(
         _ tableView: UITableView,

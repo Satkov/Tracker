@@ -13,6 +13,14 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
     )
     
     // MARK: - UI Elements
+    private let filterButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Фильтры", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     private let headerLabel: UILabel = {
         let label = UILabel()
         label.text = Localization.trackersTitle
@@ -79,6 +87,12 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
         setupUI()
         setupTrackersCollectionView()
         updateUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        OverlayView.shared.showFilterButton()
+        OverlayView.shared.view = self
     }
     
     // MARK: - UI Setup
@@ -234,5 +248,11 @@ extension TrackerListViewController: TrackersCollectionPresenterDelegate {
     func presentEditTrackerPage(vc: EditTrackerViewController) {
         vc.modalPresentationStyle = .pageSheet
         present(vc, animated: true)
+    }
+}
+
+extension TrackerListViewController: FilterPageDelegateProtocol {
+    func newFilterAdded(filter: FilterChoice) {
+        print(filter)
     }
 }
