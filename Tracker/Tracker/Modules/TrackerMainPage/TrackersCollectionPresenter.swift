@@ -14,8 +14,8 @@ final class TrackersCollectionPresenter: NSObject {
         datePicker.date
     }
     private var filter = FilterSettings(date: Date(),
-                                             trackerName: "",
-                                             recorded: .all)
+                                        trackerName: "",
+                                        recorded: .all)
     private var filterButtonIsHidden: Bool?
     
     // MARK: - Initializer
@@ -61,6 +61,25 @@ final class TrackersCollectionPresenter: NSObject {
     
     var hasTrackers: Bool {
         return trackersDataProvider.numberOfSections > 0
+    }
+    
+    func applyFilters(_ newFilter: FilterChoice) {
+        switch newFilter {
+        case .all:
+            filter.recorded = .all
+        case .recorded:
+            filter.recorded = .onlyRecorded
+        case .unrecorded:
+            filter.recorded = .onlyUnRecorded
+        case .today:
+            datePicker.date = Date()
+            filter = FilterSettings(
+                date: Date(),
+                trackerName: filter.trackerName,
+                recorded: .all
+            )
+        }
+        trackersDataProvider.filterTrackers(filters: filter)
     }
     
     @objc

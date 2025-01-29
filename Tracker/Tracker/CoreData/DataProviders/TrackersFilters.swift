@@ -1,10 +1,12 @@
 import Foundation
 
 struct TrackersFilters {
-    static func movePinnedToCompleted(in categories: inout [TrackerCategoryModel]) {
+    static func movePinnedToCompleted(
+        in categories: inout [TrackerCategoryModel]
+    ) {
         var completedTrackers: [TrackerModel] = []
         
-        // Проходим по категориям и собираем закрепленные трекеры
+        // собираем закрпленные трекеры
         categories = categories.compactMap { category in
             let (pinned, unpinned) = category.trackers.partitioned { $0.isPinned }
             
@@ -16,17 +18,20 @@ struct TrackersFilters {
             )
         }
         
-        // Если есть закрепленные трекеры, создаем категорию "Завершенные"
+        // помещаем все закрепленные трекеры в одну категорию
         if !completedTrackers.isEmpty {
             let completedCategory = TrackerCategoryModel(
                 categoryName: "Закрепленные",
                 trackers: completedTrackers.sorted { $0.name < $1.name }
             )
-            categories.insert(completedCategory, at: 0) // Добавляем в начало списка
+            categories.insert(completedCategory, at: 0) // закрепленные в начало
         }
     }
     
-    static func filterAndSortCategories(by searchText: String, in categories: inout [TrackerCategoryModel]) {
+    static func filterAndSortCategories(
+        by searchText: String,
+        in categories: inout [TrackerCategoryModel]
+    ) {
         guard searchText != "" else { return }
         categories = categories.compactMap { category in
             let filteredTrackers = category.trackers.filter { tracker in
@@ -53,7 +58,7 @@ struct TrackersFilters {
                 switch status {
                 case .onlyRecorded:
                     return hasRecord
-                case .onlyunrecorded:
+                case .onlyUnRecorded:
                     return !hasRecord
                 case .all:
                     return true

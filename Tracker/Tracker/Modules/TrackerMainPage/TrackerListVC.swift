@@ -253,6 +253,6 @@ extension TrackerListViewController: TrackersCollectionPresenterDelegate {
 
 extension TrackerListViewController: FilterPageDelegateProtocol {
     func newFilterAdded(filter: FilterChoice) {
-        print(filter)
+        trackersPresenter?.applyFilters(filter)
     }
 }
