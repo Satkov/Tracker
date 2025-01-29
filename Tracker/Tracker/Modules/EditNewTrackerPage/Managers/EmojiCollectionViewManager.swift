@@ -4,7 +4,7 @@ final class EmojiCollectionViewManager: NSObject {
     // MARK: - Properties
     private let collectionView: UICollectionView
     private let params: GeometricParamsModel
-    private let presenter: EditNewTrackerPresenterProtocol
+    private let presenter: EditTrackerPresenterProtocol
     private var selectedIndexPath: IndexPath?
     private var selectedEmoji: Emojis?
 
@@ -12,7 +12,7 @@ final class EmojiCollectionViewManager: NSObject {
     init(
         collectionView: UICollectionView,
         params: GeometricParamsModel,
-        presenter: EditNewTrackerPresenterProtocol
+        presenter: EditTrackerPresenterProtocol
     ) {
         self.collectionView = collectionView
         self.params = params

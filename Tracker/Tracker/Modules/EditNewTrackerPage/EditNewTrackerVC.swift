@@ -1,6 +1,6 @@
 import UIKit
 
-final class EditNewTrackerViewController: UIViewController {
+final class EditTrackerViewController: UIViewController {
     // MARK: - Constants
     private let params = GeometricParamsModel(
         cellCount: 6,
@@ -71,7 +71,7 @@ final class EditNewTrackerViewController: UIViewController {
 
     // MARK: - Data and Managers
     private let buttonsIdentifiers = [Localization.categoryTitle, Localization.scheduleTitle]
-    private var presenter: EditNewTrackerPresenterProtocol
+    private var presenter: EditTrackerPresenterProtocol
     private var emojiCollectionManager: EmojiCollectionViewManager
     private var colorCollectionManager: ColorCollectionManager
     private var trackerNameFieldManager: NameTextFieldManager
@@ -81,7 +81,7 @@ final class EditNewTrackerViewController: UIViewController {
 
     init(
         type: Bool,
-        presenter: EditNewTrackerPresenterProtocol,
+        presenter: EditTrackerPresenterProtocol,
         editedTrackerData: DataForTrackerModel?
     ) {
         self.isRegular = type
@@ -309,7 +309,7 @@ final class EditNewTrackerViewController: UIViewController {
 }
 
 // MARK: - UITableViewDelegate
-extension EditNewTrackerViewController: UITableViewDelegate {
+extension EditTrackerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1 {
             cell.separatorInset = UIEdgeInsets(top: 0, left: tableView.bounds.width, bottom: 0, right: 0)
@@ -354,7 +354,7 @@ extension EditNewTrackerViewController: UITableViewDelegate {
 }
 
 // MARK: - UITableViewDataSource
-extension EditNewTrackerViewController: UITableViewDataSource {
+extension EditTrackerViewController: UITableViewDataSource {
     func tableView(
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
@@ -392,7 +392,7 @@ extension EditNewTrackerViewController: UITableViewDataSource {
 }
 
 // MARK: - TrackerNameTextFieldManagerDelegateProtocol
-extension EditNewTrackerViewController: TrackerNameTextFieldManagerDelegateProtocol {
+extension EditTrackerViewController: TrackerNameTextFieldManagerDelegateProtocol {
     func showWarningLabel() {
         textFieldContainerHeightConstraint.constant = 113
         setupWarningLabel()
@@ -409,7 +409,7 @@ extension EditNewTrackerViewController: TrackerNameTextFieldManagerDelegateProto
     }
 }
 
-extension EditNewTrackerViewController: EditNewTrackerViewControllerProtocol {
+extension EditTrackerViewController: EditTrackerViewControllerProtocol {
     
     func setCreateButtonEnable() {
         createButton.backgroundColor = UIColor.projectColor(.black)

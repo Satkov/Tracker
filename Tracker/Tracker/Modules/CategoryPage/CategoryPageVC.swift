@@ -46,13 +46,13 @@ final class CategoryPageViewController: UIViewController {
     private let viewWithCategoryTableView: ViewWithCategoryTableView
 
     // MARK: - Properties
-    private var presenter: EditNewTrackerPresenterProtocol
+    private var presenter: EditTrackerPresenterProtocol
     private var lastSelectedCategory: TrackerCategoryModel?
     private var categoryDataProvider: CategoryDataProvider!
 
     // MARK: - Initializer
     init(
-        presenter: EditNewTrackerPresenterProtocol,
+        presenter: EditTrackerPresenterProtocol,
         lastSelectedCategory: TrackerCategoryModel?
     ) {
         self.presenter = presenter

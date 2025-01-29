@@ -27,10 +27,10 @@ final class SchedulePageViewController: UIViewController {
 
     // MARK: - Properties
     private var selectedDays: Set<Schedule>
-    private var presenter: EditNewTrackerPresenterProtocol
+    private var presenter: EditTrackerPresenterProtocol
 
     init(
-        presenter: EditNewTrackerPresenterProtocol,
+        presenter: EditTrackerPresenterProtocol,
         selectedDays: Set<Schedule>?
     ) {
         self.presenter = presenter

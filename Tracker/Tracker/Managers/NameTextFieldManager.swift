@@ -4,14 +4,14 @@ final class NameTextFieldManager: NSObject {
     // MARK: - Properties
     private let trackerNameField: UITextField
     private var delegate: TrackerNameTextFieldManagerDelegateProtocol?
-    private let presenter: EditNewTrackerPresenterProtocol?
+    private let presenter: EditTrackerPresenterProtocol?
     private let placeholderText: String
 
     // MARK: - Initializer
     init(
         trackerNameField: UITextField,
         placeholderText: String,
-        presenter: EditNewTrackerPresenterProtocol?
+        presenter: EditTrackerPresenterProtocol?
     ) {
         self.trackerNameField = trackerNameField
         self.placeholderText = placeholderText

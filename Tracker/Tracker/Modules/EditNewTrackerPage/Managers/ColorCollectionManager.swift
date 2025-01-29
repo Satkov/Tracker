@@ -4,7 +4,7 @@ final class ColorCollectionManager: NSObject {
     // MARK: - Properties
     private let collectionView: UICollectionView
     private let params: GeometricParamsModel
-    private let presenter: EditNewTrackerPresenterProtocol
+    private let presenter: EditTrackerPresenterProtocol
     private var selectedColor: TrackerColors?
     private var selectedIndexPath: IndexPath?
 
@@ -12,7 +12,7 @@ final class ColorCollectionManager: NSObject {
     init(
         collectionView: UICollectionView,
         params: GeometricParamsModel,
-        presenter: EditNewTrackerPresenterProtocol
+        presenter: EditTrackerPresenterProtocol
     ) {
         self.collectionView = collectionView
         self.params = params

@@ -115,7 +115,7 @@ extension TrackersCollectionPresenter: UICollectionViewDataSource {
                 isRegular: currentTracker.isRegular
             )
             
-            let vc = EditNewTrackerViewController(
+            let vc = EditTrackerViewController(
                 type: currentTracker.isRegular,
                 presenter: EditNewTrackerPresenter(),
                 editedTrackerData: dataForEdit

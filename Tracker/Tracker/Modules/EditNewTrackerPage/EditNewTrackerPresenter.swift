@@ -1,7 +1,7 @@
 import UIKit
 
-final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
-    private weak var view: EditNewTrackerViewControllerProtocol?
+final class EditNewTrackerPresenter: EditTrackerPresenterProtocol {
+    private weak var view: EditTrackerViewControllerProtocol?
     private var isNewTracker = true
     private(set) var dataModel = DataForTrackerModel() {
         didSet {
@@ -16,7 +16,7 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
     }
 
     func configure(
-        view: EditNewTrackerViewControllerProtocol,
+        view: EditTrackerViewControllerProtocol,
         editedTrackerData: DataForTrackerModel?) {
             self.view = view
             if let editedTrackerData = editedTrackerData {

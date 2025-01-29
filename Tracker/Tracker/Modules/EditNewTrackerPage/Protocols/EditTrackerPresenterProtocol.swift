@@ -1,8 +1,8 @@
 import Foundation
 
-protocol EditNewTrackerPresenterProtocol: AnyObject {
+protocol EditTrackerPresenterProtocol: AnyObject {
     func configure(
-        view: EditNewTrackerViewControllerProtocol,
+        view: EditTrackerViewControllerProtocol,
         editedTrackerData: DataForTrackerModel?
     )
     func updateName(name: String?)

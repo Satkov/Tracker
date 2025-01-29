@@ -68,7 +68,7 @@ final class TrackerTypeMenuViewController: UIViewController {
     }
 
     private func switchToEditTrackerForm(isRegular: Bool) {
-        let editVC = EditNewTrackerViewController(
+        let editVC = EditTrackerViewController(
             type: isRegular,
             presenter: EditNewTrackerPresenter(),
             editedTrackerData: nil

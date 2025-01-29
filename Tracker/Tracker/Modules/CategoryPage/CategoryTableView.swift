@@ -11,12 +11,12 @@ final class ViewWithCategoryTableView: UIView {
 
     // MARK: - Properties
     private var viewModel: CategoryViewModel?
-    private var presenter: EditNewTrackerPresenterProtocol?
+    private var presenter: EditTrackerPresenterProtocol?
     private weak var delegate: CategoryTableViewDelegateProtocol?
 
     // MARK: - Initializer
     init(frame: CGRect,
-         presenter: EditNewTrackerPresenterProtocol?
+         presenter: EditTrackerPresenterProtocol?
     ) {
         self.presenter = presenter
         super.init(frame: frame)
