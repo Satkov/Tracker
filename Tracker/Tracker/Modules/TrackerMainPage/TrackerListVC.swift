@@ -15,7 +15,7 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
     // MARK: - UI Elements
     private let filterButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Фильтры", for: .normal)
+        button.setTitle(Localization.filters, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button

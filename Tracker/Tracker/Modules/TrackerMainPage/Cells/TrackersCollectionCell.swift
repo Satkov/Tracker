@@ -211,17 +211,18 @@ extension TrackersCollectionCell: RecordsDataProviderDelegate {
 extension TrackersCollectionCell: UIContextMenuInteractionDelegate {
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-            let pinAction = UIAction(title: self.tracker?.isPinned == true ? "Открепить" : "Закрепить",
-                                     handler: { _ in
+            let pinAction = UIAction(
+                title: self.tracker?.isPinned == true ? Localization.unpin : Localization.pin,
+                handler: { _ in
                 self.onPinToggle?()
             })
             
-            let editAction = UIAction(title: "Редактировать",
+            let editAction = UIAction(title: Localization.edit,
                                       handler: { _ in
                 self.onEdit?()
             })
             
-            let deleteAction = UIAction(title: "Удалить",
+            let deleteAction = UIAction(title: Localization.delete,
                                         attributes: .destructive,
                                         handler: { _ in
                 self.onDelete?()

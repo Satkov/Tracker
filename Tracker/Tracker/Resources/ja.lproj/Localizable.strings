@@ -62,3 +62,17 @@ emoji = "Emoji";
 cancel = "キャンセル";
 create = "作成";
 ready = "完了";
+
+
+filters = "フィルター";
+filter = "フィルター";
+allTrackers = "すべてのトラッカー";
+trackersForToday = "今日のトラッカー";
+finished = "完了";
+notFinished = "未完了";
+unpin = "固定解除";
+pin = "固定";
+edit = "編集";
+delete = "削除";
+deleteConfirmationMessage = "このトラッカーを削除してもよろしいですか？";
+save = "保存";

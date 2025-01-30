@@ -61,3 +61,17 @@ sunday.short = "Вс";
 
 // Текст для ежедневного повторения
 everyDay = "Каждый день";
+
+
+filters = "Фильтры";
+filter = "Фильтр";
+alltrackers = "Все трекеры";
+trackersForTodey = "Трекеры на сегодня";
+finished = "Завершенные";
+notFinished = "Не завершенные";
+unpin = "Открепить";
+pin = "Закрепить";
+edit = "Редактировать";
+delete = "Удалить";
+deleteConfirmatonMessage = "Уверены, что хотите удалить трекер?";
+save = "Сохранить";

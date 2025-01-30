@@ -5,7 +5,7 @@ final class FiltersPageViewContoller: UIViewController {
         let label = UILabel()
         // TODO: localize
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Фильтры"
+        label.text = Localization.filters
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.textAlignment = .center
         return label
@@ -21,10 +21,10 @@ final class FiltersPageViewContoller: UIViewController {
     }()
     
     private let buttonsIdentifiers = [
-        "Все трекеры",
-        "Трекеры на сегодня",
-        "Завершенные",
-        "Не завершенные"
+        Localization.allTrackers,
+        Localization.trackersForToday,
+        Localization.finished,
+        Localization.notFinished
     ]
     var delegate: FilterPageDelegateProtocol?
     
@@ -84,13 +84,13 @@ extension FiltersPageViewContoller: UITableViewDelegate {
         let selectedOption = buttonsIdentifiers[indexPath.row]
 
         switch selectedOption {
-        case "Все трекеры":
+        case Localization.allTrackers:
             delegate?.newFilterAdded(filter: .all)
-        case "Трекеры на сегодня":
+        case Localization.trackersForToday:
             delegate?.newFilterAdded(filter: .today)
-        case "Завершенные":
+        case Localization.finished:
             delegate?.newFilterAdded(filter: .recorded)
-        case "Не завершенные":
+        case Localization.notFinished:
             delegate?.newFilterAdded(filter: .unrecorded)
         default:
             break
@@ -119,14 +119,14 @@ extension FiltersPageViewContoller: UITableViewDataSource {
         let identifier = buttonsIdentifiers[indexPath.row]
 
         switch identifier {
-        case "Все трекеры":
-            cell.configureButton(title: "Все трекеры", isSelected: false)
-        case "Трекеры на сегодня":
-            cell.configureButton(title: "Трекеры на сегодня", isSelected: false)
-        case "Завершенные":
-            cell.configureButton(title: "Завершенные", isSelected: false)
-        case "Не завершенные":
-            cell.configureButton(title: "Не завершенные", isSelected: false)
+        case Localization.allTrackers:
+            cell.configureButton(title: identifier, isSelected: false)
+        case Localization.trackersForToday:
+            cell.configureButton(title: identifier, isSelected: false)
+        case Localization.finished:
+            cell.configureButton(title: identifier, isSelected: false)
+        case Localization.notFinished:
+            cell.configureButton(title: identifier, isSelected: false)
 
         default:
             break

@@ -4,7 +4,7 @@ class FilterButtonManager {
     static let shared = FilterButtonManager()
     private var filterButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Фильтр", for: .normal)
+        button.setTitle(Localization.filter, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         button.backgroundColor = .systemBlue
         button.setTitleColor(.white, for: .normal)

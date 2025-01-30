@@ -2,42 +2,60 @@ import Foundation
 
 enum Localization {
     // Edit New Tracker
-    static let editNewTrackerTitleHabit = NSLocalizedString("editNewTracker.title.habit", comment: "")
-    static let editNewTrackerTitleIrregular = NSLocalizedString("editNewTracker.title.irregular", comment: "")
+    static let editNewTrackerTitleHabit = localized("editNewTracker.title.habit")
+    static let editNewTrackerTitleIrregular = localized("editNewTracker.title.irregular")
 
     // Onboarding
-    static let onboardingButton = NSLocalizedString("onboarding.button", comment: "")
-    static let onboardingFirstPageLabel = NSLocalizedString("onboardingPage.label.firstPage", comment: "")
-    static let onboardingSecondPageLabel = NSLocalizedString("onboardingPage.label.secondPage", comment: "")
+    static let onboardingButton = localized("onboarding.button")
+    static let onboardingFirstPageLabel = localized("onboardingPage.label.firstPage")
+    static let onboardingSecondPageLabel = localized("onboardingPage.label.secondPage")
 
     // Tab Bar
-    static let tabBarStatisticTitle = NSLocalizedString("tabbar.title.statistic", comment: "")
+    static let tabBarStatisticTitle = localized("tabbar.title.statistic")
 
     // Trackers & Statistics
-    static let trackersTitle = NSLocalizedString("trackers", comment: "")
-    static let searchPlaceholder = NSLocalizedString("search", comment: "")
-    static let statisticTitle = NSLocalizedString("statistic", comment: "")
-    static let irregularEventTitle = NSLocalizedString("irregularEvent", comment: "")
-    static let trackerListPlaceholder = NSLocalizedString("trackerList.placeholder", comment: "")
-    static let statisticPagePlaceholder = NSLocalizedString("statisticPage.placeholder", comment: "")
-    static let habbit = NSLocalizedString("habit", comment: "")
-    
-    
+    static let trackersTitle = localized("trackers")
+    static let searchPlaceholder = localized("search")
+    static let statisticTitle = localized("statistic")
+    static let irregularEventTitle = localized("irregularEvent")
+    static let trackerListPlaceholder = localized("trackerList.placeholder")
+    static let statisticPagePlaceholder = localized("statisticPage.placeholder")
+    static let habbit = localized("habit")
+
     // Tracker Creation
-    static let trackerCreationTitle = NSLocalizedString("trackerCreation", comment: "")
-    static let colorTitle = NSLocalizedString("color", comment: "")
-    static let emojiTitle = NSLocalizedString("emoji", comment: "")
-    static let nameFieldMaxLengthWarning = NSLocalizedString("nameFieldMaxLength.warning.label", comment: "")
-    static let cancelButton = NSLocalizedString("cancel", comment: "")
-    static let createButton = NSLocalizedString("create", comment: "")
+    static let trackerCreationTitle = localized("trackerCreation")
+    static let colorTitle = localized("color")
+    static let emojiTitle = localized("emoji")
+    static let nameFieldMaxLengthWarning = localized("nameFieldMaxLength.warning.label")
+    static let cancelButton = localized("cancel")
+    static let createButton = localized("create")
 
     // Category & Schedule
-    static let categoryTitle = NSLocalizedString("category", comment: "")
-    static let scheduleTitle = NSLocalizedString("schedule", comment: "")
-    static let createTrackerNamePlaceholder = NSLocalizedString("createTrackerNameField.placeholder", comment: "")
-    static let addCategoryButton = NSLocalizedString("addCategory", comment: "")
-    static let categoryPagePlaceholder = NSLocalizedString("categoryPage.placeholder", comment: "")
-    static let newCategoryTitle = NSLocalizedString("newCategory", comment: "")
-    static let readyButton = NSLocalizedString("ready", comment: "")
-    static let typeCategoryNamePlaceholder = NSLocalizedString("typeCategoryName", comment: "")
+    static let categoryTitle = localized("category")
+    static let scheduleTitle = localized("schedule")
+    static let createTrackerNamePlaceholder = localized("createTrackerNameField.placeholder")
+    static let addCategoryButton = localized("addCategory")
+    static let categoryPagePlaceholder = localized("categoryPage.placeholder")
+    static let newCategoryTitle = localized("newCategory")
+    static let readyButton = localized("ready")
+    static let typeCategoryNamePlaceholder = localized("typeCategoryName")
+
+    // Filters
+    static let filters = localized("filters")
+    static let filter = localized("filter")
+    static let allTrackers = localized("allTrackers")
+    static let trackersForToday = localized("trackersForToday")
+    static let finished = localized("finished")
+    static let notFinished = localized("notFinished")
+    static let unpin = localized("unpin")
+    static let pin = localized("pin")
+    static let edit = localized("edit")
+    static let delete = localized("delete")
+    static let deleteConfirmationMessage = localized("deleteConfirmationMessage")
+    static let save = localized("save")
+
+    // MARK: - Helper Method for Localization
+    private static func localized(_ key: String) -> String {
+        return NSLocalizedString(key, comment: "")
+    }
 }

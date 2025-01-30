@@ -89,15 +89,15 @@ final class TrackersCollectionPresenter: NSObject {
     private func showDeleteConfirmation(at indexPath: IndexPath) {
         let alertController = UIAlertController(
             title: nil,
-            message: "Уверены, что хотите удалить трекер?",
+            message: Localization.deleteConfirmationMessage,
             preferredStyle: .actionSheet
         )
 
-        let deleteAction = UIAlertAction(title: "Удалить", style: .destructive) { [weak self] _ in
+        let deleteAction = UIAlertAction(title: Localization.delete, style: .destructive) { [weak self] _ in
             try? self?.trackersDataProvider.deleteTracker(at: indexPath)
         }
 
-        let cancelAction = UIAlertAction(title: "Отменить", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: Localization.cancelButton, style: .cancel, handler: nil)
 
         alertController.addAction(deleteAction)
         alertController.addAction(cancelAction)
@@ -212,8 +212,6 @@ extension TrackersCollectionPresenter: UICollectionViewDataSource {
             screen: "Main",
             item: "tracker"
         )
-        
-        print("Выбрана ячейка: \(selectedTracker.name)")
     }
     
     func collectionView(

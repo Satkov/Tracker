@@ -61,3 +61,17 @@ sunday.short = "Sun";
 
 // Text for Daily Repetition
 everyDay = "Every day";
+
+
+filters = "Filters";
+filter = "Filter";
+allTrackers = "All trackers";
+trackersForToday = "Trackers for today";
+finished = "Finished";
+notFinished = "Not finished";
+unpin = "Unpin";
+pin = "Pin";
+edit = "Edit";
+delete = "Delete";
+deleteConfirmationMessage = "Are you sure you want to delete the tracker?";
+save = "Save";

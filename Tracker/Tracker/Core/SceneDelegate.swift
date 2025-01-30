@@ -8,9 +8,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
         window?.makeKeyAndVisible()
-//        if #available(iOS 13.0, *) {
-//            window?.overrideUserInterfaceStyle = .dark
-//        }
         let hasSeenOnboarding = UserDefaults.standard.bool(forKey: "hasSeenOnboarding")
         
         if hasSeenOnboarding {
