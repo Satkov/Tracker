@@ -35,9 +35,9 @@ class FilterButtonManager {
     @objc private func filterButtonTapped() {
         let screenName = view != nil ? NSStringFromClass(type(of: view!)) : "unknown_screen"
         AnalyticsService.shared.logEvent(
-            event: "filter_button_tapped",
-            screen: screenName,
-            item: "filter_button"
+            event: "click",
+            screen: "Main",
+            item: "filter"
         )
         
         guard let view else { return }

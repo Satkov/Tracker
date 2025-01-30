@@ -153,9 +153,9 @@ extension TrackersCollectionPresenter: UICollectionViewDataSource {
         cell.configure(with: currentTracker, datePicker: datePicker)
         cell.onDelete = { [weak self] in
             AnalyticsService.shared.logEvent(
-                event: "delete_context_menu_button_tapped",
-                screen: "main_screen",
-                item: "edit_context_menu_button"
+                event: "click",
+                screen: "Main",
+                item: "delete"
             )
             self?.showDeleteConfirmation(at: indexPath)
         }
@@ -172,9 +172,9 @@ extension TrackersCollectionPresenter: UICollectionViewDataSource {
         
         cell.onEdit = { [weak self] in
             AnalyticsService.shared.logEvent(
-                event: "edit_context_menu_button_tapped",
-                screen: "main_screen",
-                item: "edit_context_menu_button"
+                event: "click",
+                screen: "Main",
+                item: "edit"
             )
             
             let dataForEdit = DataForTrackerModel(
@@ -208,9 +208,9 @@ extension TrackersCollectionPresenter: UICollectionViewDataSource {
         guard let selectedTracker = trackersDataProvider.trackerObject(at: indexPath) else { return }
         
         AnalyticsService.shared.logEvent(
-            event: "cell_tap",
-            screen: "trackers_list",
-            item: selectedTracker.name
+            event: "click",
+            screen: "Main",
+            item: "tracker"
         )
         
         print("Выбрана ячейка: \(selectedTracker.name)")

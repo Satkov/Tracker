@@ -99,9 +99,9 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
         super.viewDidAppear(animated)
         
         AnalyticsService.shared.logEvent(
-            event: "open main screen",
-            screen: "main_screen",
-            item: "main screen"
+            event: "open",
+            screen: "Main",
+            item: "screen"
         )
     }
     
@@ -109,9 +109,9 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
         super.viewDidDisappear(animated)
         
         AnalyticsService.shared.logEvent(
-            event: "close_main_screen",
-            screen: "main_screen",
-            item: "main_screen"
+            event: "close",
+            screen: "Main",
+            item: "screen"
         )
 
     }
@@ -252,9 +252,9 @@ final class TrackerListViewController: UIViewController, UIViewControllerTransit
     @objc
     private func addTrackerButtonPressed() {
         AnalyticsService.shared.logEvent(
-            event: "button_pressed",
-            screen: "main_screen",
-            item: "add_tracker_button"
+            event: "click",
+            screen: "Main",
+            item: "add_track"
         )
         
         let createTrackerVC = TrackerTypeMenuViewController()
