@@ -16,9 +16,9 @@ final class TrackersCollectionPresenter: NSObject {
                                         trackerName: "",
                                         recorded: .all)
     private var filterButtonIsHidden: Bool?
-    
+
     // MARK: - Initializer
-    init(collectionView: UICollectionView, 
+    init(collectionView: UICollectionView,
          params: GeometricParamsModel,
          datePicker: UIDatePicker,
          delegate: TrackersCollectionPresenterDelegate?
@@ -52,21 +52,21 @@ final class TrackersCollectionPresenter: NSObject {
         filter.date = newDate
         trackersDataProvider.filterTrackers(filters: filter)
     }
-    
+
     func searchBarTextUpdated(text: String) {
         filter.trackerName = text
         trackersDataProvider.filterTrackers(filters: filter)
     }
-    
+
     var isFilteredTrackersHaveTrackers: Bool {
         return trackersDataProvider.numberOfSections > 0
     }
-    
+
     // метод нужен чтобы фильтр не пропадал, если после фильтрации не осталось трекеров
     func isAnyTrackersForChoosenDateExist(_ date: Date) -> Bool {
         return trackersDataProvider.isAnyTrackersForChoosenDateExist(date)
     }
-    
+
     func applyFilters(_ newFilter: FilterChoice) {
         switch newFilter {
         case .all:
@@ -85,7 +85,7 @@ final class TrackersCollectionPresenter: NSObject {
         }
         trackersDataProvider.filterTrackers(filters: filter)
     }
-    
+
     private func showDeleteConfirmation(at indexPath: IndexPath) {
         let alertController = UIAlertController(
             title: nil,
@@ -101,10 +101,10 @@ final class TrackersCollectionPresenter: NSObject {
 
         alertController.addAction(deleteAction)
         alertController.addAction(cancelAction)
-        
+
         delegate?.present(alertController, animated: true)
     }
-    
+
     @objc
     private func dateChanged(_ sender: UIDatePicker) {
         updateDate(sender.date)
@@ -117,8 +117,8 @@ extension TrackersCollectionPresenter: UIScrollViewDelegate {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
         let frameHeight = scrollView.frame.height
-        
-        if offsetY + frameHeight >= contentHeight && contentHeight != 0{
+
+        if offsetY + frameHeight >= contentHeight && contentHeight != 0 {
             FilterButtonManager.shared.removeFilterButton()
         } else {
             FilterButtonManager.shared.showFilterButton()
@@ -162,21 +162,21 @@ extension TrackersCollectionPresenter: UICollectionViewDataSource {
         cell.onPinToggle = { [weak self] in
             self?.trackersDataProvider.togglePinTracker(for: currentTracker)
         }
-        
+
         let recordsDataStore = RecordsDataStore()
         let recordsCount = recordsDataStore.countRecords(for: currentTracker.id)
-        
+
         let currentCategoryName = trackersDataProvider.getCategoryNameForTrackerBy(id: currentTracker.id)
         guard let currentCategoryName = currentCategoryName else { return cell }
         let currentCategory = TrackerCategoryModel(categoryName: currentCategoryName)
-        
+
         cell.onEdit = { [weak self] in
             AnalyticsService.shared.logEvent(
                 event: "click",
                 screen: "Main",
                 item: "edit"
             )
-            
+
             let dataForEdit = DataForTrackerModel(
                 id: currentTracker.id,
                 name: currentTracker.name,
@@ -187,7 +187,7 @@ extension TrackersCollectionPresenter: UICollectionViewDataSource {
                 isPinned: currentTracker.isPinned,
                 isRegular: currentTracker.isRegular
             )
-            
+
             let vc = EditTrackerViewController(
                 type: currentTracker.isRegular,
                 presenter: EditNewTrackerPresenter(),
@@ -197,23 +197,23 @@ extension TrackersCollectionPresenter: UICollectionViewDataSource {
             vc.modalPresentationStyle = .pageSheet
             self?.delegate?.present(vc, animated: true)
         }
-        
+
         return cell
     }
-    
+
     func collectionView(
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
         guard let selectedTracker = trackersDataProvider.trackerObject(at: indexPath) else { return }
-        
+
         AnalyticsService.shared.logEvent(
             event: "click",
             screen: "Main",
             item: "tracker"
         )
     }
-    
+
     func collectionView(
         _ collectionView: UICollectionView,
         viewForSupplementaryElementOfKind kind: String,

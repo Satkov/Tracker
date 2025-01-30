@@ -26,7 +26,6 @@ final class EditNewTrackerPresenter: EditTrackerPresenterProtocol {
             setIsReguler()
         }
 
-    
     private func setIsReguler() {
         let updatedModel = DataForTrackerModel(
             id: dataModel.id,
@@ -40,7 +39,7 @@ final class EditNewTrackerPresenter: EditTrackerPresenterProtocol {
         )
         dataModel = updatedModel
     }
-    
+
     func updateName(name: String?) {
 
         let newName = name == "" ? nil : name
@@ -125,10 +124,9 @@ final class EditNewTrackerPresenter: EditTrackerPresenterProtocol {
               let color = dataModel.color,
               let view = view
         else { return nil }
-        
+
         let schedule = view.isRegular ? dataModel.schudule : Set(Schedule.allCases)
-        
-        
+
         let tracker = TrackerModel(id: dataModel.id ?? UUID(),
                                    name: name,
                                    color: color,
@@ -147,7 +145,7 @@ final class EditNewTrackerPresenter: EditTrackerPresenterProtocol {
             return
         }
         let trackerManager = TrackerDataStore()
-        DispatchQueue.main.async{
+        DispatchQueue.main.async {
             if self.isNewTracker {
                 try? trackerManager.add(tracker: tracker, categoryName: category.categoryName)
             } else {

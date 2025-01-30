@@ -10,5 +10,3 @@ struct TrackerModel {
     let isPinned: Bool
     let isRegular: Bool
 }
-
-

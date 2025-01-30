@@ -24,15 +24,15 @@ final class ColorCollectionManager: NSObject {
     // MARK: - Public Methods
     func setSelectedColor(_ color: TrackerColors?) {
         selectedColor = color
-        
+
         if let color = color, let index = TrackerColors.allCases.firstIndex(of: color) {
             selectedIndexPath = IndexPath(item: index, section: 0)
         } else {
             selectedIndexPath = nil
         }
-        
+
         collectionView.reloadData()
-        
+
         // ✅ Выделяем ячейку после обновления данных
         if let selectedIndexPath = selectedIndexPath {
             collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: [])
@@ -75,7 +75,7 @@ extension ColorCollectionManager: UICollectionViewDelegate {
 
         selectedIndexPath = indexPath
         selectedColor = TrackerColors.allCases[indexPath.row]
-        
+
         presenter.updateColor(new: selectedColor)
     }
 

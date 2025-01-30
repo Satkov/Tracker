@@ -4,10 +4,10 @@ import CoreData
 // MARK: - DataProvider
 final class TrackersDataProvider: NSObject {
     weak var delegate: DataProviderDelegate?
-    
+
     private let context: NSManagedObjectContext
     private let dataStore: TrackerDataStore
-    
+
     private var categories: [TrackerCategoryModel] = []
     private var textInSearchBar = ""
     private var lastFilter = FilterSettings(date: Calendar.current.startOfDay(for: Date()),
@@ -18,7 +18,7 @@ final class TrackersDataProvider: NSObject {
     private lazy var fetchedResultsController: NSFetchedResultsController<TrackerCoreData> = {
         let fetchRequest = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: false)]
-        
+
         return NSFetchedResultsController(
             fetchRequest: fetchRequest,
             managedObjectContext: context,
@@ -48,7 +48,7 @@ final class TrackersDataProvider: NSObject {
             // TODO: error
         }
     }
-    
+
     func filterTrackers(filters: FilterSettings) {
         lastFilter = filters
         loadCategoriesWithTrackers(for: filters.date)
@@ -60,8 +60,7 @@ final class TrackersDataProvider: NSObject {
                                              recordsDataStore: RecordsDataStore())
         delegate?.didUpdate()
     }
-    
-    
+
     // MARK: - Методы для UI
     var numberOfSections: Int {
         return categories.count
@@ -70,7 +69,7 @@ final class TrackersDataProvider: NSObject {
     func numberOfRowsInSection(_ section: Int) -> Int {
         return categories[section].trackers.count
     }
-    
+
     func isAnyTrackersForChoosenDateExist(_ date: Date) -> Bool {
         let counter = try? dataStore.fetchCategoriesWithTrackers(for: date).count
         guard let counter else { return false }
@@ -84,8 +83,8 @@ final class TrackersDataProvider: NSObject {
     func trackerObject(at indexPath: IndexPath) -> TrackerModel? {
         return categories[indexPath.section].trackers[indexPath.row]
     }
-    
-    func getCategoryNameForTrackerBy(id: UUID) ->  String? {
+
+    func getCategoryNameForTrackerBy(id: UUID) -> String? {
         return try? dataStore.fetchCategoryName(for: id)
     }
 
@@ -93,11 +92,11 @@ final class TrackersDataProvider: NSObject {
     func addTracker(to categoryName: String, trackerModel: TrackerModel) throws {
         try dataStore.add(tracker: trackerModel, categoryName: categoryName)
     }
-    
+
     func updateTracker(_ tracker: TrackerModel, in category: TrackerCategoryModel) {
         try? dataStore.updateTracker(tracker, in: category)
     }
-    
+
     func deleteTracker(at indexPath: IndexPath) throws {
         let trackerModel = categories[indexPath.section].trackers[indexPath.row]
 
@@ -114,7 +113,7 @@ final class TrackersDataProvider: NSObject {
             // TODO: обработка ошибки
         }
     }
-    
+
     func togglePinTracker(for tracker: TrackerModel) {
         try? dataStore.togglePin(for: tracker)
         filterTrackers(filters: lastFilter)

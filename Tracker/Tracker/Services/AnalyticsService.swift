@@ -11,7 +11,7 @@ final class AnalyticsService {
             "screen": screen,
             "item": item
         ]
-        
+
         YMMYandexMetrica.reportEvent("user_interaction", parameters: eventParams)
     }
 }

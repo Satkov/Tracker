@@ -2,7 +2,7 @@ import Foundation
 
 class StatisticDataProvider {
     let dataStore = StatisticDataStore()
-    
+
     func getStatistic(type: StatisticType) -> String {
         switch type {
         case .allTrackersFinished:
@@ -13,7 +13,7 @@ class StatisticDataProvider {
             return dataStore.getAverageRecordsPerDay() ?? "0"
         }
     }
-    
+
     func isDataExist() -> Bool {
         return dataStore.getTotalRecordsCount() != nil ||
                dataStore.getMaxRecordsPerTracker() != nil ||

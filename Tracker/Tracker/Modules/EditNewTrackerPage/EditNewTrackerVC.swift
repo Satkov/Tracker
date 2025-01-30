@@ -10,7 +10,7 @@ final class EditTrackerViewController: UIViewController {
         cellWidth: 52,
         cellHeight: 52
     )
-    
+
     // MARK: - State Properties
     private(set) var isRegular: Bool
     private(set) var isWarningHidden = true
@@ -28,7 +28,7 @@ final class EditTrackerViewController: UIViewController {
         label.textAlignment = .center
         return label
     }()
-    
+
     private let recordsLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 32, weight: .bold)
@@ -134,7 +134,7 @@ final class EditTrackerViewController: UIViewController {
     }
 
     // MARK: - UI Setup
-    
+
     private func fillFormWithData() {
         if let tracker = editedTrackerData {
             trackerNameField.text = tracker.name
@@ -185,7 +185,7 @@ final class EditTrackerViewController: UIViewController {
             titleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16)
         ])
     }
-    
+
     private func setupRecordsLabel() {
         guard !isNewTracker,
               let counter = recordsCount
@@ -197,7 +197,7 @@ final class EditTrackerViewController: UIViewController {
             counter
         )
         recordsLabel.text = localizedString
-        
+
         NSLayoutConstraint.activate([
             recordsLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
             recordsLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
@@ -213,7 +213,7 @@ final class EditTrackerViewController: UIViewController {
 
         textFieldContainerHeightConstraint = trackerNameFieldContainer.heightAnchor.constraint(equalToConstant: 75)
         textFieldContainerHeightConstraint.isActive = true
-        
+
         let topConstraint = isNewTracker ?
         trackerNameFieldContainer.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38) :
         trackerNameFieldContainer.topAnchor.constraint(equalTo: recordsLabel.bottomAnchor, constant: 40)
@@ -229,7 +229,7 @@ final class EditTrackerViewController: UIViewController {
             trackerNameField.trailingAnchor.constraint(equalTo: trackerNameFieldContainer.trailingAnchor)
         ])
     }
-    
+
     private func setupWarningLabel() {
         warningLabel.translatesAutoresizingMaskIntoConstraints = false
         trackerNameFieldContainer.addSubview(warningLabel)
@@ -356,7 +356,6 @@ extension EditTrackerViewController: UITableViewDelegate {
     ) -> CGFloat {
         return 75
     }
-    
 
     func tableView(
         _ tableView: UITableView,
@@ -445,7 +444,7 @@ extension EditTrackerViewController: TrackerNameTextFieldManagerDelegateProtocol
 }
 
 extension EditTrackerViewController: EditTrackerViewControllerProtocol {
-    
+
     func setCreateButtonEnable() {
         createButton.backgroundColor = UIColor.projectColor(.black)
         createButton.isEnabled = true

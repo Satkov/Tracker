@@ -37,7 +37,7 @@ final class CategoryPageViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var viewModel: CategoryViewModel = {
         let viewModel = CategoryViewModel()
         return viewModel
@@ -61,7 +61,7 @@ final class CategoryPageViewController: UIViewController {
             frame: .zero,
             presenter: presenter
         )
-        
+
         super.init(nibName: nil, bundle: nil)
 
         viewWithCategoryTableView.configurate(
@@ -69,7 +69,7 @@ final class CategoryPageViewController: UIViewController {
             delegate: self,
             viewModel: viewModel)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -87,7 +87,7 @@ final class CategoryPageViewController: UIViewController {
         setupConstraints()
         setupPlaceholder()
         setupCategoriesTable()
-        
+
         addCategoryButton.addTarget(
             self,
             action: #selector(addCategoryButtonPressed),
@@ -161,7 +161,7 @@ extension CategoryPageViewController: CategoryTableViewDelegateProtocol {
     func categoryDidSelected() {
         dismiss(animated: true)
     }
-    
+
     func numberOfLoadedCategoriesStateChanged(isEmpty: Bool) {
         DispatchQueue.main.async {
             if isEmpty {

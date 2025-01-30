@@ -20,7 +20,7 @@ final class EmojiCollectionViewManager: NSObject {
         super.init()
         configureCollectionView()
     }
-    
+
     func setSelectedEmoji(_ emoji: Emojis?) {
         selectedEmoji = emoji
         if let emoji = emoji, let index = Emojis.allCases.firstIndex(of: emoji) {
@@ -28,9 +28,9 @@ final class EmojiCollectionViewManager: NSObject {
         } else {
             selectedIndexPath = nil
         }
-        
+
         collectionView.reloadData()
-        
+
         if let selectedIndexPath = selectedIndexPath {
             collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: [])
         }
@@ -67,7 +67,7 @@ extension EmojiCollectionViewManager: UICollectionViewDelegate {
 
         selectedIndexPath = indexPath
         selectedEmoji = Emojis.allCases[indexPath.row]
-        
+
         presenter.updateEmoji(new: selectedEmoji)
     }
 

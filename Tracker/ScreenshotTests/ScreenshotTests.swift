@@ -6,7 +6,7 @@ final class ScreenshotTests: XCTestCase {
 
     func testViewController() {
         let vc = TrackerListViewController()
-        
+
         assertSnapshot(of: vc, as: .image)
     }
 

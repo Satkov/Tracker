@@ -2,12 +2,12 @@ import CoreData
 
 class CoreDataManager {
     static let shared = CoreDataManager()
-    
+
     let persistentContainer: NSPersistentContainer
 
     private init() {
         persistentContainer = NSPersistentContainer(name: "TrackerCoreData")
-        persistentContainer.loadPersistentStores { (storeDescription, error) in
+        persistentContainer.loadPersistentStores { (_, error) in
             if let error = error {
                 // TODO: обработка ошибки
             }

@@ -3,7 +3,7 @@ import UIKit
 
 final class StatisticDataStore {
     private let context: NSManagedObjectContext
-    
+
     init(context: NSManagedObjectContext = CoreDataManager.shared.context) {
         self.context = context
     }
@@ -23,7 +23,7 @@ final class StatisticDataStore {
     func getMaxRecordsPerTracker() -> String? {
         let request: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "RecordCoreData")
         request.resultType = .dictionaryResultType
-        
+
         let countExpression = NSExpressionDescription()
         countExpression.name = "recordCount"
         countExpression.expression = NSExpression(forFunction: "count:", arguments: [NSExpression(forKeyPath: "tracker")])
@@ -31,7 +31,7 @@ final class StatisticDataStore {
 
         request.propertiesToFetch = ["tracker", countExpression]
         request.propertiesToGroupBy = ["tracker"]
-        
+
         do {
             if let results = try context.fetch(request) as? [[String: Any]],
                let maxRecords = results.compactMap({ $0["recordCount"] as? Int }).max() {
@@ -42,7 +42,7 @@ final class StatisticDataStore {
         }
         return nil
     }
-    
+
     func getAverageRecordsPerDay() -> String? {
         let request: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "RecordCoreData")
         request.resultType = .dictionaryResultType

@@ -16,7 +16,7 @@ final class TrackersCollectionCell: UICollectionViewCell {
     var onPinToggle: (() -> Void)?
     var onDelete: (() -> Void)?
     var onEdit: (() -> Void)?
-    
+
     // MARK: - Initializer
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -63,14 +63,14 @@ final class TrackersCollectionCell: UICollectionViewCell {
         setupRecordLabel()
         setupContextMenu()
     }
-    
+
     private func setupData() {
         cardView.backgroundColor = tracker?.color.getUIColor()
         trackerNameLabel.text = tracker?.name
         emojiLabel.backgroundColor = UIColor.projectColor(.alwaysWhite).withAlphaComponent(0.3)
         emojiLabel.text = tracker?.emoji.rawValue
     }
-    
+
     private func setupCardView() {
         cardView.translatesAutoresizingMaskIntoConstraints = false
         cardView.layer.cornerRadius = 16
@@ -134,7 +134,7 @@ final class TrackersCollectionCell: UICollectionViewCell {
         recordButton.translatesAutoresizingMaskIntoConstraints = false
         recordButton.layer.cornerRadius = 16
         recordButton.addTarget(self, action: #selector(recordButtonTapped), for: .touchUpInside)
-        
+
         footerView.addSubview(recordButton)
 
         NSLayoutConstraint.activate([
@@ -158,7 +158,7 @@ final class TrackersCollectionCell: UICollectionViewCell {
             recordLabel.trailingAnchor.constraint(equalTo: recordButton.leadingAnchor, constant: -8)
         ])
     }
-    
+
     private func setupContextMenu() {
             let interaction = UIContextMenuInteraction(delegate: self)
             cardView.addInteraction(interaction)
@@ -170,10 +170,10 @@ final class TrackersCollectionCell: UICollectionViewCell {
         guard let date = datePicker?.date, date <= Date() else { return }
         recordsDataProvider?.toggleRecord(for: date)
     }
-    
+
     private func updateButtonStyle() {
         guard let tracker = tracker, let datePicker = datePicker else { return }
-        
+
         let hasRecord = recordsDataProvider?.hasRecord(for: datePicker.date) ?? false
         if !hasRecord {
             recordButton.backgroundColor = tracker.color.getUIColor()
@@ -216,18 +216,18 @@ extension TrackersCollectionCell: UIContextMenuInteractionDelegate {
                 handler: { _ in
                 self.onPinToggle?()
             })
-            
+
             let editAction = UIAction(title: Localization.edit,
                                       handler: { _ in
                 self.onEdit?()
             })
-            
+
             let deleteAction = UIAction(title: Localization.delete,
                                         attributes: .destructive,
                                         handler: { _ in
                 self.onDelete?()
             })
-            
+
             return UIMenu(title: "", children: [pinAction, editAction, deleteAction])
         }
     }

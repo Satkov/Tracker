@@ -10,7 +10,7 @@ final class FiltersPageViewContoller: UIViewController {
         label.textAlignment = .center
         return label
     }()
-    
+
     private let buttonTable: UITableView = {
         let table = UITableView()
         table.translatesAutoresizingMaskIntoConstraints = false
@@ -19,7 +19,7 @@ final class FiltersPageViewContoller: UIViewController {
         table.separatorColor = UIColor.projectColor(.separatorColor)
         return table
     }()
-    
+
     private let buttonsIdentifiers = [
         Localization.allTrackers,
         Localization.trackersForToday,
@@ -27,7 +27,7 @@ final class FiltersPageViewContoller: UIViewController {
         Localization.notFinished
     ]
     var delegate: FilterPageDelegateProtocol?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.projectColor(.white)
@@ -38,21 +38,21 @@ final class FiltersPageViewContoller: UIViewController {
         buttonTable.rowHeight = 75
         buttonTable.estimatedRowHeight = 75
     }
-    
+
     private func setupTitleLabel() {
         view.addSubview(titleLabel)
-        
+
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             titleLabel.widthAnchor.constraint(equalTo: view.widthAnchor)
         ])
     }
-    
+
     private func setupTableView() {
         view.addSubview(buttonTable)
         buttonTable.register(FilterButtonsTableViewCell.self, forCellReuseIdentifier: "FilterButtonsTableViewCells")
-        
+
         NSLayoutConstraint.activate([
             buttonTable.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
             buttonTable.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -75,7 +75,7 @@ extension FiltersPageViewContoller: UITableViewDelegate {
     ) -> CGFloat {
         return 75
     }
-    
+
     func tableView(
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath
@@ -135,6 +135,5 @@ extension FiltersPageViewContoller: UITableViewDataSource {
         cell.selectionStyle = .none
         return cell
     }
-    
-    
+
 }

@@ -74,7 +74,7 @@ final class TrackerTypeMenuViewController: UIViewController {
             presenter: EditNewTrackerPresenter(),
             editedTrackerData: nil,
             recordsCount: nil
-            
+
         )
         editVC.modalPresentationStyle = .pageSheet
         present(editVC, animated: true)

@@ -9,7 +9,7 @@ final class StatisticTableViewCell: UITableViewCell {
         label.textAlignment = .center
         return label
     }()
-    
+
     private let statisticNameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
@@ -17,7 +17,7 @@ final class StatisticTableViewCell: UITableViewCell {
         label.textAlignment = .center
         return label
     }()
-    
+
     private let gradientLayer = CAGradientLayer()
     private let borderLayer = CAShapeLayer()
 
@@ -28,16 +28,16 @@ final class StatisticTableViewCell: UITableViewCell {
         setupGradientBorder()
         self.backgroundColor = .clear
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         updateGradientBorder()
     }
-    
+
     // MARK: - Configuration
     func configurate(type: StatisticType, value: String) {
         statisticNameLabel.text = type.localized
@@ -56,7 +56,7 @@ final class StatisticTableViewCell: UITableViewCell {
             counter.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
             counter.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
             counter.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -37),
-            
+
             statisticNameLabel.topAnchor.constraint(equalTo: counter.bottomAnchor, constant: 7),
             statisticNameLabel.leadingAnchor.constraint(equalTo: counter.leadingAnchor),
             statisticNameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12)
@@ -81,14 +81,14 @@ final class StatisticTableViewCell: UITableViewCell {
         borderLayer.fillColor = UIColor.clear.cgColor
         borderLayer.strokeColor = UIColor.black.cgColor
         borderLayer.frame = contentView.bounds
-        
+
         contentView.layer.insertSublayer(gradientLayer, at: 0)
     }
-    
+
     private func updateGradientBorder() {
         let cornerRadius: CGFloat = 16
         let borderPath = UIBezierPath(roundedRect: contentView.bounds.insetBy(dx: 1, dy: 1), cornerRadius: cornerRadius)
-        
+
         gradientLayer.frame = contentView.bounds
         borderLayer.path = borderPath.cgPath
         borderLayer.frame = contentView.bounds
