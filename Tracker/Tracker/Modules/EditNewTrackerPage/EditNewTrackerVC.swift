@@ -66,7 +66,7 @@ final class EditTrackerViewController: UIViewController {
 
     private let createButton: UIButton = {
         let button = UIButton()
-        button.setTitleColor(UIColor.projectColor(.white), for: .normal)
+        button.setTitleColor(UIColor.projectColor(.alwaysWhite), for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.backgroundColor = UIColor.projectColor(.gray)
         button.layer.cornerRadius = 16

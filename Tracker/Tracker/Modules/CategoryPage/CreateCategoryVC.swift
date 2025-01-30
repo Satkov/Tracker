@@ -102,6 +102,8 @@ final class CreateCategoryViewController: UIViewController {
     // MARK: - Button State Management
     private func setAddCategoryButtonState(isTextFieldEmpty: Bool) {
         let backgroundcolor: ProjectColors = isTextFieldEmpty ? .gray : .black
+        let textColor: ProjectColors = isTextFieldEmpty ? .alwaysWhite : .white
+        addCategoryButton.setTitleColor(UIColor.projectColor(textColor), for: .normal)
         addCategoryButton.backgroundColor = UIColor.projectColor(backgroundcolor)
         addCategoryButton.isEnabled = !isTextFieldEmpty
     }

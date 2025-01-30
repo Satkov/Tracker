@@ -37,6 +37,7 @@ final class TrackerTypeMenuViewController: UIViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.backgroundColor = UIColor(named: "TrackerBackgroundBlack")
         button.layer.cornerRadius = 16
+        button.setTitleColor(UIColor.projectColor(.white), for: .normal)
     }
 
     private func setupHabbitTrackerButton() {

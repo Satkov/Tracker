@@ -12,6 +12,8 @@ class StatisticTableView: UIView {
     func configurate() {
         setupTableView()
         tableView.reloadData()
+        self.backgroundColor = .clear
+        tableView.backgroundColor = .clear
     }
     
     func setupTableView() {

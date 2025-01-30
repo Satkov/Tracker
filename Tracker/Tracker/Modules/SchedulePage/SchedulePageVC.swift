@@ -21,6 +21,7 @@ final class SchedulePageViewController: UIViewController {
     private let scheduleTable: UITableView = {
         let tableView = UITableView()
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.separatorColor = UIColor.projectColor(.separatorColor)
         tableView.layer.cornerRadius = 16
         return tableView
     }()
@@ -153,7 +154,7 @@ extension SchedulePageViewController: UITableViewDataSource {
 
         cell.textLabel?.text = schedule.localized
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-        cell.backgroundColor = UIColor.systemGray6
+        cell.backgroundColor = UIColor(named: "TrackerBackgroundLightGray")
         cell.selectionStyle = .none
 
         let switchView = createSwitch(for: indexPath)

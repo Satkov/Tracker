@@ -62,7 +62,7 @@ extension EmojiCollectionViewManager: UICollectionViewDelegate {
         }
 
         if let cell = collectionView.cellForItem(at: indexPath) {
-            cell.contentView.backgroundColor = UIColor.projectColor(.lightGray)
+            cell.contentView.backgroundColor = UIColor.projectColor(.alwaysLightgray)
         }
 
         selectedIndexPath = indexPath

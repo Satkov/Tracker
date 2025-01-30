@@ -5,7 +5,7 @@ final class StatisticTableViewCell: UITableViewCell {
     private let counter: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 34, weight: .bold)
-        label.textColor = .black
+        label.textColor = UIColor.projectColor(.black)
         label.textAlignment = .center
         return label
     }()
@@ -13,7 +13,7 @@ final class StatisticTableViewCell: UITableViewCell {
     private let statisticNameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        label.textColor = .darkGray
+        label.textColor = UIColor.projectColor(.black)
         label.textAlignment = .center
         return label
     }()
@@ -26,6 +26,7 @@ final class StatisticTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
         setupGradientBorder()
+        self.backgroundColor = .clear
     }
     
     required init?(coder: NSCoder) {

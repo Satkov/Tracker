@@ -25,7 +25,6 @@ final class StatisticPageViewController: UIViewController {
     
     private let viewWithTableView = {
         let viewWithTableView = StatisticTableView()
-        viewWithTableView.backgroundColor = .black.withAlphaComponent(0.1)
         viewWithTableView.configurate()
         return viewWithTableView
     }()

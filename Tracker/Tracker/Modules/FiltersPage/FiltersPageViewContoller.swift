@@ -16,6 +16,7 @@ final class FiltersPageViewContoller: UIViewController {
         table.translatesAutoresizingMaskIntoConstraints = false
         table.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         table.layer.cornerRadius = 16
+        table.separatorColor = UIColor.projectColor(.separatorColor)
         return table
     }()
     
