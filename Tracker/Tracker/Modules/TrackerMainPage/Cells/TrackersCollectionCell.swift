@@ -8,6 +8,7 @@ final class TrackersCollectionCell: UICollectionViewCell {
     private let trackerNameLabel = UILabel()
     private let recordLabel = UILabel()
     private let recordButton = UIButton()
+    private let pinIcon = UIImageView()
 
     // MARK: - Properties
     private var tracker: TrackerModel?
@@ -62,13 +63,17 @@ final class TrackersCollectionCell: UICollectionViewCell {
         setupRecordButton()
         setupRecordLabel()
         setupContextMenu()
+        setupPinIcon()
     }
 
     private func setupData() {
-        cardView.backgroundColor = tracker?.color.getUIColor()
-        trackerNameLabel.text = tracker?.name
+        guard let tracker else { return }
+        cardView.backgroundColor = tracker.color.getUIColor()
+        trackerNameLabel.text = tracker.name
         emojiLabel.backgroundColor = UIColor.projectColor(.alwaysWhite).withAlphaComponent(0.3)
-        emojiLabel.text = tracker?.emoji.rawValue
+        emojiLabel.text = tracker.emoji.rawValue
+        pinIcon.image = UIImage(named: "pin")
+        pinIcon.isHidden = !tracker.isPinned
     }
 
     private func setupCardView() {
@@ -156,6 +161,18 @@ final class TrackersCollectionCell: UICollectionViewCell {
             recordLabel.centerYAnchor.constraint(equalTo: recordButton.centerYAnchor),
             recordLabel.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 12),
             recordLabel.trailingAnchor.constraint(equalTo: recordButton.leadingAnchor, constant: -8)
+        ])
+    }
+    
+    private func setupPinIcon() {
+        pinIcon.translatesAutoresizingMaskIntoConstraints = false
+        cardView.addSubview(pinIcon)
+        
+        NSLayoutConstraint.activate([
+            pinIcon.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 18),
+            pinIcon.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -12),
+            pinIcon.widthAnchor.constraint(equalToConstant: 8),
+            pinIcon.heightAnchor.constraint(equalToConstant: 12)
         ])
     }
 

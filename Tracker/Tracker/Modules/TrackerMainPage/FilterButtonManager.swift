@@ -32,8 +32,9 @@ class FilterButtonManager {
         view.view.bringSubviewToFront(filterButton)
     }
 
-    @objc private func filterButtonTapped() {
-        let screenName = view != nil ? NSStringFromClass(type(of: view!)) : "unknown_screen"
+    @objc
+    private func filterButtonTapped() {
+        _ = view != nil ? NSStringFromClass(type(of: view!)) : "unknown_screen"
         AnalyticsService.shared.logEvent(
             event: "click",
             screen: "Main",
@@ -44,6 +45,7 @@ class FilterButtonManager {
         let vc = FiltersPageViewContoller()
         vc.modalPresentationStyle = .pageSheet
         vc.delegate = view
+        vc.filterSettings = view.getFilterSettings()
         view.present(vc, animated: true)
     }
 

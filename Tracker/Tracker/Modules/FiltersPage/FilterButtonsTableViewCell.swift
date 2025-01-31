@@ -24,13 +24,8 @@ final class FilterButtonsTableViewCell: UITableViewCell {
             checkmark.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             checkmark.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
-
-        view.isHidden = true
         return view
     }()
-
-    // MARK: - Properties
-    private var isChecked: Bool = false
 
     // MARK: - Initializer
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -77,7 +72,6 @@ final class FilterButtonsTableViewCell: UITableViewCell {
     // MARK: - Configuration
     func configureButton(title: String, isSelected: Bool) {
         titleLabel.text = title
-        isChecked = isSelected
-        customAccessoryView.isHidden = !isChecked
+        customAccessoryView.isHidden = !isSelected
     }
 }

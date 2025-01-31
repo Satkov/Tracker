@@ -42,7 +42,7 @@ enum Localization {
 
     // Filters
     static let filters = localized("filters")
-    static let filter = localized("filter")
+    static let filter = localized("filters")
     static let allTrackers = localized("allTrackers")
     static let trackersForToday = localized("trackersForToday")
     static let finished = localized("finished")

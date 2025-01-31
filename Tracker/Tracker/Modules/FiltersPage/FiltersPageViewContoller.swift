@@ -27,6 +27,7 @@ final class FiltersPageViewContoller: UIViewController {
         Localization.notFinished
     ]
     var delegate: FilterPageDelegateProtocol?
+    var filterSettings: FilterSettings?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,6 +60,19 @@ final class FiltersPageViewContoller: UIViewController {
             buttonTable.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             buttonTable.heightAnchor.constraint(equalToConstant: 300)
         ])
+    }
+    
+    func isCellSelected(for choice: FilterChoice) -> Bool {
+        guard let filterSettings else { return false }
+        switch choice {
+        case .all:
+            return filterSettings.recorded == .all
+        case .recorded:
+            return filterSettings.recorded == .onlyRecorded
+        case .unrecorded:
+            return filterSettings.recorded == .onlyUnRecorded
+        case .today:
+        }
     }
 }
 
@@ -120,13 +134,13 @@ extension FiltersPageViewContoller: UITableViewDataSource {
 
         switch identifier {
         case Localization.allTrackers:
-            cell.configureButton(title: identifier, isSelected: false)
+            cell.configureButton(title: identifier, isSelected: isCellSelected(for: .all))
         case Localization.trackersForToday:
-            cell.configureButton(title: identifier, isSelected: false)
+            cell.configureButton(title: identifier, isSelected: isCellSelected(for: .today))
         case Localization.finished:
-            cell.configureButton(title: identifier, isSelected: false)
+            cell.configureButton(title: identifier, isSelected: isCellSelected(for: .recorded))
         case Localization.notFinished:
-            cell.configureButton(title: identifier, isSelected: false)
+            cell.configureButton(title: identifier, isSelected: isCellSelected(for: .unrecorded))
 
         default:
             break
