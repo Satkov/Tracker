@@ -8,7 +8,7 @@ final class OnboardingSlideViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(Localization.onboardingButton, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.backgroundColor = UIColor(named: "TrackerBackgroundBlack")
+        button.backgroundColor = UIColor.projectColor(.alwaysblack)
         button.layer.cornerRadius = 16
         return button
     }()

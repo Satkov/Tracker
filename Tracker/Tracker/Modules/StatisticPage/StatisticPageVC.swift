@@ -41,7 +41,7 @@ final class StatisticPageViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewWithTableView.reloadTableView()
-        unc getStatistic(type: StatisticType)if dataProvider.isDataExist() {
+        if dataProvider.isDataExist() {
             placeholderText.isHidden = true
             placeholderImage.isHidden = true
             viewWithTableView.isHidden = false

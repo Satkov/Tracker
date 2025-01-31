@@ -447,11 +447,17 @@ extension EditTrackerViewController: EditTrackerViewControllerProtocol {
 
     func setCreateButtonEnable() {
         createButton.backgroundColor = UIColor.projectColor(.black)
+        if #available(iOS 13.0, *) {
+            if traitCollection.userInterfaceStyle == .dark {
+                createButton.setTitleColor(UIColor.projectColor(.alwaysblack), for: .normal)
+            }
+        }
         createButton.isEnabled = true
     }
 
     func setCreateButtonDissable() {
         createButton.backgroundColor = UIColor.projectColor(.gray)
+        createButton.setTitleColor(UIColor.projectColor(.alwaysWhite), for: .normal)
         createButton.isEnabled = false
     }
 
