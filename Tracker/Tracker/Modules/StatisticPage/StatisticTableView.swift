@@ -1,22 +1,27 @@
 import UIKit
 
-class StatisticTableView: UIView {
-    let tableView = {
+final class StatisticTableView: UIView {
+    private let tableView = {
         let tableView = UITableView()
 
         return tableView
     }()
 
-    let dataProvider = StatisticDataProvider()
+    private let dataProvider = StatisticDataProvider()
 
     func configurate() {
         setupTableView()
         tableView.reloadData()
         self.backgroundColor = .clear
         tableView.backgroundColor = .clear
+        
+    }
+    
+    func reloadTableView() {
+        tableView.reloadData()
     }
 
-    func setupTableView() {
+    private func setupTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(tableView)
         tableView.delegate = self

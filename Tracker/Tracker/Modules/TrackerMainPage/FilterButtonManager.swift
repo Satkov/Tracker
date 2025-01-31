@@ -1,6 +1,6 @@
 import UIKit
 
-class FilterButtonManager {
+final class FilterButtonManager {
     static let shared = FilterButtonManager()
     private var filterButton: UIButton = {
         let button = UIButton(type: .system)

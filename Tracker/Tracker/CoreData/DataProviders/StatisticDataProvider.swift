@@ -1,16 +1,16 @@
 import Foundation
 
-class StatisticDataProvider {
+final class StatisticDataProvider {
     let dataStore = StatisticDataStore()
 
     func getStatistic(type: StatisticType) -> String {
         switch type {
         case .allTrackersFinished:
-            return dataStore.getTotalRecordsCount() ?? "0"
+            dataStore.getTotalRecordsCount() ?? "0"
         case .bestStreak:
-            return dataStore.getMaxRecordsPerTracker() ?? "0"
+            dataStore.getMaxRecordsPerTracker() ?? "0"
         case .averageValue:
-            return dataStore.getAverageRecordsPerDay() ?? "0"
+            dataStore.getAverageRecordsPerDay() ?? "0"
         }
     }
 

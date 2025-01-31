@@ -4,6 +4,11 @@ import CoreData
 final class TrackerDataStore {
 
     private let context: NSManagedObjectContext
+    
+    private let jsonDecoder: JSONDecoder = {
+        let decoder = JSONDecoder()
+        return decoder
+    }()
 
     enum StoreError: Error {
         case modelNotFound
@@ -90,7 +95,7 @@ final class TrackerDataStore {
                     guard let category = trackerCoreData.category,
                           let categoryName = category.name,
                           let scheduleData = trackerCoreData.schedule,
-                          let schedule = try? JSONDecoder().decode(Set<Schedule>.self, from: scheduleData),
+                          let schedule = try? jsonDecoder.decode(Set<Schedule>.self, from: scheduleData),
                           schedule.contains(scheduleDay) else { continue }
 
                     let trackerModel = TrackerModel(
