@@ -12,9 +12,12 @@ final class TrackersCollectionPresenter: NSObject {
     var currentDate: Date {
         Calendar.current.startOfDay(for: datePicker.date)
     }
-    private var filter = FilterSettings(date: Date(),
-                                        trackerName: "",
-                                        recorded: .all)
+    private(set) var filter = FilterSettings(
+        date: Date(),
+        trackerName: "",
+        recorded: .all,
+        onlyToday: false
+    )
     private var filterButtonIsHidden: Bool?
 
     // MARK: - Initializer
@@ -50,6 +53,8 @@ final class TrackersCollectionPresenter: NSObject {
     // MARK: - Actions
     func updateDate(_ newDate: Date) {
         filter.date = newDate
+        filter.onlyToday = false
+        filter.recorded = .all
         trackersDataProvider.filterTrackers(filters: filter)
     }
 
@@ -71,16 +76,20 @@ final class TrackersCollectionPresenter: NSObject {
         switch newFilter {
         case .all:
             filter.recorded = .all
+            filter.onlyToday = false
         case .recorded:
             filter.recorded = .onlyRecorded
+            filter.onlyToday = false
         case .unrecorded:
             filter.recorded = .onlyUnRecorded
+            filter.onlyToday = false
         case .today:
             datePicker.date = Date()
             filter = FilterSettings(
                 date: Date(),
                 trackerName: filter.trackerName,
-                recorded: .all
+                recorded: .all,
+                onlyToday: true
             )
         }
         trackersDataProvider.filterTrackers(filters: filter)

@@ -242,18 +242,11 @@
 			path = FiltersPage;
 			sourceTree = "<group>";
 		};
-		911563962D4A636B00BE046E /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				911563972D4A637900BE046E /* FilterSettings.swift */,
-				911563992D4A639700BE046E /* RecordStatus.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		911563A12D4A9C5800BE046E /* models */ = {
 			isa = PBXGroup;
 			children = (
+				911563992D4A639700BE046E /* RecordStatus.swift */,
+				911563972D4A637900BE046E /* FilterSettings.swift */,
 				911563A22D4A9C6400BE046E /* FilterChoice.swift */,
 			);
 			path = models;
@@ -382,7 +375,6 @@
 		9170EFE92D3FA3B50004A701 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				911563962D4A636B00BE046E /* Models */,
 				9170EFEC2D3FAE1F0004A701 /* DataStores */,
 				9170F0162D413B690004A701 /* DataProviders */,
 				91039B4F2D3D3463009D333B /* CoreDataManager.swift */,

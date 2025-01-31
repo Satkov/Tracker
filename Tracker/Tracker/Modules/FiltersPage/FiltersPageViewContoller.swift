@@ -66,12 +66,14 @@ final class FiltersPageViewContoller: UIViewController {
         guard let filterSettings else { return false }
         switch choice {
         case .all:
-            return filterSettings.recorded == .all
+            return filterSettings.recorded == .all &&
+                   filterSettings.onlyToday == false
         case .recorded:
             return filterSettings.recorded == .onlyRecorded
         case .unrecorded:
             return filterSettings.recorded == .onlyUnRecorded
         case .today:
+            return filterSettings.onlyToday == true
         }
     }
 }

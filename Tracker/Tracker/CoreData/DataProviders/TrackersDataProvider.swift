@@ -10,9 +10,12 @@ final class TrackersDataProvider: NSObject {
 
     private var categories: [TrackerCategoryModel] = []
     private var textInSearchBar = ""
-    private var lastFilter = FilterSettings(date: Calendar.current.startOfDay(for: Date()),
-                                            trackerName: "",
-                                            recorded: .all)
+    private var lastFilter = FilterSettings(
+        date: Calendar.current.startOfDay(for: Date()),
+        trackerName: "",
+        recorded: .all,
+        onlyToday: false
+    )
 
     // использую, чтобы следить за обновлениями coredata
     private lazy var fetchedResultsController: NSFetchedResultsController<TrackerCoreData> = {
