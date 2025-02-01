@@ -5,7 +5,7 @@ final class TrackerTypeMenuViewController: UIViewController {
     private var unregularTrackerButton = UIButton()
     private var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Создание трекера"
+        label.text = Localization.trackerCreationTitle
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         return label
     }()
@@ -37,11 +37,12 @@ final class TrackerTypeMenuViewController: UIViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.backgroundColor = UIColor(named: "TrackerBackgroundBlack")
         button.layer.cornerRadius = 16
+        button.setTitleColor(UIColor.projectColor(.white), for: .normal)
     }
 
     private func setupHabbitTrackerButton() {
         habbitTrackerButton.translatesAutoresizingMaskIntoConstraints = false
-        setupButtonUI(for: habbitTrackerButton, title: "Привычка")
+        setupButtonUI(for: habbitTrackerButton, title: Localization.habbit)
         habbitTrackerButton.addTarget(nil, action: #selector(habbitButtonPressed), for: .touchUpInside)
         view.addSubview(habbitTrackerButton)
 
@@ -55,7 +56,7 @@ final class TrackerTypeMenuViewController: UIViewController {
 
     private func setupUnregularTrackerButton() {
         unregularTrackerButton.translatesAutoresizingMaskIntoConstraints = false
-        setupButtonUI(for: unregularTrackerButton, title: "Нерегулярное событие")
+        setupButtonUI(for: unregularTrackerButton, title: Localization.irregularEventTitle)
         unregularTrackerButton.addTarget(nil, action: #selector(unregularTrackerButtonPressed), for: .touchUpInside)
         view.addSubview(unregularTrackerButton)
 
@@ -68,9 +69,12 @@ final class TrackerTypeMenuViewController: UIViewController {
     }
 
     private func switchToEditTrackerForm(isRegular: Bool) {
-        let editVC = EditNewTrackerViewController(
+        let editVC = EditTrackerViewController(
             type: isRegular,
-            presenter: EditNewTrackerPresenter()
+            presenter: EditNewTrackerPresenter(),
+            editedTrackerData: nil,
+            recordsCount: nil
+
         )
         editVC.modalPresentationStyle = .pageSheet
         present(editVC, animated: true)

@@ -5,7 +5,7 @@ final class CategoryTableViewCell: UITableViewCell {
     // MARK: - UI Elements
     private let customBackgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.projectColor(.backgroundLightGray)
+        view.backgroundColor = UIColor.projectColor(.lightGray)
         view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view

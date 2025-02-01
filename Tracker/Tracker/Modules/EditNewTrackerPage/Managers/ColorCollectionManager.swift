@@ -4,19 +4,39 @@ final class ColorCollectionManager: NSObject {
     // MARK: - Properties
     private let collectionView: UICollectionView
     private let params: GeometricParamsModel
-    private let presenter: EditNewTrackerPresenterProtocol
+    private let presenter: EditTrackerPresenterProtocol
+    private var selectedColor: TrackerColors?
+    private var selectedIndexPath: IndexPath?
 
     // MARK: - Initializer
     init(
         collectionView: UICollectionView,
         params: GeometricParamsModel,
-        presenter: EditNewTrackerPresenterProtocol
+        presenter: EditTrackerPresenterProtocol
     ) {
         self.collectionView = collectionView
         self.params = params
         self.presenter = presenter
         super.init()
         configureCollectionView()
+    }
+
+    // MARK: - Public Methods
+    func setSelectedColor(_ color: TrackerColors?) {
+        selectedColor = color
+
+        if let color = color, let index = TrackerColors.allCases.firstIndex(of: color) {
+            selectedIndexPath = IndexPath(item: index, section: 0)
+        } else {
+            selectedIndexPath = nil
+        }
+
+        collectionView.reloadData()
+
+        // ✅ Выделяем ячейку после обновления данных
+        if let selectedIndexPath = selectedIndexPath {
+            collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: [])
+        }
     }
 
     // MARK: - Configuration
@@ -50,9 +70,13 @@ extension ColorCollectionManager: UICollectionViewDelegate {
         if let cell = collectionView.cellForItem(at: indexPath) {
             let color = TrackerColors.allCases[indexPath.row].getUIColor()
             cell.contentView.layer.borderColor = color.withAlphaComponent(0.3).cgColor
+            cell.contentView.layer.borderWidth = 3.0
         }
 
-        presenter.updateColor(new: TrackerColors.allCases[indexPath.row])
+        selectedIndexPath = indexPath
+        selectedColor = TrackerColors.allCases[indexPath.row]
+
+        presenter.updateColor(new: selectedColor)
     }
 
     func collectionView(
@@ -63,6 +87,8 @@ extension ColorCollectionManager: UICollectionViewDelegate {
             cell.contentView.layer.borderColor = UIColor.clear.cgColor
         }
 
+        selectedIndexPath = nil
+        selectedColor = nil
         presenter.updateColor(new: nil)
     }
 }
@@ -86,7 +112,18 @@ extension ColorCollectionManager: UICollectionViewDataSource {
             fatalError("Failed to dequeue ColorCollectionViewCell")
         }
 
-        cell.cellColor = TrackerColors.allCases[indexPath.item].getUIColor()
+        let color = TrackerColors.allCases[indexPath.item].getUIColor()
+        cell.cellColor = color
+
+        // ✅ Выделяем ячейку, если цвет совпадает
+        if selectedColor == TrackerColors.allCases[indexPath.item] {
+            cell.contentView.layer.borderColor = color.withAlphaComponent(0.3).cgColor
+            cell.contentView.layer.borderWidth = 3.0
+        } else {
+            cell.contentView.layer.borderColor = UIColor.clear.cgColor
+            cell.contentView.layer.borderWidth = 0
+        }
+
         return cell
     }
 
@@ -103,7 +140,7 @@ extension ColorCollectionManager: UICollectionViewDataSource {
             fatalError("Failed to dequeue SupplementaryView")
         }
 
-        view.titleLabel.text = "Цвет"
+        view.titleLabel.text = Localization.colorTitle
         return view
     }
 }

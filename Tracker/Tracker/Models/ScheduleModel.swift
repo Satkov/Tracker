@@ -1,13 +1,37 @@
 import Foundation
 
 enum Schedule: String, CaseIterable, Codable {
-    case monday = "Понедельник"
-    case tuesday = "Вторник"
-    case wednesday = "Среда"
-    case thursday = "Четверг"
-    case friday = "Пятница"
-    case saturday = "Суббота"
-    case sunday = "Воскресенье"
+    case monday
+    case tuesday
+    case wednesday
+    case thursday
+    case friday
+    case saturday
+    case sunday
+
+    var localized: String {
+        switch self {
+        case .monday: return NSLocalizedString("monday", comment: "Понедельник")
+        case .tuesday: return NSLocalizedString("tuesday", comment: "Вторник")
+        case .wednesday: return NSLocalizedString("wednesday", comment: "Среда")
+        case .thursday: return NSLocalizedString("thursday", comment: "Четверг")
+        case .friday: return NSLocalizedString("friday", comment: "Пятница")
+        case .saturday: return NSLocalizedString("saturday", comment: "Суббота")
+        case .sunday: return NSLocalizedString("sunday", comment: "Воскресенье")
+        }
+    }
+
+    var shortName: String {
+        switch self {
+        case .monday: return NSLocalizedString("monday.short", comment: "Пн")
+        case .tuesday: return NSLocalizedString("tuesday.short", comment: "Вт")
+        case .wednesday: return NSLocalizedString("wednesday.short", comment: "Ср")
+        case .thursday: return NSLocalizedString("thursday.short", comment: "Чт")
+        case .friday: return NSLocalizedString("friday.short", comment: "Пт")
+        case .saturday: return NSLocalizedString("saturday.short", comment: "Сб")
+        case .sunday: return NSLocalizedString("sunday.short", comment: "Вс")
+        }
+    }
 
     static func dayOfWeek(for date: Date) -> Schedule {
         let calendar = Calendar.current
@@ -28,27 +52,15 @@ enum Schedule: String, CaseIterable, Codable {
         }
     }
 
-    func shortName() -> String {
-        switch self {
-        case .monday: return "Пн"
-        case .tuesday: return "Вт"
-        case .wednesday: return "Ср"
-        case .thursday: return "Чт"
-        case .friday: return "Пт"
-        case .saturday: return "Сб"
-        case .sunday: return "Вс"
-        }
-    }
-
     static let sortedOrder: [Schedule] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
 
     static func formattedString(from days: Set<Schedule>) -> String {
         if days.count == 7 {
-            return "Каждый день"
+            return NSLocalizedString("everyDay", comment: "Каждый день")
         }
         let sortedDays = days.sorted {
             sortedOrder.firstIndex(of: $0)! < sortedOrder.firstIndex(of: $1)!
         }
-        return sortedDays.map { $0.shortName() }.joined(separator: ", ")
+        return sortedDays.map { $0.shortName }.joined(separator: ", ")
     }
 }

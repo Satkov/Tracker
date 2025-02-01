@@ -4,16 +4,16 @@ final class SchedulePageViewController: UIViewController {
     // MARK: - UI Elements
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Расписание"
+        label.text = Localization.scheduleTitle
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.textAlignment = .center
         return label
     }()
     private let addScheduleButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Готово", for: .normal)
-        button.setTitleColor(UIColor.projectColor(.backgroundWhite), for: .normal)
-        button.backgroundColor = UIColor.projectColor(.backgroundBlack)
+        button.setTitle(Localization.readyButton, for: .normal)
+        button.setTitleColor(UIColor.projectColor(.white), for: .normal)
+        button.backgroundColor = UIColor.projectColor(.black)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.layer.cornerRadius = 16
         return button
@@ -21,16 +21,17 @@ final class SchedulePageViewController: UIViewController {
     private let scheduleTable: UITableView = {
         let tableView = UITableView()
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.separatorColor = UIColor.projectColor(.separatorColor)
         tableView.layer.cornerRadius = 16
         return tableView
     }()
 
     // MARK: - Properties
     private var selectedDays: Set<Schedule>
-    private var presenter: EditNewTrackerPresenterProtocol
+    private var presenter: EditTrackerPresenterProtocol
 
     init(
-        presenter: EditNewTrackerPresenterProtocol,
+        presenter: EditTrackerPresenterProtocol,
         selectedDays: Set<Schedule>?
     ) {
         self.presenter = presenter
@@ -151,9 +152,9 @@ extension SchedulePageViewController: UITableViewDataSource {
     ) {
         let schedule = Schedule.allCases[indexPath.row]
 
-        cell.textLabel?.text = schedule.rawValue
+        cell.textLabel?.text = schedule.localized
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-        cell.backgroundColor = UIColor.systemGray6
+        cell.backgroundColor = UIColor(named: "TrackerBackgroundLightGray")
         cell.selectionStyle = .none
 
         let switchView = createSwitch(for: indexPath)

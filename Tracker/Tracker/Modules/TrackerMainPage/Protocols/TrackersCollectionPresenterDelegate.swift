@@ -1,5 +1,5 @@
-import Foundation
+import UIKit
 
-protocol TrackersCollectionPresenterDelegate: AnyObject {
-    func updateUI()
+protocol TrackersCollectionPresenterDelegate: UIViewController {
+    func updateUI(date: Date)
 }

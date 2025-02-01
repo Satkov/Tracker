@@ -5,7 +5,7 @@ final class CategoryPageViewController: UIViewController {
     // MARK: - UI Elements
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Категория"
+        label.text = Localization.categoryTitle
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.textAlignment = .center
         return label
@@ -13,9 +13,9 @@ final class CategoryPageViewController: UIViewController {
 
     private let addCategoryButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Добавить категорию", for: .normal)
-        button.setTitleColor(UIColor.projectColor(.backgroundWhite), for: .normal)
-        button.backgroundColor = UIColor.projectColor(.backgroundBlack)
+        button.setTitle(Localization.addCategoryButton, for: .normal)
+        button.setTitleColor(UIColor.projectColor(.white), for: .normal)
+        button.backgroundColor = UIColor.projectColor(.black)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.layer.cornerRadius = 16
         return button
@@ -30,14 +30,14 @@ final class CategoryPageViewController: UIViewController {
 
     private let placeholderText: UILabel = {
         let label = UILabel()
-        label.text = "Привычки и события можно\nобъединить по смыслу"
+        label.text = Localization.categoryPagePlaceholder
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         label.numberOfLines = 0
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var viewModel: CategoryViewModel = {
         let viewModel = CategoryViewModel()
         return viewModel
@@ -46,13 +46,13 @@ final class CategoryPageViewController: UIViewController {
     private let viewWithCategoryTableView: ViewWithCategoryTableView
 
     // MARK: - Properties
-    private var presenter: EditNewTrackerPresenterProtocol
+    private var presenter: EditTrackerPresenterProtocol
     private var lastSelectedCategory: TrackerCategoryModel?
     private var categoryDataProvider: CategoryDataProvider!
 
     // MARK: - Initializer
     init(
-        presenter: EditNewTrackerPresenterProtocol,
+        presenter: EditTrackerPresenterProtocol,
         lastSelectedCategory: TrackerCategoryModel?
     ) {
         self.presenter = presenter
@@ -61,7 +61,7 @@ final class CategoryPageViewController: UIViewController {
             frame: .zero,
             presenter: presenter
         )
-        
+
         super.init(nibName: nil, bundle: nil)
 
         viewWithCategoryTableView.configurate(
@@ -69,7 +69,7 @@ final class CategoryPageViewController: UIViewController {
             delegate: self,
             viewModel: viewModel)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -82,12 +82,12 @@ final class CategoryPageViewController: UIViewController {
 
     // MARK: - Setup UI
     private func setupUI() {
-        view.backgroundColor = UIColor.projectColor(.backgroundWhite)
+        view.backgroundColor = UIColor.projectColor(.white)
         prepareViews()
         setupConstraints()
         setupPlaceholder()
         setupCategoriesTable()
-        
+
         addCategoryButton.addTarget(
             self,
             action: #selector(addCategoryButtonPressed),
@@ -161,7 +161,7 @@ extension CategoryPageViewController: CategoryTableViewDelegateProtocol {
     func categoryDidSelected() {
         dismiss(animated: true)
     }
-    
+
     func numberOfLoadedCategoriesStateChanged(isEmpty: Bool) {
         DispatchQueue.main.async {
             if isEmpty {

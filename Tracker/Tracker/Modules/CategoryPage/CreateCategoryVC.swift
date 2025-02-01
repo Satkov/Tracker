@@ -4,15 +4,15 @@ final class CreateCategoryViewController: UIViewController {
     // MARK: - UI Elements
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Новая категория"
+        label.text = Localization.newCategoryTitle
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.textAlignment = .center
         return label
     }()
     private let addCategoryButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Готово", for: .normal)
-        button.setTitleColor(UIColor.projectColor(.backgroundWhite), for: .normal)
+        button.setTitle(Localization.readyButton, for: .normal)
+        button.setTitleColor(UIColor.projectColor(.white), for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.layer.cornerRadius = 16
         return button
@@ -27,7 +27,7 @@ final class CreateCategoryViewController: UIViewController {
         categoryDataProvider = CategoryDataProvider(delegate: nil)
         trackerNameFieldManager = NameTextFieldManager(
             trackerNameField: trackerNameField,
-            placeholderText: "Введите название категории",
+            placeholderText: Localization.createTrackerNamePlaceholder,
             presenter: nil
         )
         super.init(nibName: nil, bundle: nil)
@@ -101,7 +101,9 @@ final class CreateCategoryViewController: UIViewController {
 
     // MARK: - Button State Management
     private func setAddCategoryButtonState(isTextFieldEmpty: Bool) {
-        let backgroundcolor: ProjectColors = isTextFieldEmpty ? .textColorForLightgray : .backgroundBlack
+        let backgroundcolor: ProjectColors = isTextFieldEmpty ? .gray : .black
+        let textColor: ProjectColors = isTextFieldEmpty ? .alwaysWhite : .white
+        addCategoryButton.setTitleColor(UIColor.projectColor(textColor), for: .normal)
         addCategoryButton.backgroundColor = UIColor.projectColor(backgroundcolor)
         addCategoryButton.isEnabled = !isTextFieldEmpty
     }

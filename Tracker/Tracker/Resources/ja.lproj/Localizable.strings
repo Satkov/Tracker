@@ -1,0 +1,78 @@
+// Onboarding
+onboarding.button = "これはすごい技術だ！";
+onboardingPage.label.firstPage = "自分が追跡したいものだけを\n記録しましょう";
+onboardingPage.label.secondPage = "たとえそれが\n水のリットルやヨガでなくても";
+
+// Tab Bar
+tabbar.title.statistic = "統計";
+
+// Tracker Sections
+trackers = "トラッカー";
+trackerList.placeholder = "何を追跡しますか？";
+trackerCreation = "トラッカーの作成";
+habit = "習慣";
+irregularEvent = "不定期イベント";
+
+// Categories and Schedule
+category = "カテゴリー";
+addCategory = "カテゴリーを追加";
+newCategory = "新しいカテゴリー";
+categoryPage.placeholder = "習慣やイベントを\n意味ごとに分類できます";
+typeCategoryName = "カテゴリー名を入力してください";
+schedule = "スケジュール";
+
+// Edit New Tracker
+editNewTracker.title.habit = "新しい習慣";
+editNewTracker.title.irregular = "新しい不定期イベント";
+createTrackerNameField.placeholder = "トラッカーの名前を入力してください";
+nameFieldMaxLength.warning.label = "制限：38文字";
+
+// Tracker Statistics
+statistic = "統計";
+statisticPage.placeholder = "分析するデータがまだありません";
+statisticPage.bestStreak = "最長継続記録";
+statisticPage.perfectDays = "完璧な日数";
+statisticPage.allTrackersFinished = "完了したトラッカー";
+statisticPage.averageValue = "平均値";
+
+// Days of the Week (Full)
+monday = "月曜日";
+tuesday = "火曜日";
+wednesday = "水曜日";
+thursday = "木曜日";
+friday = "金曜日";
+saturday = "土曜日";
+sunday = "日曜日";
+
+// Days of the Week (Short)
+monday.short = "月";
+tuesday.short = "火";
+wednesday.short = "水";
+thursday.short = "木";
+friday.short = "金";
+saturday.short = "土";
+sunday.short = "日";
+
+// Every Day
+everyDay = "毎日";
+
+// UI Elements
+color = "色";
+emoji = "Emoji";
+cancel = "キャンセル";
+create = "作成";
+ready = "完了";
+
+
+filters = "フィルター";
+filter = "フィルター";
+allTrackers = "すべてのトラッカー";
+trackersForToday = "今日のトラッカー";
+finished = "完了";
+notFinished = "未完了";
+unpin = "固定解除";
+pin = "固定";
+edit = "編集";
+delete = "削除";
+deleteConfirmationMessage = "このトラッカーを削除してもよろしいですか？";
+save = "保存";

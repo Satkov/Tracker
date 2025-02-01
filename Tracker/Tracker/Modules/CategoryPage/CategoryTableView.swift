@@ -11,12 +11,12 @@ final class ViewWithCategoryTableView: UIView {
 
     // MARK: - Properties
     private var viewModel: CategoryViewModel?
-    private var presenter: EditNewTrackerPresenterProtocol?
+    private var presenter: EditTrackerPresenterProtocol?
     private weak var delegate: CategoryTableViewDelegateProtocol?
 
     // MARK: - Initializer
     init(frame: CGRect,
-         presenter: EditNewTrackerPresenterProtocol?
+         presenter: EditTrackerPresenterProtocol?
     ) {
         self.presenter = presenter
         super.init(frame: frame)
@@ -49,7 +49,7 @@ final class ViewWithCategoryTableView: UIView {
         tableView.dataSource = self
         tableView.register(CategoryTableViewCell.self,
                            forCellReuseIdentifier: "CategoryTableViewCell")
-        
+
         addSubview(tableView)
 
         NSLayoutConstraint.activate([
@@ -92,7 +92,7 @@ extension ViewWithCategoryTableView: UITableViewDataSource {
         guard let viewModel = viewModel else { return 0 }
         return viewModel.numberOfCategories()
     }
-    
+
     func tableView(
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
@@ -106,7 +106,7 @@ extension ViewWithCategoryTableView: UITableViewDataSource {
         else { return UITableViewCell() }
 
         let dataForCell = viewModel.getDataForCell(indexPath: indexPath)
-        
+
         cell.configureCell(
             with: dataForCell.categoryName,
             isSelected: dataForCell.isSelected,

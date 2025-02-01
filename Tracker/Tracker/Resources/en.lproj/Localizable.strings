@@ -1,0 +1,77 @@
+// Onboarding
+onboarding.button = "These are technologies!";
+onboardingPage.label.firstPage = "Track only what\nyou want";
+onboardingPage.label.secondPage = "Even if it's not\nliters of water and yoga";
+
+// Titles and Navigation
+editNewTracker.title.habit = "New Habit";
+editNewTracker.title.irregular = "New Irregular Event";
+trackerCreation = "Tracker Creation";
+tabbar.title.statistic = "Statistics";
+trackers = "Trackers";
+statistic = "Statistics";
+search = "Search";
+category = "Category";
+schedule = "Schedule";
+habit = "Habit";
+irregularEvent = "Irregular Event";
+
+// Alerts and Placeholders
+trackerList.placeholder = "What do we track?";
+categoryPage.placeholder = "Habits and events can\nbe grouped by meaning";
+statisticPage.placeholder = "Nothing to analyze yet";
+createTrackerNameField.placeholder = "Enter tracker name";
+typeCategoryName = "Enter category name";
+nameFieldMaxLength.warning.label = "Limit of 38 characters";
+
+// Statistics
+statisticPage.bestStreak = "Best Streak";
+statisticPage.perfectDays = "Perfect Days";
+statisticPage.allTrackersFinished = "Trackers Completed";
+statisticPage.averageValue = "Average Value";
+
+// Action Buttons
+cancel = "Cancel";
+create = "Create";
+addCategory = "Add Category";
+newCategory = "New Category";
+ready = "Ready";
+
+// Tracker Settings
+color = "Color";
+emoji = "Emoji";
+
+// Full Names of the Days of the Week
+monday = "Monday";
+tuesday = "Tuesday";
+wednesday = "Wednesday";
+thursday = "Thursday";
+friday = "Friday";
+saturday = "Saturday";
+sunday = "Sunday";
+
+// Short Names of the Days of the Week
+monday.short = "Mon";
+tuesday.short = "Tue";
+wednesday.short = "Wed";
+thursday.short = "Thu";
+friday.short = "Fri";
+saturday.short = "Sat";
+sunday.short = "Sun";
+
+// Text for Daily Repetition
+everyDay = "Every day";
+
+
+filters = "Filters";
+filter = "Filter";
+allTrackers = "All trackers";
+trackersForToday = "Trackers for today";
+finished = "Finished";
+notFinished = "Not finished";
+unpin = "Unpin";
+pin = "Pin";
+edit = "Edit";
+delete = "Delete";
+deleteConfirmationMessage = "Are you sure you want to delete the tracker?";
+save = "Save";

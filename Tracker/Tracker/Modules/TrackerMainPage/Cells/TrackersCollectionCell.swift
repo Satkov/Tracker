@@ -8,15 +8,20 @@ final class TrackersCollectionCell: UICollectionViewCell {
     private let trackerNameLabel = UILabel()
     private let recordLabel = UILabel()
     private let recordButton = UIButton()
+    private let pinIcon = UIImageView()
 
     // MARK: - Properties
     private var tracker: TrackerModel?
     private var datePicker: UIDatePicker?
     private var recordsDataProvider: RecordsDataProvider?
-    
+    var onPinToggle: (() -> Void)?
+    var onDelete: (() -> Void)?
+    var onEdit: (() -> Void)?
+
     // MARK: - Initializer
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupUI()
     }
 
     required init?(coder: NSCoder) {
@@ -24,11 +29,12 @@ final class TrackersCollectionCell: UICollectionViewCell {
     }
 
     // MARK: - Configuration
-    func configure(with tracker: TrackerModel, datePicker: UIDatePicker) {
+    func configure(
+        with tracker: TrackerModel,
+        datePicker: UIDatePicker
+    ) {
         self.tracker = tracker
         self.datePicker = datePicker
-        setupUI()
-        
         recordsDataProvider?.delegate = nil
         recordsDataProvider = RecordsDataProvider(
             trackerID: tracker.id,
@@ -37,6 +43,7 @@ final class TrackersCollectionCell: UICollectionViewCell {
         )
         updateRecordCount()
         updateButtonStyle()
+        setupData()
     }
 
     override func prepareForReuse() {
@@ -55,6 +62,18 @@ final class TrackersCollectionCell: UICollectionViewCell {
         setupTrackerNameLabel()
         setupRecordButton()
         setupRecordLabel()
+        setupContextMenu()
+        setupPinIcon()
+    }
+
+    private func setupData() {
+        guard let tracker else { return }
+        cardView.backgroundColor = tracker.color.getUIColor()
+        trackerNameLabel.text = tracker.name
+        emojiLabel.backgroundColor = UIColor.projectColor(.alwaysWhite).withAlphaComponent(0.3)
+        emojiLabel.text = tracker.emoji.rawValue
+        pinIcon.image = UIImage(named: "pin")
+        pinIcon.isHidden = !tracker.isPinned
     }
 
     private func setupCardView() {
@@ -90,8 +109,6 @@ final class TrackersCollectionCell: UICollectionViewCell {
         emojiLabel.translatesAutoresizingMaskIntoConstraints = false
         emojiLabel.layer.cornerRadius = 12
         emojiLabel.layer.masksToBounds = true
-        emojiLabel.backgroundColor = UIColor.projectColor(.backgroundWhite).withAlphaComponent(0.3)
-        emojiLabel.text = tracker?.emoji.rawValue
 
         cardView.addSubview(emojiLabel)
 
@@ -107,8 +124,7 @@ final class TrackersCollectionCell: UICollectionViewCell {
         trackerNameLabel.translatesAutoresizingMaskIntoConstraints = false
         trackerNameLabel.textAlignment = .left
         trackerNameLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        trackerNameLabel.textColor = UIColor.projectColor(.backgroundWhite)
-        trackerNameLabel.text = tracker?.name
+        trackerNameLabel.textColor = UIColor.projectColor(.alwaysWhite)
 
         cardView.addSubview(trackerNameLabel)
 
@@ -123,7 +139,7 @@ final class TrackersCollectionCell: UICollectionViewCell {
         recordButton.translatesAutoresizingMaskIntoConstraints = false
         recordButton.layer.cornerRadius = 16
         recordButton.addTarget(self, action: #selector(recordButtonTapped), for: .touchUpInside)
-        
+
         footerView.addSubview(recordButton)
 
         NSLayoutConstraint.activate([
@@ -137,7 +153,7 @@ final class TrackersCollectionCell: UICollectionViewCell {
     private func setupRecordLabel() {
         recordLabel.translatesAutoresizingMaskIntoConstraints = false
         recordLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        recordLabel.text = "0 дней"
+        // TODO: localize
 
         footerView.addSubview(recordLabel)
 
@@ -147,6 +163,23 @@ final class TrackersCollectionCell: UICollectionViewCell {
             recordLabel.trailingAnchor.constraint(equalTo: recordButton.leadingAnchor, constant: -8)
         ])
     }
+    
+    private func setupPinIcon() {
+        pinIcon.translatesAutoresizingMaskIntoConstraints = false
+        cardView.addSubview(pinIcon)
+        
+        NSLayoutConstraint.activate([
+            pinIcon.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 18),
+            pinIcon.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -12),
+            pinIcon.widthAnchor.constraint(equalToConstant: 8),
+            pinIcon.heightAnchor.constraint(equalToConstant: 12)
+        ])
+    }
+
+    private func setupContextMenu() {
+            let interaction = UIContextMenuInteraction(delegate: self)
+            cardView.addInteraction(interaction)
+        }
 
     // MARK: - Button Action
     @objc
@@ -154,26 +187,31 @@ final class TrackersCollectionCell: UICollectionViewCell {
         guard let date = datePicker?.date, date <= Date() else { return }
         recordsDataProvider?.toggleRecord(for: date)
     }
-    
+
     private func updateButtonStyle() {
         guard let tracker = tracker, let datePicker = datePicker else { return }
-        
+
         let hasRecord = recordsDataProvider?.hasRecord(for: datePicker.date) ?? false
         if !hasRecord {
             recordButton.backgroundColor = tracker.color.getUIColor()
             recordButton.setImage(UIImage(systemName: "plus"), for: .normal)
-            recordButton.tintColor = .white
+            recordButton.tintColor = UIColor.projectColor(.white)
         } else {
             recordButton.backgroundColor = tracker.color.getUIColor().withAlphaComponent(0.3)
             recordButton.setImage(UIImage(named: "Done"), for: .normal)
-            recordButton.tintColor = .white
+            recordButton.tintColor = UIColor.projectColor(.white)
         }
     }
 
     // MARK: - UI Updates
     private func updateRecordCount() {
         let countRecords = recordsDataProvider?.recordCount ?? 0
-        recordLabel.text = "\(countRecords) дней"
+        print(countRecords)
+        let localizedString = String.localizedStringWithFormat(
+            NSLocalizedString("daysCount", comment: ""),
+            countRecords
+        )
+        recordLabel.text = localizedString
     }
 }
 
@@ -183,6 +221,31 @@ extension TrackersCollectionCell: RecordsDataProviderDelegate {
         DispatchQueue.main.async {
             self.updateRecordCount()
             self.updateButtonStyle()
+        }
+    }
+}
+
+extension TrackersCollectionCell: UIContextMenuInteractionDelegate {
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            let pinAction = UIAction(
+                title: self.tracker?.isPinned == true ? Localization.unpin : Localization.pin,
+                handler: { _ in
+                self.onPinToggle?()
+            })
+
+            let editAction = UIAction(title: Localization.edit,
+                                      handler: { _ in
+                self.onEdit?()
+            })
+
+            let deleteAction = UIAction(title: Localization.delete,
+                                        attributes: .destructive,
+                                        handler: { _ in
+                self.onDelete?()
+            })
+
+            return UIMenu(title: "", children: [pinAction, editAction, deleteAction])
         }
     }
 }

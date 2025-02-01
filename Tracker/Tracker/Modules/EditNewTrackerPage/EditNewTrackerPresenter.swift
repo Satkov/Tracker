@@ -1,7 +1,8 @@
 import UIKit
 
-final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
-    private weak var view: EditNewTrackerViewControllerProtocol?
+final class EditNewTrackerPresenter: EditTrackerPresenterProtocol {
+    private weak var view: EditTrackerViewControllerProtocol?
+    private var isNewTracker = true
     private(set) var dataModel = DataForTrackerModel() {
         didSet {
             // TODO: обработка ошибки если вью не предоставлена
@@ -14,8 +15,29 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
         }
     }
 
-    func configure(view: EditNewTrackerViewControllerProtocol) {
-        self.view = view
+    func configure(
+        view: EditTrackerViewControllerProtocol,
+        editedTrackerData: DataForTrackerModel?) {
+            self.view = view
+            if let editedTrackerData = editedTrackerData {
+                isNewTracker = false
+                self.dataModel = editedTrackerData
+            }
+            setIsReguler()
+        }
+
+    private func setIsReguler() {
+        let updatedModel = DataForTrackerModel(
+            id: dataModel.id,
+            name: dataModel.name,
+            category: dataModel.category,
+            color: dataModel.color,
+            emoji: dataModel.emoji,
+            schudule: dataModel.schudule,
+            isPinned: dataModel.isPinned,
+            isRegular: view?.isRegular
+        )
+        dataModel = updatedModel
     }
 
     func updateName(name: String?) {
@@ -23,11 +45,14 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
         let newName = name == "" ? nil : name
 
         let updatedModel = DataForTrackerModel(
+            id: dataModel.id,
             name: newName,
             category: dataModel.category,
             color: dataModel.color,
             emoji: dataModel.emoji,
-            schudule: dataModel.schudule
+            schudule: dataModel.schudule,
+            isPinned: dataModel.isPinned,
+            isRegular: dataModel.isRegular
         )
         dataModel = updatedModel
     }
@@ -38,11 +63,14 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
         let newSchedule = new?.isEmpty == true ? nil : new
 
         dataModel = DataForTrackerModel(
+            id: dataModel.id,
             name: dataModel.name,
             category: dataModel.category,
             color: dataModel.color,
             emoji: dataModel.emoji,
-            schudule: newSchedule
+            schudule: newSchedule,
+            isPinned: dataModel.isPinned,
+            isRegular: dataModel.isRegular
         )
     }
 
@@ -50,33 +78,42 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
         view?.reloadButtonTable()
 
         let updatedModel = DataForTrackerModel(
+            id: dataModel.id,
             name: dataModel.name,
             category: new,
             color: dataModel.color,
             emoji: dataModel.emoji,
-            schudule: dataModel.schudule
+            schudule: dataModel.schudule,
+            isPinned: dataModel.isPinned,
+            isRegular: dataModel.isRegular
         )
         dataModel = updatedModel
     }
 
     func updateEmoji(new: Emojis?) {
         let updatedModel = DataForTrackerModel(
+            id: dataModel.id,
             name: dataModel.name,
             category: dataModel.category,
             color: dataModel.color,
             emoji: new,
-            schudule: dataModel.schudule
+            schudule: dataModel.schudule,
+            isPinned: dataModel.isPinned,
+            isRegular: dataModel.isRegular
         )
         dataModel = updatedModel
     }
 
     func updateColor(new: TrackerColors?) {
         let updatedModel = DataForTrackerModel(
+            id: dataModel.id,
             name: dataModel.name,
             category: dataModel.category,
             color: new,
             emoji: dataModel.emoji,
-            schudule: dataModel.schudule
+            schudule: dataModel.schudule,
+            isPinned: dataModel.isPinned,
+            isRegular: dataModel.isRegular
         )
         dataModel = updatedModel
     }
@@ -87,14 +124,16 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
               let color = dataModel.color,
               let view = view
         else { return nil }
-        
+
         let schedule = view.isRegular ? dataModel.schudule : Set(Schedule.allCases)
-        
-        let tracker = TrackerModel(id: UUID(),
+
+        let tracker = TrackerModel(id: dataModel.id ?? UUID(),
                                    name: name,
                                    color: color,
                                    emoji: emoji,
-                                   schedule: schedule)
+                                   schedule: schedule,
+                                   isPinned: dataModel.isPinned ?? false,
+                                   isRegular: view.isRegular)
         return tracker
     }
 
@@ -106,7 +145,12 @@ final class EditNewTrackerPresenter: EditNewTrackerPresenterProtocol {
             return
         }
         let trackerManager = TrackerDataStore()
-        
-        try? trackerManager.add(tracker: tracker, categoryName: category.categoryName)
+        DispatchQueue.main.async {
+            if self.isNewTracker {
+                try? trackerManager.add(tracker: tracker, categoryName: category.categoryName)
+            } else {
+                try? trackerManager.updateTracker(tracker, in: category)
+            }
+        }
     }
 }

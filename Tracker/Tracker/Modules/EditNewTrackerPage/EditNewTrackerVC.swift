@@ -1,6 +1,6 @@
 import UIKit
 
-final class EditNewTrackerViewController: UIViewController {
+final class EditTrackerViewController: UIViewController {
     // MARK: - Constants
     private let params = GeometricParamsModel(
         cellCount: 6,
@@ -14,6 +14,7 @@ final class EditNewTrackerViewController: UIViewController {
     // MARK: - State Properties
     private(set) var isRegular: Bool
     private(set) var isWarningHidden = true
+    private let isNewTracker: Bool
 
     // MARK: - UI Elements
     private let scrollView = UIScrollView()
@@ -28,11 +29,18 @@ final class EditNewTrackerViewController: UIViewController {
         return label
     }()
 
+    private let recordsLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 32, weight: .bold)
+        label.textAlignment = .center
+        return label
+    }()
+
     private let trackerNameField = UITextField()
 
     private let warningLabel: UILabel = {
         let label = UILabel()
-        label.text = "Ограничение 38 символов"
+        label.text = Localization.nameFieldMaxLengthWarning
         label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         label.textColor = UIColor.projectColor(.borderRed)
         return label
@@ -47,7 +55,7 @@ final class EditNewTrackerViewController: UIViewController {
 
     private let cancelButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Отменить", for: .normal)
+        button.setTitle(Localization.cancelButton, for: .normal)
         button.setTitleColor(UIColor.projectColor(.borderRed), for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.layer.borderWidth = 1
@@ -58,10 +66,9 @@ final class EditNewTrackerViewController: UIViewController {
 
     private let createButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Создать", for: .normal)
-        button.setTitleColor(UIColor.projectColor(.backgroundWhite), for: .normal)
+        button.setTitleColor(UIColor.projectColor(.alwaysWhite), for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.backgroundColor = UIColor.projectColor(.textColorForLightgray)
+        button.backgroundColor = UIColor.projectColor(.gray)
         button.layer.cornerRadius = 16
         return button
     }()
@@ -70,20 +77,25 @@ final class EditNewTrackerViewController: UIViewController {
     private var textFieldContainerHeightConstraint: NSLayoutConstraint!
 
     // MARK: - Data and Managers
-    private let buttonsIdentifiers = ["Категория", "Расписание"]
-    private var presenter: EditNewTrackerPresenterProtocol
+    private let buttonsIdentifiers = [Localization.categoryTitle, Localization.scheduleTitle]
+    private var presenter: EditTrackerPresenterProtocol
     private var emojiCollectionManager: EmojiCollectionViewManager
     private var colorCollectionManager: ColorCollectionManager
     private var trackerNameFieldManager: NameTextFieldManager
+    private let editedTrackerData: DataForTrackerModel?
+    private let recordsCount: Int?
 
     // MARK: - Initializer
 
     init(
         type: Bool,
-        presenter: EditNewTrackerPresenterProtocol
+        presenter: EditTrackerPresenterProtocol,
+        editedTrackerData: DataForTrackerModel?,
+        recordsCount: Int?
     ) {
         self.isRegular = type
         self.presenter = presenter
+        self.editedTrackerData = editedTrackerData
         self.emojiCollectionManager = EmojiCollectionViewManager(
             collectionView: emojiCollection,
             params: params,
@@ -92,7 +104,7 @@ final class EditNewTrackerViewController: UIViewController {
 
         self.trackerNameFieldManager = NameTextFieldManager(
             trackerNameField: trackerNameField,
-            placeholderText: "Введите название трекера",
+            placeholderText: Localization.typeCategoryNamePlaceholder,
             presenter: presenter
         )
 
@@ -101,9 +113,10 @@ final class EditNewTrackerViewController: UIViewController {
             params: params,
             presenter: presenter
         )
+        isNewTracker = editedTrackerData == nil
+        self.recordsCount = recordsCount
         super.init(nibName: nil, bundle: nil)
-
-        presenter.configure(view: self)
+        presenter.configure(view: self, editedTrackerData: editedTrackerData)
         trackerNameFieldManager.addDelegate(delegate: self)
     }
 
@@ -117,10 +130,18 @@ final class EditNewTrackerViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupGestureRecognizer()
+        fillFormWithData()
     }
 
     // MARK: - UI Setup
 
+    private func fillFormWithData() {
+        if let tracker = editedTrackerData {
+            trackerNameField.text = tracker.name
+            emojiCollectionManager.setSelectedEmoji(tracker.emoji)
+            colorCollectionManager.setSelectedColor(tracker.color)
+        }
+    }
     private func setupUI() {
         view.backgroundColor = UIColor(named: "TrackerBackgroundWhite")
         setupScrollView()
@@ -141,6 +162,7 @@ final class EditNewTrackerViewController: UIViewController {
 
     private func addContent() {
         setupTitleLabel()
+        setupRecordsLabel()
         setupTrackerNameField()
         setupButtonsTableView()
         setupEmojiCollection()
@@ -153,7 +175,9 @@ final class EditNewTrackerViewController: UIViewController {
 
     private func setupTitleLabel() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = isRegular ? "Новая привычка" : "Новое нерегулярное событие"
+        let newTrackerTitle = isRegular ? Localization.editNewTrackerTitleHabit: Localization.editNewTrackerTitleIrregular
+        let title = isNewTracker ? newTrackerTitle : "Редактирование привычки"
+        titleLabel.text = title
         scrollView.addSubview(titleLabel)
 
         NSLayoutConstraint.activate([
@@ -162,14 +186,22 @@ final class EditNewTrackerViewController: UIViewController {
         ])
     }
 
-    private func setupWarningLabel() {
-        warningLabel.translatesAutoresizingMaskIntoConstraints = false
-        trackerNameFieldContainer.addSubview(warningLabel)
+    private func setupRecordsLabel() {
+        guard !isNewTracker,
+              let counter = recordsCount
+        else { return }
+        recordsLabel.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(recordsLabel)
+        let localizedString = String.localizedStringWithFormat(
+            NSLocalizedString("daysCount", comment: ""),
+            counter
+        )
+        recordsLabel.text = localizedString
 
         NSLayoutConstraint.activate([
-            warningLabel.centerXAnchor.constraint(equalTo: trackerNameField.centerXAnchor),
-            warningLabel.heightAnchor.constraint(equalToConstant: 22),
-            warningLabel.topAnchor.constraint(equalTo: trackerNameField.bottomAnchor, constant: 8)
+            recordsLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
+            recordsLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
+            recordsLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16)
         ])
     }
 
@@ -182,15 +214,30 @@ final class EditNewTrackerViewController: UIViewController {
         textFieldContainerHeightConstraint = trackerNameFieldContainer.heightAnchor.constraint(equalToConstant: 75)
         textFieldContainerHeightConstraint.isActive = true
 
+        let topConstraint = isNewTracker ?
+        trackerNameFieldContainer.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38) :
+        trackerNameFieldContainer.topAnchor.constraint(equalTo: recordsLabel.bottomAnchor, constant: 40)
+
         NSLayoutConstraint.activate([
             trackerNameFieldContainer.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-            trackerNameFieldContainer.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
+            topConstraint,
             trackerNameFieldContainer.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
             trackerNameFieldContainer.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
             trackerNameField.heightAnchor.constraint(equalToConstant: 75),
             trackerNameField.centerXAnchor.constraint(equalTo: trackerNameFieldContainer.centerXAnchor),
             trackerNameField.leadingAnchor.constraint(equalTo: trackerNameFieldContainer.leadingAnchor),
             trackerNameField.trailingAnchor.constraint(equalTo: trackerNameFieldContainer.trailingAnchor)
+        ])
+    }
+
+    private func setupWarningLabel() {
+        warningLabel.translatesAutoresizingMaskIntoConstraints = false
+        trackerNameFieldContainer.addSubview(warningLabel)
+
+        NSLayoutConstraint.activate([
+            warningLabel.centerXAnchor.constraint(equalTo: trackerNameField.centerXAnchor),
+            warningLabel.heightAnchor.constraint(equalToConstant: 22),
+            warningLabel.topAnchor.constraint(equalTo: trackerNameField.bottomAnchor, constant: 8)
         ])
     }
 
@@ -251,6 +298,8 @@ final class EditNewTrackerViewController: UIViewController {
     }
 
     private func setupCreateButton() {
+        let title = self.isNewTracker ? Localization.createButton : "Сохранить"
+        createButton.setTitle(title, for: .normal)
         createButton.translatesAutoresizingMaskIntoConstraints = false
         createButton.addTarget(self, action: #selector(createButtonPressed), for: .touchUpInside)
 
@@ -285,12 +334,16 @@ final class EditNewTrackerViewController: UIViewController {
     private func createButtonPressed() {
         let tracker = presenter.createTracker()
         presenter.saveTracker(tracker: tracker)
-        self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+        if isNewTracker {
+            self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+        } else {
+            self.presentingViewController?.dismiss(animated: true, completion: nil)
+        }
     }
 }
 
 // MARK: - UITableViewDelegate
-extension EditNewTrackerViewController: UITableViewDelegate {
+extension EditTrackerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1 {
             cell.separatorInset = UIEdgeInsets(top: 0, left: tableView.bounds.width, bottom: 0, right: 0)
@@ -312,7 +365,7 @@ extension EditNewTrackerViewController: UITableViewDelegate {
         let selectedOption = buttonsIdentifiers[indexPath.row]
 
         switch selectedOption {
-        case "Категория":
+        case Localization.categoryTitle:
             let createVC = CategoryPageViewController(
                 presenter: presenter,
                 lastSelectedCategory: presenter.dataModel.category
@@ -320,7 +373,7 @@ extension EditNewTrackerViewController: UITableViewDelegate {
             createVC.modalPresentationStyle = .pageSheet
             present(createVC, animated: true)
 
-        case "Расписание":
+        case Localization.scheduleTitle:
             let createVC = SchedulePageViewController(
                 presenter: presenter,
                 selectedDays: presenter.dataModel.schudule)
@@ -335,7 +388,7 @@ extension EditNewTrackerViewController: UITableViewDelegate {
 }
 
 // MARK: - UITableViewDataSource
-extension EditNewTrackerViewController: UITableViewDataSource {
+extension EditTrackerViewController: UITableViewDataSource {
     func tableView(
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
@@ -355,11 +408,11 @@ extension EditNewTrackerViewController: UITableViewDataSource {
         let identifier = buttonsIdentifiers[indexPath.row]
 
         switch identifier {
-        case "Категория":
+        case Localization.categoryTitle:
             let selectedCategory = presenter.dataModel.category
             cell.configureTitleButton(title: identifier, category: selectedCategory)
 
-        case "Расписание":
+        case Localization.scheduleTitle:
             let schedule = presenter.dataModel.schudule
             cell.configureScheduleButton(title: identifier, schedule: schedule)
 
@@ -373,7 +426,7 @@ extension EditNewTrackerViewController: UITableViewDataSource {
 }
 
 // MARK: - TrackerNameTextFieldManagerDelegateProtocol
-extension EditNewTrackerViewController: TrackerNameTextFieldManagerDelegateProtocol {
+extension EditTrackerViewController: TrackerNameTextFieldManagerDelegateProtocol {
     func showWarningLabel() {
         textFieldContainerHeightConstraint.constant = 113
         setupWarningLabel()
@@ -390,14 +443,21 @@ extension EditNewTrackerViewController: TrackerNameTextFieldManagerDelegateProto
     }
 }
 
-extension EditNewTrackerViewController: EditNewTrackerViewControllerProtocol {
+extension EditTrackerViewController: EditTrackerViewControllerProtocol {
+
     func setCreateButtonEnable() {
-        createButton.backgroundColor = UIColor.projectColor(.backgroundBlack)
+        createButton.backgroundColor = UIColor.projectColor(.black)
+        if #available(iOS 13.0, *) {
+            if traitCollection.userInterfaceStyle == .dark {
+                createButton.setTitleColor(UIColor.projectColor(.alwaysblack), for: .normal)
+            }
+        }
         createButton.isEnabled = true
     }
 
     func setCreateButtonDissable() {
-        createButton.backgroundColor = UIColor.projectColor(.textColorForLightgray)
+        createButton.backgroundColor = UIColor.projectColor(.gray)
+        createButton.setTitleColor(UIColor.projectColor(.alwaysWhite), for: .normal)
         createButton.isEnabled = false
     }
 

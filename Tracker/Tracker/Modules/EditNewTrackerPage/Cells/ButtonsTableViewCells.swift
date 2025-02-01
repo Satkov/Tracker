@@ -6,7 +6,7 @@ final class ButtonsTableViewCells: UITableViewCell {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-        label.textColor = UIColor.projectColor(.backgroundBlack)
+        label.textColor = UIColor.projectColor(.black)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -14,7 +14,7 @@ final class ButtonsTableViewCells: UITableViewCell {
     private let subtitleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-        label.textColor = UIColor.projectColor(.textColorForLightgray)
+        label.textColor = UIColor.projectColor(.gray)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -44,7 +44,7 @@ final class ButtonsTableViewCells: UITableViewCell {
         labelsContainer.addSubview(titleLabel)
         labelsContainer.addSubview(subtitleLabel)
         contentView.addSubview(arrowImageView)
-        contentView.backgroundColor = UIColor.projectColor(.backgroundLightGray)
+        contentView.backgroundColor = UIColor.projectColor(.lightGray)
         labelsContainer.translatesAutoresizingMaskIntoConstraints = false
     }
 

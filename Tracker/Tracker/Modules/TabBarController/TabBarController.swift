@@ -1,18 +1,27 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
+    private let topBorder = CALayer()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTabBarControllers()
-        addTopBorderToTabBar()
+        updateTabBarBorder()
     }
 
-    private func addTopBorderToTabBar() {
-        let topBorder = CALayer()
-        topBorder.backgroundColor = UIColor.lightGray.cgColor
-        topBorder.frame = CGRect(x: 0, y: 0, width: tabBar.bounds.width, height: 1)
+    private func updateTabBarBorder() {
+        if traitCollection.userInterfaceStyle == .dark {
+            topBorder.removeFromSuperlayer()
+        } else {
+            topBorder.frame = CGRect(x: 0, y: 0, width: tabBar.bounds.width, height: 0.5)
+            topBorder.backgroundColor = UIColor.lightGray.cgColor
+            tabBar.layer.addSublayer(topBorder)
+        }
+    }
 
-        tabBar.layer.addSublayer(topBorder)
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        updateTabBarBorder()
     }
 
     private func setupTabBarControllers() {
@@ -21,12 +30,13 @@ final class TabBarController: UITabBarController {
 
         let statisticViewController = StatisticPageViewController()
         statisticViewController.tabBarItem = UITabBarItem(
-            title: "Статистика",
+            title: Localization.statisticTitle,
             image: UIImage(named: "RabbitIcon"),
-            selectedImage: nil)
+            selectedImage: nil
+        )
 
         trackerNavViewController.tabBarItem = UITabBarItem(
-            title: "Трекеры",
+            title: Localization.trackersTitle,
             image: UIImage(named: "TrackerCircleIcon"),
             selectedImage: nil
         )
